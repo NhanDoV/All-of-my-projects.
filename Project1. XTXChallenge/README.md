@@ -7,3 +7,4 @@
         Group 4. Bid_Rate
 - This problem is about the time-series forecasting; and unfortunately, we didn't have any infomation on the time-index.
 - I had suggested some method to predict the value y; such as XGB, LSTM,...
+- Dataset links: https://www.kaggle.com/nhan1212/dataset-for-timeseries?select=XTX_data.csv
