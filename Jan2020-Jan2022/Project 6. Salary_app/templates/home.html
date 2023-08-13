@@ -9,7 +9,7 @@
     </style>
 </head>
 
-<body style="background-image: linear-gradient(to right, rgba(255,200,200,0), rgba(255,0,0,1))">
+<body style="background-image: linear-gradient(to right, rgba(255,200,200,0), rgb(0, 225, 255))">
     <div class="row">
         <div class="col-md-10 mr-auto ml-auto">
             <h1 style="color: rgb(33, 33, 206); text-align: center;"> Hệ thống tính lương & <br> thuế thu nhập cá nhân hàng tháng </h1>
@@ -26,9 +26,10 @@
                                 <br> Dưới đây là bảng thuế <br><br>
                             </span>
                         </p>
-
-                        <div class="block" style="font-family:Courier New; font-size:80%;">
-                            {{ table.to_html().replace('<tr>','<tr style="text-align: center;">') | safe }}                             
+                        <div class="centered" style="text-align: center;">
+                            <div class="block" style="font-family:Courier New; font-size:80%;">
+                                {{ table.to_html().replace('<tr>','<tr style="text-align: center;">') | safe }}                             
+                            </div>
                         </div>
                     </div>
                     <br><br>
