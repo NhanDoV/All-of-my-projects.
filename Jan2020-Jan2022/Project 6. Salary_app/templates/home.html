@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .row {
+            max-width: 750px;
+            margin: auto;       
+        }
+    </style>
+</head>
+
+<body style="background-image: linear-gradient(to right, rgba(255,200,200,0), rgba(255,0,0,1))">
+    <div class="row">
+        <div class="col-md-10 mr-auto ml-auto">
+            <h1 style="color: rgb(33, 33, 206); text-align: center;"> Hệ thống tính lương & <br> thuế thu nhập cá nhân hàng tháng </h1>
+            <form method="POST">
+                <div id="chatbox">
+                    <div class="col-md-8 ml-auto mr-auto">
+                        <p class="botText" style="font-size: 9;"> <span> Hệ thống này được xây dựng để tính số tiền lương bạn đáng lẽ phải nhận được. </span></p>
+                        <p class="botText" style="font-size: 8;"> 
+                            <span> 
+                                Nó sẽ được tính dựa trên các đầu vào như sau:
+                                <li> Số lương (triệu đồng) </li>
+                                <li> Số người phụ thuộc </li>
+                                <li> Mức chi trả của BHXH và các khoản chi phí khác nếu cty không đóng cho bạn (triệu đồng) </li>                            
+                                <br> Dưới đây là bảng thuế <br><br>
+                            </span>
+                        </p>
+
+                        <div class="block" style="font-family:Courier New; font-size:80%;">
+                            {{ table.to_html().replace('<tr>','<tr style="text-align: center;">') | safe }}                             
+                        </div>
+                    </div>
+                    <br><br>
+                </div>
+                <div id="userInput" class="row">
+                    <div class="col-md-10" style="text-align: center;">
+                        <input  id="text" type="number" step="0.001" name="salary" placeholder="Nhập số lương của bạn " class="form-control" value="">
+                        <input  id="text" type="number" step="1" name="nb_dependencies" placeholder="Nhập số người phụ thuộc" class="form-control">
+                        <input  id="text" type="number" step="0.01" name="bhxh" placeholder="Nhập tiền BHXH và các chi phí khác" class="form-control">
+                    </div>
+                </div>
+                
+                <div style="text-align: center;">
+                    <button type="submit" id="send" class="btn btn-warning" > press Enter </button>
+                </div>
+            </form>
+        </div>
+
+        <h5 style="color: rgb(10, 25, 230);"> 
+            Tổng số tiền chịu thuế: x1 + x2 - (x3 + x4) = {{gross}} (triệu VNĐ), trong đó: 
+            <li> x1. Tổng thu nhập: {{gross_init}} (triệu) </li>
+            <li> x2. Trừ đi số người phụ thuộc: {{sub_dep}} (triệu) </li>
+            <li> x3. Trừ đi các khoản tiền BHXH và các chi phí khác: {{ins}} (triệu) </li>
+            <li> x4. Giảm trừ bản thân : 11 triệu </li>
+        </h5>
+
+        <h5 style="color: rgb(10, 25, 230);"> 
+            Thuế bạn cần đóng là: {{tax}}, mức thuế suất cao nhất ứng với lương của bạn là {{tax_level}} %
+        </h5>
+        
+        <h5 style="color: rgb(10, 25, 230);"> 
+            Tiền thực nhận (thực lãnh của bạn là): {{net_inc}} 
+        </h5>
+
+    </div>
+
+</body>
+</html>
