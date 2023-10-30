@@ -2,3 +2,4 @@ wave
 supyr_struct
 numpy
 matplotlib
+pyaudio
