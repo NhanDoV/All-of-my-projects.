@@ -75,9 +75,5 @@ def note_detect(audio_file):
 	plt.show()
 
 if __name__ == "__main__":
-	audio_file = wave.open("musical_notes_extract\wav_files\d2.wav")
-	#fig, Detected_Note = note_detect(audio_file)
+	audio_file = wave.open("wav_files/d2.wav")
 	note_detect(audio_file)
-    #plt.suptitle(f"Detected note: {Detected_Note}")
-	#fig.show()
-	#print("\n\tDetected Note = " + str(Detected_Note))
