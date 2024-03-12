@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<style>
+    
+    table, th, td {
+        border:1px solid black;
+        border-style: dotted;
+        text-align: center;
+    }
+
+    </style> 
+<head>
+    <title> index </title>
+</head>
+
+<body style="background-image: linear-gradient(to right, rgba(0,0,0,0.1), rgba(12,21,121,0.6));"> 
+    <p>
+
+    <h1 style="text-align: center; color: rgba(29, 97, 185, 0.801);"> Image to cartoon </h1>
+    <h2 style="text-align: center; color:rgba(7, 75, 7, 0.801)"> Authorized: Do Van Nhan <br> </h2>
+    
+<form method="POST" enctype="multipart/form-data" style="text-align: center;">    
+    <div>
+        Please upload your image here (accepted file: JPG, PNG)
+        <input type="file" name="file">
+    </div>
+    <br>
+    <div>
+        Please input the number of cluster <input type="number" name="nb_cluster" min="2" value="2">
+    </div>
+    <br>
+    <div>
+        Select your transformation-type:
+        <select name="transformed_type" id="transformed_type">
+            <option value="red_form"> red_form </option>
+            <option value="blue_form"> blue_form </option>
+            <option value="green_form"> green_form </option>
+            <option value="grey_form"> grey_form </option>
+        </select>
+    </div>
+    <br>
+    <div style="text-align: center;">
+        <button type="submit" id="send" class="btn btn-warning" > press Enter </button>
+    </div>
+</form>
+
+    <br>
+
+    <div>
+        <table style="width:100%">
+            <tr>
+                <th>Original image (input)</th>
+                <th>Transformed image (Output)</th>
+            </tr>
+            <tr>
+                <td> <img src="{{uploaded_image}}" style="height: 50%; width: 50%;"> </td>
+                <td> <img src="{{transformed_img}}" style="height: 50%; width: 50%;"> </td>
+            </tr>
+        </table>
+    </div>
+
+</p> </body>
+
+</html>
