@@ -1,0 +1,411 @@
+{
+    "intents": [ 
+                {
+                    "tag": "greeting", 
+                    "patterns": [
+                                "Hi", "Hi BOT", "hello", "hello BOT", "xin chào", "bonjour", "salut", "hey", "hey BOT", "hello there", "hi there", "ni hao", "ohayo", "comment ca va",
+                                "ê","eh", "ê BOT", "hellu", "hella", "alo", "hallo", "konichiwa"
+                                ],
+                    "response": [
+                        "(VI): xin chào, tôi có thể giúp gì cho bạn\n(EN): Hi, can I help you\n(GE): Hallo, kann ich dir helfen?\n(FR): Salut, puis-je vous aider",
+                        "(VI): chào bạn, bạn cần hỗ trợ điều gì?\n(EN): Hi, what support do you need?\n(GE): Hallo, welche Unterstützung brauchst du?\n(FR): Bonjour, de quel soutien avez-vous besoin?"
+                    ]
+                },
+
+                {
+                    "tag": "goodbye",
+                    "patterns": ["Bye", "Goodbye", "Sayonara", "Tschuss", "Thank for your help", "bye nha", "Thank for your answers", "Tạm biệt"],
+                    "response": [
+                        "(VI): Cám ơn bạn đã sử dụng chúng tôi và vui lòng đánh giá trải nghiệm \n(EN): Thank you for using us and please rate your experience\n(GE): Vielen Dank, dass Sie uns nutzen, und bitte bewerten Sie Ihre Erfahrung \n(FR): Merci de nous utiliser et s’il vous plaît évaluer votre expérience."
+                    ]
+                },
+        
+                {
+                    "tag": "who_created",
+                    "patterns": ["who created you", "ai đã lập trình", "mày là ai", "who are you", "bạn là ai", "Qui êtes vous", "Wer bist du"],
+                    "response": [
+                        "(VI): Tôi là XBot, được phát triển bởi ông Đỗ Văn Nhân \n(EN) I am XBot, developed by Sir Do Van Nhan\n(GE) Ich bin XBot, entwickelt von Sir Do Van Nhan \n(FR) Je suis XBot, développé par Sir Do Van Nhan"
+                    ]
+                },
+
+                {
+                    "tag": "daytime_today",
+                    "patterns": ["what time is it", "What the date today", "hôm nay ngày nào nhỉ", "giờ là mấy giờ rồi"],
+                    "response": [""]
+                },
+
+                {
+                    "tag": "working_hour",
+                    "patterns": ["Giờ làm việc ở Fsoft?", "giờ làm việc", "working time", "working hour", "giờ đi làm ở công ty", "offical time / hour at Fsoft",
+                                 "what time do we start at work", "when do we end work at fsoft", "giờ tan làm ở fsoft", "giờ hành chính ở fsoft"],
+                    "response":[
+                        "(VI): Giờ làm việc ở Fsoft buổi sáng bắt đầu lúc 8:15 và kết thúc lúc 12:00 và buổi chiều là 13:00-17:00\n(EN): From 8:15 to 12:00 in the morning and 13:00-17:00 in the afternoon"
+                    ]
+                },
+
+                {
+                    "tag": "log_off_tms",
+                    "patterns": ["muốn xin nghỉ phép thì làm sao", "working time report TMS tool", "Khoảng mấy ngày BUL sẽ approve đơn TMS của tôi vậy?", "sau bao lâu thì các đơn TMS sẽ được xử lý", "khi nào đơn TMS sẽ được duyệt", "khi nào đơn TMS được phê duyệt", "khi nào đơn TMS được approved", "xin nghỉ phép", "tôi muốn xin nghỉ phép", "tôi muốn xin work from home", "how to log WFH on TMS"],
+                    "response": ["(VI): Bạn có thể xin nghỉ phép bằng cách log đơn trên TMS (nếu số ngày phép của bạn còn hợp lệ). \n\t Các trường hợp khác (như WFH, đi trễ về sớm, etc) thì cần thông báo trước cho cán bộ quản lý của bạn, cho HR admin và BUL để được xử lý.\n\t Tất cả các đơn TMS, BUL sẽ approve 1 lần vào ngày cuối tháng nhé. Đến cuối tháng bạn vẫn không thấy approved thì có thể báo lại PM và BUL để được duyệt. \n\n (EN): If your number of leave days is still valid, you can log a leave application on TMS. Other situations (like WFH, late arrival, early departure, etc.) must be made aware to your manager, HR admin, and BUL in advance in order to be handled. \n\t At the end of each month, the BUL will approve all TMS orders. \n\t If you still don't see approved at the end of the month, you can report back to PM and BUL for approval."]
+                },
+
+                {
+                    "tag": "address-FHM",
+                    "patterns": ["where FSoft located in SaiGon", "địa chỉ FSOFT", "where is FHM", "FPT tọa lạc ở đâu", "FPT ở đâu", "FSOFT tọa lạc ở đâu?", "FHM nằm chỗ nào", "Fsoft sài gòn ở đâu?"],
+                    "response": ["(VI): Võ Chí Công - Quận 9 - TP HCM \n(EN): Vo Chi Cong St, District 9, HCM City"]
+                },
+
+                {
+                    "tag": "address-FTel",
+                    "patterns": ["where F-Tel located in SaiGon", "where is FTel in Ho Chi Minh", "F-Telecom ở đâu"],
+                    "response": ["(VI): Khu Chế Xuất Tân Thuận - Quận 7 - TP HCM \n(EN): District 7 HCMCity Tan Thuan"]
+                }, 
+
+                {
+                    "tag": "thank",
+                    "patterns": ["thank you", "thank for your help", "cám ơn đã tư vấn", "cám ơn", "merci beaucoup", "danke", "thanks"],
+                    "response": [
+                                    "(VI): Không sao, rất vui đã giúp được bạn. \n(EN): You are welcome, nice to help you",
+                                    "(VI): Cám ơn bạn đã tin tưởng dịch vụ. \n(EN): Thank for your confidence to our service.",
+                                    "(VI): Đa tạ! Vui lòng đánh giá chất lượng chatbot. \n(EN): Many thanks! Please rate the chatbot to help us improve your experience"
+                                ]
+                },
+
+                {
+                    "tag": "offical check in",
+                    "patterns": ["working time report issue", "vấn đề quẹt thẻ?", "Dữ liệu quẹt thẻ FPT?", "quẹt thẻ dưới 3 tiếng thì như thế nào", "dữ liệu trong khoang làm việc dưới 5 tiếng", "quẹt thẻ ra vào", "quẹt thẻ", "quẹt thẻ vào khoang làm việc", "quẹt thẻ FSOFT", "number of working hours in offical area, Fsoft", "working hours is not enough 6 hours a day"],
+                    "response": ["(VI): Nhân viên ra vào khoang làm việc phải quẹt thẻ, công ty có ghi nhận giờ ra vào khoang làm việc.\n\t-Nếu dữ liệu quẹt thẻ dưới 6 tiếng: Tool sẽ tính nghỉ nửa ngày công.\n\t-Nếu dữ liệu quẹt thẻ dưới 3 tiếng: Tool sẽ tính nghỉ một ngày công. \n\n(EN): Employees must swipe their cards when entering and leaving the workspace, and the business will keep track of the times.\n\t-If the card swipe data is less than 6 hours, the tool will calculate a half-day.\n\t- If the card swipe data is less than 3 hours, the tool will subtract one working day."]                    
+                },
+
+                {
+                    "tag": "bus-info",
+                    "patterns": ["Tôi có thể tra cứu các thông tin về các tuyến bus tại FSOFT ở đâu?", "Cho tôi biết link chứa thông tin về các tuyến bus tại FSOFT ?", "bus-route at Fsoft", "bus schedule at Fsoft",
+                                 "Cho tôi biết thông tin về các shuttle bus qua lại giữa FTown3 và các bên FTown1-2", "Những thời điểm nào có bus di chuyển từ FTown3 sang FTown1-2 và ngược lại?",
+                                 "how to register bus route in Fsoft", "search bus info for each District in Ho Chi Minh City",
+                                 "Để đăng ký bus đi làm từ các quận thì tôi sẽ tham khảo ở đâu?", "cho tôi biết cách truy cập vào bus schedule trên portal ở fsoft"
+                                ],
+                    "response": ["(VI):\n\tB1. Vào https://portal.fpt-software.com/secure/SSCHome.jspa.\n\tB2. Chọn tab `Useful Information` rồi chọn `bus schedule`.\n\tBạn có thể tìm hiểu các thông tin bạn muốn biết tại đây! \n(EN):\n\tB1. Go to https://portal.fpt-software.com/secure/SSCHome.jspa. \n\tB2. Select the `Useful Information` tab and then select `bus schedule`. \n\tYou can find out what you want to know here!"]
+                },
+
+                {
+                    "tag": "log_off_type",
+                    "patterns": ["thông tin nghỉ phép", "nhân viên nghỉ phép", "nghỉ phép cần làm gì?", "số ngày phép trong năm", 
+                                "log-off", "thủ tục xin nghỉ phép", "log off", " thông tin ngày phép", "logoff", "annual holiday fsoft", " annual off dates",
+                                "mới vào fsoft thì có phép không", "xin phép để off"
+                                ],
+                    "response": ["(VI): Chào bạn, để biết lịch nghỉ phép hàng năm thì vui lòng vào đây https://portal.fpt-software.com/secure/ShowContent.jspa?id=23 , còn \n nhân viên nghỉ phép cần trao đổi trực tiếp với người quản lý (Line Manager) sau đó thực hiện log tool online. Mỗi tháng nhân viên sẽ có thêm 1 ngày phép vào quỹ ngày phép. Tổng cộng có 12 ngày phép/năm. Xin cho biết hợp đồng của bạn là gì trong các loại dưới đây: \n\t OJT, \n\t nhân viên thử việc, \n\t nhân viên chính thức.\n(EN): To learn more the annualy holiday, please visit this page https://portal.fpt-software.com/secure/ShowContent.jspa?id=23, and \n the employee on leave needs to talk directly with the manager (Line Manager) then perform the online log tool. Each month, employees will have 1 additional day of leave to the leave fund. A total of 12 days of leave/year. Please indicate what your contract is in the following categories: \n\t OJT, \n\t probation employee, \n\t full-time employee"]
+                },
+                {
+                    "tag": "OJT-logoff",
+                    "patterns": ["OJT nghỉ phép", "nhân viên OJT nghỉ phép", "nghỉ phép khi đang là OJT", "OJT log-off", "nghỉ phép khi đang là OJT", "nghỉ phép diện OJT"],
+                    "response": ["(VI): Chào bạn, nhân viên OJT không log phép trên tool. Nhân viên OJT tự chủ động liên hệ với PM/Line Manager để sắp xếp thời gian lên công ty hợp lý.\n(EN): The OJT staffs do not log permission on the tool. OJT staff automatically contact PM/Line Manager to arrange a reasonable time to the company."]
+                },
+                {
+                    "tag": "official-logoff",
+                    "patterns": ["nhân viên chính thức xin nghỉ phép", "nghỉ phép khi là nhân viên chính thức", "vào làm chính thức nghỉ phép", "nghỉ phép khi đã ký hợp đồng lao động chính thức"],
+                    "response": ["(VI): Chào bạn, nhân viên chính thức sẽ nói chuyện với quản lý trực tiếp về ngày nghỉ của mình để được duyệt, sau đó log đơn nghỉ phép trên tool. \n(EN): The official staff will talk to their direct manager about their leave for approval, then log the leave application on the tool."]
+                },
+                {
+                    "tag": "probation-logoff",
+                    "patterns": ["nghỉ phép khi thử việc", "nhân viên thử việc xin nghỉ phép", "log-off in probation time", "nghỉ phép khi đang là nhân viên thử việc"],
+                    "response": ["(VI): Chào bạn, trong thời gian thử việc, nhân viên chưa nhận được ngày phép. Sau thời gian thử việc, hệ thống sẽ bù số ngày phép cho nhân viên tùy theo số tháng thử việc (mỗi tháng 1 ngày). \n(EN): During the probationary period, the employee has not received any leave. After the probationary period, the system will compensate the number of leave days for the employee depending on the number of probationary months (1 day per month)."]
+                },
+                {
+                    "tag": "time to logoff",
+                    "patterns": ["thời gian xin nghỉ phép", "quy định thời gian khi xin nghỉ phép", "xin phép bao lâu trước khi nghỉ phép"],
+                    "response": ["(VI): Chào bạn, bạn cần gửi đơn xin phép đến quản lý trực tiếp,\n\t Nếu thời gian nghỉ phép (1-2) ngày thì hãy xin trước ít nhất 1 ngày làm việc.\n\t Nếu thời gian nghỉ phép > 3 ngày thì hãy xin trước ít nhất 1 tuần làm việc. \n(EN): you need to send an application to your line manager,\n\t If the leave period is 1-2 days, please apply at least 1 working day in advance.\n\t If the leave period is > 3 days Please apply at least 1 working week in advance."]
+                },
+                {
+                    "tag": "time logoff 1-2 days",
+                    "patterns": ["xin nghỉ phép 1 ngày cần làm gì", "xin nghỉ phép 1 buổi cần làm gì", "xin nghỉ phép 3 buổi cần làm gì", "xin nghỉ phép 2 buổi cần làm gì", "xin nghỉ phép 2 ngày cần làm gì"],
+                    "response": ["(VI): Chào bạn, bạn cần gửi đơn xin phép đến quản lý trực tiếp, hãy xin trước ít nhất 1 ngày làm việc. \n(EN): you need to send an application-form to your line manager, please apply at least 1 working day in advance."]
+                },
+                {
+                    "tag": "time logoff 1 week",
+                    "patterns": ["nghỉ phép 3 ngày cần làm gì", "nếu nghỉ phép 2 tuần cần làm gì", "nghỉ phép 4 ngày cần làm gì", "nghỉ phép 5 ngày cần làm gì", "xin được nghỉ phép 1 tuần cần làm gì", "xin nghỉ phép 2 tuần cần làm gì", "xin nghỉ phép 3 tuần cần làm gì", "xin nghỉ phép 4 tuần cần làm gì", "xin nghỉ phép 1 tháng cần làm gì", "nghỉ phép nhiều hơn 1 tuần cần làm gì"],
+                    "response": ["(VI): Chào bạn, bạn cần gửi đơn xin phép đến quản lý trực tiếp, hãy báo trước ít nhất 1 tuần làm việc. \n(EN): You need to send an application-form for permission to your direct manager, at least 1 working week in advance."]
+                },
+
+                {
+                    "tag": "late_range",
+                    "patterns": ["sau bao lâu sẽ bị tính là đi trễ", "vào làm việc sau 8g15", "vào làm việc sau 8 giờ 15", "sau bao lâu sẽ bị tính là đi muộn", "đi làm sau mấy giờ sẽ bị xem là đi trễ", "đi làm sau mấy giờ sẽ bị xem là vào muộn"],
+                    "response": ["(VI): sau 8h15 sẽ được tính là đi trễ/muộn nhé, bạn tự tính cho trường hợp của bạn! Nếu đi trễ bạn sẽ bị trừ 20k / lần trễ vào lương tháng 13. \n(EN): After 8:15 will be counted as late / late, you calculate for your own case! If you are late, you will be deducted 20k / late from your 13th month salary."]
+                },
+                {
+                    "tag": "early_range",
+                    "patterns": ["sau bao lâu sẽ bị tính là về sớm", "sau bao lâu sẽ bị tính là về sớm", "khi nào sẽ bị tính là về sớm", "về trước 17h", "về trước 16h"],
+                    "response": ["(VI): về sớm là ra về trước 17h nhé (16h59 cũng là về sớm, bạn tự tính cho trường hợp của bạn)! Nếu về sớm, bạn sẽ bị trừ 20k / lần vào lương tháng 13. \n(EN): If you leave early, you will leave before 5:00 pm (16:59 is also leaving early, you can calculate it for yourself)! If you leave early, you will be deducted 20k / time from your 13th month salary."]
+                },                
+                {
+                    "tag": "lateness",
+                    "patterns": ["đi muộn cần làm gì", "đi trễ cần làm gì", "về sớm không lý do", "đi trễ không lý do", "về sớm cần làm gì", "ra về sớm cần làm gì", "đi muộn chính đáng cần làm gì", "về sớm chính đáng cần làm gì"],
+                    "response": ["(VI): Nhân viên cần xin phép PM/Quản lý trực tiếp và sau đó log đơn Đi muộn/Về sớm với lý do chính đáng trên TMS. \n(EN): All employee must ask permission from PM/Director and then log Late/Early Leave application with good reason on TMS"]
+                },
+                {
+                    "tag": "late-invalid",
+                    "patterns": ["đi muộn không chính đáng bị gì", "đi muộn bị gì", "về sớm bị gì", "về sớm không lý do bị gì", "đi muộn không lý do bị gì", "đi muộn về sớm không lý do chính đáng bị gì"],
+                    "response": ["(VI): Theo quy định, nếu bạn (anh / chị) đi muộn, về sớm không log đơn: bị trừ 20,000đ/lần. \n(EN): According to the regulations, if you (he / she) go late, leave early without logging in: 20,000 VND / time will be deducted."]
+                },
+                {
+                    "tag": "absence-alert",
+                    "patterns": ["Trường hợp khẩn cấp cần nghỉ phép", "nghỉ phép vì lý do đột xuất", "nghỉ phép vì việc ngoài ý muốn"],
+                    "response": ["(VI): Anh / chị cần thông báo nghỉ phép qua điện thoại hoặc email.", "Trường hợp này, bạn cần thông báo nghỉ phép qua điện thoại hoặc email. \n(EN): You need to notify the leave by phone or email.", "In this case, you need to notify the leave by phone or email."]
+                },
+
+                {
+                    "tag": "loss_carde",
+                    "patterns": ["Thẻ của tôi bị mất, làm mới như thế nào nhỉ?", "làm sao khi bị mất thẻ ra vào"],
+                    "response": ["(VI): Dạ anh/chị log ticket tại đây: https://portal.fpt-software.com/secure/SSC01CreateTicket.jspa?processId=93&catalogId=75&issueKeys=. \n\t- Thời gian dự kiến: 3-5 ngày có thẻ mới. \n\t- Chi phí làm lại thẻ: 100,000/thẻ. \n\t- Trong thời gian chờ có thẻ mới, anh/chị vui lòng mượn thẻ tạm tại quầy lễ tân. \n(EN): First, log your ticket here: https://portal.fpt-software.com/secure/SSC01CreateTicket.jspa?processId=93&catalogId=75&issueKeys=. \n\t- Estimated time: 3-5 days with new cards. \n\t- Card renewal fee: 100,000/card. \n\t- While waiting for a new card, please borrow a temporary card at the front desk."]
+                },
+
+                {
+                    "tag": "borrow_carde",
+                    "patterns": ["Hôm nay anh/chị quên thẻ ở nhà, mượn thẻ ở đâu nhỉ?", "Hôm nay tôi quên thẻ ở nhà, mượn thẻ ở đâu hả?", "Hôm nay dự án có khách hàng ghé thăm Ftown, mượn thẻ khách ở đâu?", "mượn thẻ cho khách ở đâu?"],
+                    "response": ["(VI): Dạ anh/chị mượn thẻ tạm tại quầy lễ tân. \n(EN): You can borrow a temporary card at the front desk."]
+                },
+
+                {
+                    "tag": "MyFPT-ebus",
+                    "patterns": ["Tôi phải check in bus như thế nào và check in tối thiểu bao nhiêu lần một tháng?", "số lần check in bus trên myFPT", 
+                                 "ebus trên MyFPT", "check in bus trên myFPT như thế nào?"],
+                    "response":["(VI): Bạn cần tải app MyFPT, vào mục e-bus và check in trước 12h trưa hàng ngày. \n Bạn cần check in tối thiểu 11 lần một tháng, nếu không bạn phải đăng ký lại. \n(EN): You need to download the MyFPT app, go to the e-bus section and check in before 12 noon every day. \n You need to check in at least 11 times a month, otherwise you have to re-register"]
+                },
+                {
+                    "tag": "install permission",
+                    "patterns": ["download phần mềm", "cài đặt phần mềm", "whitelist", "blacklist", "WHITE LIST", "black list", "những ứng dụng được phép sử dụng", "những phần mềm được cho phép", "những phần mềm bị cấm"],
+                    "response": ["Nhân viên không download phần mềm trên mạng để cài đặt vào máy tính. Các phần mềm cài đặt vào máy tính phải nằm trong WHITELIST của công ty. <br> \t\t Link check Whitelist/Backlist: https://qms.fsoft.com.vn/#/document-master-list > Master List > Gõ vào ô Keyword: “Blacklist”."]
+                },
+
+                {
+                    "tag": "IT",
+                    "patterns": ["tui là IT", "tao là IT, tao muốn hỏi", "IT đây", "This is IT.FHM", "This is IT.FHN", "THis is IT FSOFT", "IT FPT"],
+                    "response": [
+                                    "Dume IT, diss con mẹ mày làm gì giờ mới thấy",
+                                    "IT IT cái củ kẹt, clmm đừng test nữa",
+                                    "Clm chúng mày trốn đâu hết rồi mà giờ issues của bố mày chưa xong",
+                                    "Cdm bọn IT FSOFT tụi bây cũng biết test chatbot à",
+                                    "IT-sinh vật ngu nhất và nguy hiểm nhất FSOFT",
+                                    "Nổ tên tuổi, địa chỉ nhà mày ra đây xem con cờ hó.",
+                                    "Fuck ya IT", "Damm IT", "Fuck cả lò IT.", "IT is in the (ass) hole"
+                                ]
+                },                
+                {
+                    "tag": "email-cho",
+                    "patterns": ["sử dụng email tại FSOFT", "sử dụng email công việc", "email trong dự án", "email hỏi thăm đồng nghiệp", 
+                                 "cho biết các thông tin về việc sử dụng email ở FSoft"
+                               ],
+                    "response": ["Nhân viên chỉ sử dụng email cho mục đích công việc và dự án, không được phục vụ mục đích cá nhân (mua sắm / giải trí / trao đổi với email ngoài công việc). Nếu dự án có yêu cầu gửi và nhận từ free mail thì nhân viên email cho PM, BUL, cc Admin (ViPA). Sau khi có confirm từ PM và BUL thì Admin sẽ log request cho nhân viên."]
+                },
+
+                {
+                    "tag": "email-chê",
+                    "patterns": ["sử dụng email để mua sắm", "dùng email cty bán dữ liệu", "sử dụng email cty tuồn bán dữ liệu được hong?", 
+                                "có thể sử dụng email cty cấp để mua sắm không?", "có thể sử dụng email cty cấo để lướt shopee không?", "có thể sử dụng email cty cấp để shoping không?",
+                                "có thể sử dụng email cty cấp để vào Lazada không?", "có thể sử dụng email cty để vào Grab không?", "có thể sử dụng email công ty để tạo tài khoản shopee, lazada, grab, netflix không?",
+                                "có thể sử dụng email công ty trao đổi công việc ngoài dự án không?", "có thể sử dụng email công ty trao đổi công việc với bên ngoài không?",
+                                "dùng email cty bán data ông PM", "xài email cty bán data ông PM", "xài email cty bán dữ liệu anh em", "sử dụng email cty bán dữ liệu anh em", "email để đặt hàng online", "email để bán thông tin đồng nghiệp", "vậy xài email công ty mua sắm ?", "xài email FSOFT mua hàng trên mạng", "xài email FPT mua hàng trên mạng", "email công ty mua hàng trên mạng", "dùng email công ty mua hàng trên mạng", "sử dụng email công ty để mua sắm trên mạng", "email fsoft lướt Lazada", "email fsoft lướt tiki", "email fsoft lướt shopee", "email fsoft lướt sendo"],
+                    "response": ["Bạn không được sử dụng email để đăng ký/gửi/nhận thông tin trên bất kỳ trang giải trí/mua sắm… nào bên ngoài. Nếu dự án của bạn có yêu cầu gửi và nhận từ free mail thì nhân viên email cho PM, BUL, cc Admin (ViPA). Sau khi có confirm từ PM và BUL thì Admin sẽ log request cho nhân viên."]
+                },
+                {
+                    "tag": "documentary",
+                    "patterns": ["sử dụng tài liệu ở FPT", "được upload tài liệu không?", "dùng tài liệu như thế nào", "tài liệu với ISMS", "bảo mật thông tin với việc sử dùng tài liệu"],
+                    "response": ["Nhân viên chỉ sử dụng tài liệu của công ty, tài liệu của dự án… cho mục đích công việc, hành động chia sẻ thông tin dự án và tài liệu cho người khác là vi phạm quy định bảo mật của công ty và bị cấm. Nhân viên không upload tài liệu lên mạng… để tránh các incident về qui định bảo mật thông tin (ISMS) của công ty. Các qui định cụ thể khác sẽ được phổ biến trong các kỳ thi ISMS được tổ chức hằng năm."]
+                },
+                {
+                    "tag": "documentary-banned",
+                    "patterns": ["được upload tài liệu dự án không?", "dùng tài liệu như thế nào để tránh ISMS", "vi phạm bảo mật thông tin với việc sử dùng tài liệu"],
+                    "response": ["Những hành động chia sẻ thông tin dự án và tài liệu cho người khác (khi không báo qua các bộ phận liên quan) là vi phạm quy định bảo mật của công ty và bị cấm. Nhân viên không upload tài liệu lên mạng để tránh các incident về qui định bảo mật thông tin (ISMS) của công ty, anh chị cần được sự cho phép của PM và phía khách hàng."]
+                },
+                {
+                    "tag": "documentary-valid",
+                    "patterns": ["sử dụng tài liệu hợp lý", "những tình huống đươc phép sử dụng tài liệu", "sử dụng tài liệu dự án FSOFT"],
+                    "response": ["Nhân viên chỉ sử dụng tài liệu của công ty, tài liệu của dự án… cho mục đích công việc"]
+                },
+
+                {
+                    "tag": "printer-quiz",
+                    "patterns": ["printer", "hỏi về máy in", "sử dụng máy in", "request máy in", "yêu cầu máy in", "các lưu ý khi dùng máy in"],
+                    "response": ["bạn muốn hỏi gì về việc sử dụng máy in?<br> \t-quy định khi sử dụng máy in <br> \t-cách cài đặt... hay<br> \t-cách request quyền máy in?"]
+                },
+
+                {
+                    "tag": "printer-rule",
+                    "patterns": ["quy định về việc sử dụng máy in", "quy định khi sử dụng máy in", "quy định sử dụng máy in", "cần chú ý gì khi sử dụng máy in"],
+                    "response": [
+                        "<br> - Nhân viên in nội dung liên quan công việc, với số lượng ít (100 trang trở xuống) thì sử dụng máy in tại khoang làm việc. <br> - Nếu Nhân viên cần in số lượng nhiều và đóng thành cuốn trong trường hợp cần gửi tài liệu cho khách hàng thì báo với PM để yêu cầu SSC in giùm, dự án thanh toán các chi phí."                    ]
+                },
+                {
+                    "tag": "printer-install",
+                    "patterns": ["về việc cài đặt máy in", "hướng dẫn cài đặt máy in", "how to use or get a instruction for printer at Fsoft?", "cài đặt sử dụng máy in như thế nào", "cài đặt sử dụng máy in bằng cách nào", "cách cài đặt máy in", "printer-driver"],
+                    "response": [
+                        "<br>  B1. vào đường dẫn \\hcm-printsrv02,<br>  B2. click chọn Printer-FHM.AVI để cài đặt printer driver.<br> \t Ghi chú: Nếu dùng wifi không vào đường dẫn trên được thì cắm dây mạng rồi thử lại."
+                    ]
+                },
+                {
+                    "tag": "printer-request",
+                    "patterns": ["request sử dụng máy in", "request máy in", "cách yêu cầu cấp máy in", "how to request a printer at fsoft", "hướng dẫn cách request xài máy in", "cách request sử dụng máy in", "cách request máy in"],
+                    "response": ["<br> \tBước 1: Vào trang https://fpt.workplace.com/groups/fsoft.it/ <br> \tBước 2: Đăng issue lên workplace: <br> \t'Dear IT, Nhờ IT cấp quyền máy in cho member <Account> vào máy in khoang AVI (Tầng 2, FT3). Máy in số hiệu: GDU.3A HP LaserJet 400 Thanks IT.' <br> \tBước 3: Tag BUL @TanTQM vào để BUL confirm. <br> \tBước 4: Theo dõi và chờ kết quả."]
+                },
+
+                {
+                    "tag": "printer-error",
+                    "patterns": ["máy in bị hỏng thì tôi nên làm gì", "xử lý như thế nào nếu máy in bị hư", "nếu máy in có vấn đề về mực in, giấy in hoặc bị lỗi thì tôi cần làm gì?"],
+                    "response": ["Liên hệ / báo lại với Admin của BU bạn (ViPA nếu bạn ở AVI)"]
+                },
+
+                {
+                    "tag": "FSOFT Portal",
+                    "patterns":["Portal FSOFT", "FSOFT Portal", "Employee Service Portal"],
+                    "response": ["Đây là nơi cung cấp thông tin và dịch vụ cho Nhân viên theo link: https://portal.fpt-software.com/secure/SSCHome.jspa"]
+                },
+
+                {
+                    "tag": "which_floor",
+                    "patterns": ["AVI ở tầng mấy", "khoang làm việc ở đâu", "where is the cabin office", "which floor do we work at"],
+                    "response": ["AVI, CMS, ADG ở tầng 2, IT ở tầng 3; còn mấy BU kia thì Bot hok biết, bạn lên cty hỏi lễ tân đi"]
+                },
+                {
+                    "tag": "bookme",
+                    "patterns": ["đặt phòng họp FT3", "bookme", "book phòng họp", "đặt phòng ở FT1", "book phòng họp FT3", "book phòng họp ở FT2",
+                                 "cách book phòng meeting ở Fsoft", "làm sao để đặt phòng họp ở fsoft cho dự án", "how to book a room"
+                                 ],
+                    "response": ["Cách book phòng họp: https://bookme.fsoft.com.vn/Web/schedule.php. <br> \tChọn địa chỉ FT1/FT2/FT3, ngày giờ và book phòng."]
+               },
+               {
+                    "tag": "site-blocked",
+                    "patterns": ["Để mở link bị chặn bằng cách nào", "làm thế nào để sử dụng tool bị IT chặn", "làm thế nào để sử dụng tool bị đám lz IT chặn", 
+                                 "dùng tool trong black list", "để dùng tool bị IT chận thì cần làm gì", "dự án yêu cầu Github nhưng Github bị cấm", 
+                                 "xin mở port vào Gihtub", "Cần quyền để cài đặt các thư viện python từ Git", "không dùng google colab được thì mở port như thế nào"
+                                ],
+                    "response": ["Để mở các Link phục vụ công việc (dự án) nhưng đang bị Fsoft chặn, truy cập link sau: https://portal.fpt-software.com/secure/SSC01CreateTicket.jspa?processId=58&catalogId=14&issueKeys. <br> \t và tạo ticket. <br> Ticket này cần phải đính kèm CM Plan (contact PM để xin)"] 
+               },
+               {
+                    "tag": "head-phone",
+                    "patterns": ["mua tai nghe", "mua hàng", "tai nghe", "head phone", "head-phone", "muốn cấp tai nghe, tôi cần làm gì?", 
+                                 "muốn cấp headphone cần làm gì", "làm thế nào để được cấp headphone", "làm thế nào để được cấp earphone",
+                                 "làm sao để được cấp tai nghe", "quy trình xin cấp tai nghe", "làm sao để request tai nghe?", "làm sao để request headphone"
+                                ],
+                    "response": [
+                        "Nếu bạn mua để phục vụ công việc, bạn cần báo PM trực tiếp. Sau khi PM đồng ý, hãy email cho BUL, cc PM + ViPA. Sau khi BUL confirm thì ViPA log mua"
+                    ]
+               },
+               {
+                   "tag": "data_analyst_skill",
+                   "patterns": ["how to become a data analyst", "Các kỹ năng và công cụ cần biết nếu muốn trở thành Data Analyst", "Which tools a Data analyst must know", "which skills data analyst must have"],
+                   "response": ["Data analysts require a high level of mathematical ability, the ability to analyze, model, and interpret data, problem-solving skills, a methodical and logical approach, the ability to plan work and meet deadlines, accuracy and attention to detail, interpersonal skills, and teamworking skills. \n\n Skills: \n\t- Data Cleaning and Preparation. \n\t- Data Analysis and Exploration \n\t- Statistical Knowledge \n\t- Creating Data Visualizations \n\t- Creating Dashboards and Reports \n\t- Writing and Communication \n\t- Domain Knowledge in a certain business \n\t- Problem-Solving. \n\n Tools: \n\t- SQL, Excel \n\t- PowerBI, Tableau, Qlik \n\n How to learn: \n\t- Bootcamp \n\t- Online Community"]
+               },
+               {
+                "tag": "data_engineer_skill",
+                "patterns": ["how to become a data engineer", "Engineering skills", "Data engineer responsibilities", "Các kỹ năng và công cụ cần biết nếu muốn trở thành Data Engineer", "Which tools a Data Engineer must know", "which skills data Engineer must have"],
+                "response": ["A data engineer is an engineering role within a data science team or any data related project that requires creating and managing technological infrastructure of a data platform.\n\n * Responsibilities: \n\t - Architecture design. \n\t - Development of data related instruments/instances. \n\t - Data pipeline maintenance/testing. \n\t - Machine learning algorithm deployment. \n\t - Manage data and meta-data. \n\t - Provide data-access tools. \n\t - Track pipeline stability. \n\n * Skills: \n\t - Software: C++/C# / Scala/ Python / R / Golang / etc. \n\t - ETL, ELT & administration database \n\t - Database / Datawarehouse: SQL-No SQL / AWS Redshift / Oracle / Apache Hive / etc, \n\t - Nice to have: \n\t\t + Big data: Hadoop and Kafka \n\t\t + ML Frameworks & libraries:  TensorFlow, Spark, PyTorch, mlpack \n\t\t + BI tools: Power BI / Tableau / Qlik / AWS QuickSight \n\t\t + Cloud: AWS / Azure / GCP"]
+            },
+
+            {
+                "tag": "when_data_engineer",
+                "patterns": ["when a business need a data engineer", "khi nào cần đến một data engineer", "When to hire a data engineer?"],
+                "response": [" + Scaling your data science team. \n\tWhen your team of data specialists reaches the point when there is nobody to carry technical infrastructure, a data engineer might be a good choice in terms of a general specialist.\n + Big data projects. \n\tCurrently, data engineering shifts towards projects that aim at processing big data, managing data lakes, and building expansive data integration pipelines for noSQL storages. In this case, a dedicated team of data engineers with allocated roles by infrastructure components is optimal. \n + Requiring custom data flows. \n\tEven for medium-sized corporate platforms, there may be the need for custom data engineering. Extract, Transform, Load is just one of the main principles applied mostly to automated BI platforms. In practice, a company might leverage different types of storages and processes for multiple data types. This involves a large technological infrastructure that can be architected and managed only by a diverse data specialist. A data engineer in this case is much more suitable than any other role in the data domain."]
+            },
+            
+            {
+                "tag": "data_lake_def",
+                "patterns": ["data lake", "what is data lake"],
+                "response": ["A data lake is a central repository for raw data and unstructured data. You can store data first and process it later on. \n\t - Types of data: all types (Structured data, semi-structured data, unstructured (raw) data). \n\t - Used open-format while Data-Warehouse use a closed-proprietary format. \n\t - Scales to hold any amount of data at low cost, regardless of type \n\t - Limited to Data scientists, poor performance \n\t - Reliability: Low quality, data swamp \n\t - Difficult: Exploring large amounts of raw data can be difficult without tools to organize and catalog the data."]
+            },
+
+            {
+                "tag": "data_warehouse_def",
+                "patterns": ["data ware house", "what is data warehouse", "warehousing data", "What does data warehouse do?"],
+                "response": [" A data warehouse stores data in a structured format. It is a central repository of preprocessed data for analytics and business intelligence. \n\t- Data warehouses store and process large amounts of data from various sources within a business. An integral component of business intelligence (BI), data warehouses help businesses make better, more informed decisions by applying data analytics to large volumes of information. \n\t- Used to develop insights and guide decision-making via business intelligence (BI), data warehouses often contain a combination of both current and historical data that has been extracted, transformed, and loaded (ETL) from several sources, including internal and external databases. \n Benifits: \n\t * Provide a stable, centralized repository for large amounts of historical data \n\t * Improve business processes and decision-making with actionable insights \n\t * Increase a business’s overall return on investment (ROI) \n\t * Improve data quality \n\t * Enhance BI performance and capabilities by drawing on multiple sources \n\t * Provide access to historical data business-wide \n\t * Use AI and machine learning to improve business analytics"]
+            },
+
+            {
+                "tag": "data_mart_def",
+                "patterns": ["data mart", "what is dataMart"],
+                "response": [" A data mart is a data storage system that contains information specific to an organization's business unit. It contains a small and selected part of the data that the company stores in a larger storage system. Companies use a data mart to analyze department-specific information more efficiently. It provides summarized data that key stakeholders can use to quickly make informed decisions. \n Why important? \n\t - Retrieve data more efficiently \n\t - Streamline decision-making \n\t - Control information more effectively \n\t - Manage data flexibly \n Types: Dependent - Independent - Hybrid \n Structures: Star - Denormalized"]
+            },
+
+            {
+                "tag": "data_lake_WH_diff",
+                "patterns": ["difference between data lake and data warehouse", "DataLake vs Data Warehouse comparison?"],
+                "response": ["- @ A data warehouse and a data lake are two related but fundamentally different technologies. \n - @ While data warehouses store structured data, a lake is a centralized repository that allows you to store any data at any scale. A data lake offers more storage options, has more complexity, and has different use cases compared to a data warehouse. Key points of difference are given below: \n - Data: \n\t * (Data Warehouse) Relational data from transactional systems, operational databases, and line of business applications \n\t * (Data Lake) All data, including structured, semi-structured, and unstructured\n - Schema: \n\t * (Data Warehouse) Often designed prior to the data warehouse implementation but also can be written at the time of analysis. (schema-on-write or schema-on-read) \n\t * (Data Lake) Written at the time of analysis (schema-on-read)\n - Price/Performance: \n\t * (Data Warehouse) Fastest query results using local storage \n\t * (Data Lake) Query results getting faster using low-cost storage and decoupling of compute and storage\n - Data quality: \n\t * (Data Warehouse) Highly curated data that serves as the central version of the truth \n\t * (Data Lake) Any data that may or may not be curated (i.e. raw data)\n - Users : \n\t * (Data Warehouse) Business analysts, data scientists, and data developers \n\t * (Data Lake) Business analysts (using curated data), data scientists, data developers, data engineers, and data architects\n - Analytics: \n\t * (Data Warehouse) Batch reporting, BI, and visualizations \n\t * (Data Lake) Machine learning, exploratory analytics, data discovery, streaming, operational analytics, big data, and profiling"]
+            },
+
+            {
+                "tag": "data_mart_WH_diff",
+                "patterns": ["difference between data mart and data warehouse", "DataMart vs Data Warehouse comparison?"],
+                "response": [" @ A data warehouse is a relational database that stores data from transactional systems and business function applications. All data in the warehouse is structured or pre-modeled into tables. The data structure and schema are designed to optimize for fast SQL queries.\n @ A data mart is a different marketing term for the same technology. It is also a relational database, but practical usage differs greatly from that of a data warehouse. Key points of difference are given below.\n- Scope: \n\t* (Data Warehouse) Centralized, multiple subject areas integrated together \n\t* (Data Mart) Decentralized, specific subject area \n- Users: \n\t* (Data Warehouse) Organization-wide \n\t* (Data Mart) A single community or department \n- Data source: \n\t* (Data Warehouse) Many sources \n\t* (Data Mart) A single or a few sources, or a portion of data already collected in a data warehouse \n- Size: \n\t* (Data Warehouse) Large, can be 100's of gigabytes to petabytes \n\t* (Data Mart) Small, generally up to 10's of gigabytes\n- Design: : \n\t* (Data Warehouse) Top-down \n\t* (Data Mart) Bottom-up\n- Data detail: \n\t* (Data Warehouse) Complete, detailed data \n\t* (Data Mart) May hold summarized data"]
+            },
+
+            {
+                "tag": "data_mart_WH_lake_sims",
+                "patterns": ["similarities between data mart, data lake and data warehouse", "DataMart, DataLake và Data Warehouse giống nhau ở điểm nào?"],
+                "response": [" Organizations today have access to ever-increasing volumes of data. However, they must sort, process, filter, and analyze the raw data to derive practical benefits. \n At the same time, they also have to follow rigid data protection and security practices for regulatory compliance. For example, here are practices organizations must follow:\n\t - Collect data from different sources like applications, vendors, Internet of Things (IoT) sensors, and other third parties.\n\t - Process data into a consistent, trustworthy, and useful format. For example, organizations could process data to make sure all dates in the system are in a common format or summarize daily reports.\n\t - Prepare the data by formatting XML files for machine learning software or generating reports for humans. \n Organizations use various tools and solutions to achieve their data analytics outcomes. Data warehouses, marts, and lakes are all solutions that help with storing data."]
+            },
+
+            {
+                "tag": "EC2",
+                "patterns": ["Elastic computing"],
+                "response": ["Amazon Elastic Compute Cloud (Amazon EC2) offers the broadest and deepest compute platform, with over 600 instances and choice of the latest processor, storage, networking, operating system, and purchase model to help you best match the needs of your workload. We are the first major cloud provider that supports Intel, AMD, and Arm processors, the only cloud with on-demand EC2 Mac instances, and the only cloud with 400 Gbps Ethernet networking. We offer the best price performance for machine learning training, as well as the lowest cost per inference instances in the cloud. More SAP, high performance computing (HPC), ML, and Windows workloads run on AWS than any other cloud."]
+            },
+
+            {
+                "tag": "Redshift warehouse",
+                "patterns": ["Amazon Redshift for warehousing"],
+                "response": ["Amazon Redshift uses SQL to analyze structured and semi-structured data across data warehouses, operational databases, and data lakes, using AWS-designed hardware and machine learning to deliver the best price performance at any scale. \n Use Amazon Redshift for your data warehousing and data mart requirements. Get integrated insights by running real-time and predictive analytics on complex, scaled data across your operational databases, data lake, data warehouse, and thousands of third-party datasets. You can automatically create, train, and deploy machine learning models with ease."]
+            },        
+        
+            {
+                "tag": "S3",
+                "patterns": ["S3 bucket", "S3 to build a data lake"],
+                "response": ["Amazon Simple Storage Service (Amazon S3) is an object storage service offering industry-leading scalability, data availability, security, and performance. Customers of all sizes and industries can store and protect any amount of data for virtually any use case, such as data lakes, cloud-native applications, and mobile apps. With cost-effective storage classes and easy-to-use management features, you can optimize costs, organize data, and configure fine-tuned access controls to meet specific business, organizational, and compliance requirements. \n\t- Build a data lake: build a custom data lake for big data analytics, artificial intelligence, machine learning, and high-performance computing applications, Run big data analytics, artificial intelligence (AI), machine learning (ML), and high performance computing (HPC) applications to unlock data insights.. \n\t- Back up and restore critical data: Meet Recovery Time Objectives (RTO), Recovery Point Objectives (RPO), and compliance requirements with S3’s robust replication features. \n\t- Archive data at the lowest cost: Move data archives to the Amazon S3 Glacier storage classes to lower costs, eliminate operational complexities, and gain new insights. \n\t- Run cloud-native applications: Build fast, powerful mobile and web-based cloud-native apps that scale automatically in a highly available configuration."]
+            },
+
+            {
+                 "tag": "oracle_def",
+                 "patterns": ["what is oracle"],
+                 "response": ["Oracle is a slightly more traditional database management system that began with relational RDBMS technologies and was improvised with object-relational and multi-model databases. From the past few years, Oracle has shifted its offerings to the Cloud to leverage the benefits of cloud technology. It also presented some of the modern SAAS offerings such as ERPs/CRMs/SCMs/IoT on the Cloud."]
+            },
+
+            {
+                "tag": "snowflake_def",
+                "patterns" : ["What is snowflake"],
+                "response" : ["Snowflake is a cloud-based Software-as-a-service(SAAS) solution which allows data storage, preprocessing and analysis. It provides an all-in-one software package to support data collection from a variety of sources as well as storage, processing and analysis solutions. Snowflake does not employ any past or existing database technology. Still, its architecture, as well as query engines, are designed from the beginning, specifically to fit the public cloud infrastructure behind it. "]
+            },
+            
+            {
+                "tag": "databrick_def",
+                "patterns" : ["what is databrick"],
+                "response": ["is a cloud-based platform that provides a unified analytics workspace for big data processing, machine learning, and AI applications. It is built on top of the popular Apache Spark framework, enabling users to scale their data processing and analysis tasks efficiently."]
+            },
+        
+            {
+                "tag": "Cloud_engineer",
+                "patterns": ["how to become a cloud engineer", "what is the mission and vision of a cloud engineer"],
+                "response": []
+            },
+
+            {
+                "tag": "Cloud_architect",
+                "patterns": ["what is cloud architect"],
+                "response": ["Cloud architecture is a key element of building in the cloud. It refers to the layout and connects all the necessary components and technologies required for cloud computing.<br> \t * Migrating to the cloud can offer many business benefits compared to on-premises environments, from improved agility and scalability to cost efficiency. While many organizations may start with a «lift-and-shift» approach, where on-premises applications are moved over with minimal modifications, ultimately it will be necessary to construct and deploy applications according to the needs and requirements of cloud environments.<br> \t * Cloud architecture dictates how components are integrated so that you can pool, share, and scale resources over a network. Think of it as a building blueprint for running and deploying applications in cloud environments.<br> \t * Explore how Google Cloud helps you design cloud architecture to match your business needs. Use our Architecture Framework for guidance, recommendations, and best practices to build and migrate your workloads to the cloud. Use our Architecture Diagramming Tool for pre-built reference architectures and customizing them to your use case"]
+            },
+
+            {
+                "tag": "Cloud_tools",
+                "patterns": ["which tools is used in cloud"],
+                "response": ["Refer:<br> \t * https://intellipaat.com/blog/cloud-computing-tools/ <br> \t *  https://www.knowledgehut.com/blog/cloud-computing/cloud-computing-tools"]
+            },
+            
+            {
+                "tag": "project_manager",
+                "patterns": ["what is project manager and how to become?"],
+                "response": ["A project manager is a professional who organizes, plans, and executes projects while working within restraints like budgets and schedules. <br> \t * Project managers lead entire teams, define project goals, communicate with stakeholders, and see a project through to its closure. Whether running a marketing campaign, constructing a building, developing a computer system, or launching a new product, the project manager is responsible for the success or failure of the project.<br> \t * The project manager role is in demand in just about every industry. Let’s take a closer look at what project managers do, why you should consider a career in project management, and how you can get started.<br>In this position, you play a key role in a company’s success.<br> \t * Leadership: You’ll lead a team to achieve a goal.<br> \t * Communication: You’re often the first line of communication for team members, vendors, stakeholders, and customers.<br> \t * Organization: The ability to prioritize and multitask will keep projects running smoothly.<br> \t * Critical thinking: Analyzing and evaluating a situation critically helps prevent issues before they happen.<br> \t * A sense of humor: Approaching a project with a positive attitude can ease stress and energize your team."]
+            },
+
+            {
+                "tag": "MLOps",
+                "patterns": ["What is MLOPs", "ML Devops and ML engineer?"],
+                "response": ["MLOps stands for Machine Learning Operations. MLOps is a core function of Machine Learning engineering, focused on streamlining the process of taking machine learning models to production, and then maintaining and monitoring them. MLOps is a collaborative function, often comprising data scientists, devops engineers, and IT. <br> \t * MLOps is a useful approach for the creation and quality of machine learning and AI solutions. By adopting an MLOps approach, data scientists and machine learning engineers can collaborate and increase the pace of model development and production, by implementing continuous integration and deployment practices with proper monitoring, validation, and governance of ML models. <br> * A majority of enterprises deploy MLOps principles across the following:<br> \t * Exploratory data analysis (EDA)<br> \t * Data Prep and Feature Engineering<br> \t * Model training and tuning<br> \t * Model review and governance<br> \t * Model inference and serving<br> \t * Model monitoring<br> \t * Automated model retraining"]
+            }
+        ]
+}

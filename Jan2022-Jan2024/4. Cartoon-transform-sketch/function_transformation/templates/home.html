@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<style>
+    
+    table, th, td {
+        border:1px solid black;
+        border-style: dotted;
+        text-align: center;
+    }
+
+    </style> 
+<head>
+    <title> index </title>
+</head>
+
+<body style="background-image: linear-gradient(to right, rgba(0,0,0,0.1), rgba(121,12,21,0.6));"> 
+    <p>
+
+    <h1 style="text-align: center; color: rgba(29, 97, 185, 0.801);"> Image transformation </h1>
+    <h2 style="text-align: center; color:rgba(7, 75, 7, 0.801)"> Authorized: Do Van Nhan <br> </h2>
+    
+<form method="POST" enctype="multipart/form-data" style="text-align: center;">    
+    <div>
+        Please upload your image here (accepted file: JPG, PNG)
+        <input type="file" name="file">
+    </div>
+    <br>
+
+    <div>
+        Select your transformation-type:
+        <select name="transformed_type" id="transformed_type">
+            <option value="sine_transform"> sine_transform </option>
+            <option value="cosine_transform"> cosine_transform </option>
+            <option value="cosh_transform"> cosh_transform </option>
+            <option value="sinh_transform"> sinh_transform </option>
+            <option value="tan_transform"> tan_transform </option>
+            <option value="tanh_transform"> tanh_transform </option>
+            <option value="none"> none </option>
+        </select>
+    </div>
+    <br>
+    <div style="text-align: center;">
+        <button type="submit" id="send" class="btn btn-warning" > press Enter </button>
+    </div>
+</form>
+
+    <br>
+
+    <div>
+        <table style="width:100%">
+            <tr>
+                <th>Original image (input)</th>
+                <th>Transformed image (Output)</th>
+            </tr>
+            <tr>
+                <td> <img src="{{uploaded_image}}" style="height: 50%; width: 50%;"> </td>
+                <td> <img src="{{transformed_img}}" style="height: 50%; width: 50%;"> </td>
+            </tr>
+        </table>
+    </div>
+
+</p> </body>
+
+</html>

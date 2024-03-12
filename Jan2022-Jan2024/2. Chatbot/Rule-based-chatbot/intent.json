@@ -1,0 +1,52 @@
+{
+    "intents":[
+        {
+            "intent": "greetings",
+            "keywords": [".*)my name is (.*)"],
+            "responses": ["Hello %2, How are you today ?"]
+        },
+        
+        {
+            "intent" : "help",
+            "keywords" : ["(.*)help(.*) "],
+            "responses" : ["I can help you "]
+        },
+        
+        {
+            "intent" : "name_ask",
+            "keywords": ["(.*) your name ?"],
+            "responses" : ["My name is DataScientist_NhanDV, but you can just call me robot and I'm a chatbot ."]        
+        },
+        
+        {
+            "intent": "how_r_u",
+            "keywords": ["how are you (.*) ?"],
+            "responses" : ["I'm doing very well", "i am great !"]        
+        },
+        
+        {
+            "intent": "sr",
+            "keywords": ["sorry (.*)"],
+            "responses" : ["Its alright","Its OK, never mind that"]        
+        },
+        
+        {
+            "intent": "well",
+            "keywords": ["i'm (.*) (good|well|okay|ok)"],
+            "responses" : ["Nice to hear that","Alright, great !"]
+        },
+
+        {
+            "intent": "greet2",
+            "keywords": ["(hi|hey|hello|hola|holla)(.*)"],
+            "responses": ["Hello", "Hey there"]
+        },
+        
+        {
+            "intent": "want",
+            "keywords": ["what (.*) want ?"],
+            "responses": ["Make me an offer I can't refuse"]        
+        }
+
+    ]
+}
