@@ -6,4 +6,4 @@
 
 - Run app `python run.py`
 
-![Alt text](folder_img/image_1.png)
+![Alt text](folder_img/image1.png)
