@@ -1,4 +1,5 @@
 import re
+import pickle
 import string
 import numpy as np
 import pandas as pd
@@ -157,3 +158,4 @@ print(confusion_matrix(y_test, pred_test))
 #==============================
 estimator = clf_svm.best_estimator_
 dump(estimator, "svm.joblib")
+pickle.dump(tfidf_vectorizer, open("tfidf.pickle", "wb"))
