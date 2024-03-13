@@ -1,0 +1,6 @@
+torch
+tqdm
+torchvision
+albumentations
+scikit-image
+scikit-learn

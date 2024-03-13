@@ -149,22 +149,27 @@ def count_movement(ad_id_df, day, thresh_1 = 60, thresh_2 = 8, thresh_3 = 20, th
     
     ## only count the day has at least one observation
     if N > 0:
-        for k in range(N):
-            
+        for k in range(N):            
             if (k < N - 1):
                 
                 ## this meant that if there exist a time that have a change of direction_movement and longer than 10 seconds
-                if (diff_dist[k] * diff_dist[k+1] < 0) & (diff_time[k] > thresh_2) & (speed_ms[k] < 1.25) & (speed_ms[k+1] > 6.25):
+                if (diff_dist[k] * diff_dist[k+1] < 0) & \
+                                (diff_time[k] > thresh_2) & (speed_ms[k] < 1.25) \
+                                & (speed_ms[k+1] > 6.25):
                     count_change_dir += 1
                 
                 ## this meant if there exist the relax time that longer than 30 seconds that near the restaurant
-                if (diff_time[k] > thresh_1) & (diff_dist[k] != 0) & (distance[k] <= 0.285) & (speed_ms[k] < 3.25) & (speed_ms[k+1] > 6.25):
+                if (diff_time[k] > thresh_1) & (diff_dist[k] != 0) & \
+                                (distance[k] <= 0.285) & (speed_ms[k] < 3.25) & \
+                                (speed_ms[k+1] > 6.25):
                     count_dist += 1
                                
                 ## count entered: 
                 ## - diff_time in [thresh_3, thresh_4] 
                 ## - speed[k] :  < 0.001 (m/s)
-                if (distance[k] <= 0.25) & (speed_ms[k+1] < 1) & (np.abs(distance[k] - 4*horz_acc[k]) < err) & (diff_time[k] > thresh_3) & (diff_time[k] < thresh_4):
+                if (distance[k] <= 0.25) & (speed_ms[k+1] < 1) & \
+                                (np.abs(distance[k] - 4*horz_acc[k]) < err) & \
+                                (diff_time[k] > thresh_3) & (diff_time[k] < thresh_4):
                     count_entered += 1
                     total_dist_2_res += distance[k]
                 
