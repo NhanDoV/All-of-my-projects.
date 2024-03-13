@@ -17,7 +17,7 @@ data_dir2 = os.environ["S3-dir-actual"]
 #==================== your function here =========================
 def get_real_time_data(s3_bucket, data_dir):
     """
-
+        Load csv data from S3 bucket and stored it as dataframe
     """
     # 's3' is a key word. create connection to S3 using default config and all buckets within S3
     s3 = boto3.client('s3') 
@@ -36,10 +36,15 @@ def get_mean_and_std(s3_bucket, data_dir):
         Get mean and std value in the last 6 months of y which stored daily in S3
     """
     s3 = boto3.client('s3')
-    obj = s3.list_objects(Bucket = s3_bucket, Prefix = data_dir) 
-    for o in obj.get('Contents'):
-        data = s3.get_object(Bucket=s3_bucket, Key=o.get('Key'))
-        mean, std = data['Body'].read()
+    s3_key = 'get_std.txt'
+    try:
+        obj = s3.list_objects(Bucket = s3_bucket, Prefix = data_dir) 
+        for o in obj.get('Contents'):
+            data = s3.get_object(Bucket=s3_bucket, Key=s3_key)
+            mean, std = data['Body'].read()
+    except:
+        print("Please check again your bucket-name or the data_dir is right or not?")
+
     return mean, std
 
 def forecast_accuracy_2(forecast, actual):
@@ -108,6 +113,9 @@ def send_message(content):
     print(response)
 
 def get_ssm_parameter_store():
+    """
+        Get values which stored from SSM
+    """
     secure_string_token = ssm.StringParameter.value_for_secure_string_parameter("my-secure-parameter-name")
     x1,x2,x3,x4 = secure_string_token.split("\*")
     return x1, x2, x3, x4
