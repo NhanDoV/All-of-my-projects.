@@ -1,0 +1,1 @@
+This repo gathers answers to multiple-choice questions from some high school math exams (kind of `GMAT` style) that I’ve tried before, and it’s recreated with Streamlit. You can browse them by topic (`algebra`, `sequences`, `statistics`) or by mock exam sets.

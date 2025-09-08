@@ -1,0 +1,4 @@
+ultralytics
+yaml
+supervision
+opencv-python
