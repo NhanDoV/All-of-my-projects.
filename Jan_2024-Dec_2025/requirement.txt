@@ -1,0 +1,3 @@
+openpyxl
+streamlit
+streamlit-flow-component
