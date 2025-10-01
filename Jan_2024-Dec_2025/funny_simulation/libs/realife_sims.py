@@ -1,4 +1,6 @@
 import streamlit as st
+from itertools import product
+
 # =========================================================================================================
 #--------------------------------------------- Decoration -------------------------------------------------
 # .........................................................................................................
@@ -24,8 +26,20 @@ def realifesims_render_wrt_background(bg_img):
 #--------------------------------------------- Board Game -------------------------------------------------
 # .........................................................................................................
 class Board:
-    def Knight_move(self):
-        pass
+    def Knight_move(self, x: int, y: int) -> list:
+        """
+            Return valid knight moves inside board and not yet visited.
+        """
+        moves = list(product([x-1, x+1],[y-2, y+2])) + list(product([x-2,x+2],[y-1,y+1]))
+        moves = [(x,y) for x,y in moves if x >= 0 and y >= 0 and x < 8 and y < 8]
+        return moves
+
+# =========================================================================================================
+#--------------------------------------------- Board Game -------------------------------------------------
+# .........................................................................................................
+class polygon_transformation:
+    def is_valid_triangle(self, a: float, b: float, c: float) -> bool:
+        return (a + b > c) * (a + c > b) * (b + c > a)
 
 # =========================================================================================================
 #-------------------------------------------- RUN & LAUNCH ------------------------------------------------
@@ -35,7 +49,8 @@ domain_topic_dict = {
     "Physics": ["Projectile motion", "Brownian motion", "Pendulum"],
     "Card Games": ["Poker simulation", "Blackjack", "Monty Hall"],
     "Biology": ["Predator-Prey (Lotka–Volterra)", "SIR Model"],
-    "Social / Economics": ["Prisoner’s dilemma", "Auction toy model"]
+    "Social / Economics": ["Prisoner’s dilemma", "Auction toy model"],
+    "Construction / Transformation": ["Making stick to polygon", ""]
 }
 
 def run():

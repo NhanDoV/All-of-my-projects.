@@ -9,7 +9,7 @@ home, graphs, sequences, simulations = st.tabs((
     "**Real-life simulations**"
 ))
 # ---------- HOME ----------
-with home:    
+with home:
     bg_home = get_base64_of_bin_file("assets/bg.jpg")
     homepage_render_wrt_background(bg_home)
 # ---------- GRAPHS ----------
