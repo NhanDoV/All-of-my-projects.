@@ -28,15 +28,58 @@ def graph_render_wrt_background(bg_img):
     """, unsafe_allow_html=True)
 
 # ----------------------------- HEARTS ---------------------------------- #
-def heart_eq1(n_pat=101, epsilon=1e-6):
-    t = np.linspace(-1, 1, num=n_pat)
+def heart_eq1(n_pat: int = 101, epsilon: float = 1e-6):
+    """
+        Plot Heart Curve - Type 1 (Polar - Hybrid Parametric Form)
+
+        This function draws a heart-like curve generated from the parametric equations:
+
+            x(t) = sin(t) * cos(t) * log(|t| + epsilon)
+            y(t) = sqrt(|t|) * cos(t)
+
+        The log( |t| + epsilon ) term sharpens the “tail” of the heart by avoiding log(0), and 
+        epsilon ensures numerical stability.
+
+        Args:
+            n_pat (int):
+                Number of partition points used to discretize the parameter t.
+            epsilon (float):
+                Small constant added inside the logarithm to prevent log(0).
+
+        Returns:
+            None. Displays a matplotlib figure in Streamlit via st.pyplot().
+
+        Example:
+            >>> heart_eq1(n_pat=201, epsilon=1e-5)
+    """
+    t = np.linspace(-1, 1, num = n_pat)
     x = np.sin(t) * np.cos(t) * np.log(np.abs(t) + epsilon) # make the tail of heart better
     y = np.sqrt(np.abs(t)) * np.cos(t)
     fig = plt.figure(figsize=(6, 6))
     plt.plot(x, y)
     st.pyplot(fig)
 
-def heart_eq2(n_pat=500):
+def heart_eq2(n_pat:int = 500):
+    """
+        Plot Heart Curve - Type 2 (Implicit Algebraic Curve)
+
+        This heart curve is defined implicitly by the well-known equation:
+
+            F(x, y) = (x^2 + y^2 - 1)^3 - x^2 * y^3 = 0
+
+        The curve is drawn using a contour plot of the level set F = 0.
+
+        Args:
+            n_pat (int):
+                Number of points for generating the x,y grid. Larger values produce a smoother contour 
+                but increase computation time.
+
+        Returns:
+            None. Renders a contour plot of the heart in Streamlit.
+
+        Example:
+            >>> heart_eq2(800)
+    """
     # Define grid
     x = np.linspace(-1.25, 1.25, n_pat)
     y = np.linspace(-1.1, 1.25, n_pat)
@@ -51,7 +94,27 @@ def heart_eq2(n_pat=500):
     plt.gca().set_aspect("equal")
     st.pyplot(fig)
 
-def heart_eq3(n_pat=500):
+def heart_eq3(n_pat: int = 500):
+    """
+        Plot Heart Curve – Type 3 (Cusped Heart)
+
+        This function plots the implicit curve defined by:
+
+            F(x, y) = x^2 + 2 * (0.6 * (x^2)^(1/3) - y)^2 - 1 = 0
+
+        The expression uses np.cbrt for stable computation of x^(2/3), ensuring that negative values of x 
+        do not cause numerical issues.
+
+        Args:
+            n_pat (int):
+                Number of samples per axis in the meshgrid.
+
+        Returns:
+            None. Produces a Streamlit figure.
+
+        Example:
+            >>> heart_eq3(n_pat=600)
+    """
     x = np.linspace(-1.1, 1.1, n_pat)
     y = np.linspace(-0.8, 1.1, n_pat)
     X, Y = np.meshgrid(x, y)
@@ -60,7 +123,28 @@ def heart_eq3(n_pat=500):
     plt.contour(X, Y, F, levels=[0], colors="#9400D3")
     st.pyplot(fig)
 
-def heart_eq4(n_pat=500):
+def heart_eq4(n_pat: int = 500):
+    """
+        Plot Heart Curve - Type 4 (Parametric Quadratic - Sinusoidal Heart)
+
+        This function generates a symmetric heart shape using the parametric form:
+
+            x(t) =  -0.01 * (-t^2 + 40t + 1200) * sin(pi * t / 180)
+            y(t) =   0.01 * (-t^2 + 40t + 1200) * cos(pi * t / 180)
+
+        The polynomial term controls the thickness and width of the heart, while the sinusoidal component 
+        introduces symmetry.
+
+        Args:
+            n_pat (int):
+                Number of sampled parameter values t ∈ [0, 60].
+
+        Returns:
+            None. Displays the parametric heart in Streamlit.
+
+        Example:
+            >>> heart_eq4(500)
+    """
     t = np.linspace(0, 60, n_pat)
     fig = plt.figure(figsize=(6, 6))
     plt.plot([-0.01*(-_**2 + 40*_ + 1200)*np.sin( np.pi * _ /180 ) for _ in t],
@@ -71,7 +155,33 @@ def heart_eq4(n_pat=500):
             )
     st.pyplot(fig)
 
-def heart_eq5(n_pat=500):
+def heart_eq5(n_pat: int = 500):
+    """
+        Plot Heart Curve - Type 5 (Piecewise Exponential - Trigonometric Heart)
+
+        This heart is built from two parametric branches defined on intervals:
+            t₁ ∈ [-pi, -pi/2]
+            t₂ ∈ [pi/2, pi]
+
+        The radius function is:
+
+            r(t) = (sin(t))^7 * exp(2 * |t|)
+
+        The final coordinates are:
+
+            x = r(t) * cos(t)
+            y = r(t) * sin(t)
+
+        Args:
+            n_pat (int):
+                Number of discretization points for each interval.
+
+        Returns:
+            None. Outputs a Streamlit plot.
+
+        Example:
+            >>> heart_eq5(800)    
+    """
     t1 = np.linspace(-np.pi, -np.pi/2, n_pat)
     t2 = np.linspace(np.pi/2, np.pi, n_pat)
     r1 = (np.sin(t1))**7*np.exp(2*np.abs(t1))
@@ -81,7 +191,28 @@ def heart_eq5(n_pat=500):
     plt.plot(r2*np.cos(t2), r2*np.sin(t2), 'magenta')
     st.pyplot(fig)
 
-def heart_eq6(n_deg = 3, n_pat=500):
+def heart_eq6(n_deg: int = 3, n_pat: int = 500):
+    """
+        Plot Heart Curve - Type 6 (Degree-Scaled Implicit Heart)
+
+        This function draws the scaled implicit curve:
+
+            F(x, y) = x² + ( y - |x|^{1/2} )² - n_deg = 0
+
+        The parameter n_deg acts as a scaling factor controlling the heart's size.
+
+        Args:
+            n_deg (int or float):
+                Controls the radius-like magnitude of the heart.
+            n_pat (int):
+                Grid density for mesh generation.
+
+        Returns:
+            None. Displays the contour corresponding to F = 0.
+
+        Example:
+            >>> heart_eq6(n_deg=5, n_pat=1000)    
+    """
     r = (n_deg + 5) / 3  # scale factor
     # expand domain relative to r
     x = np.linspace(-r*0.8, r*0.8, n_pat)
@@ -93,6 +224,24 @@ def heart_eq6(n_deg = 3, n_pat=500):
     st.pyplot(fig)
 
 def all_hearts():
+    """
+        Plot All 6 Heart Types in a 2×3 Grid
+
+        This function draws all six heart types from heart_eq1 to heart_eq6 in a
+        single consolidated figure using Matplotlib subplots arranged in a grid.
+
+        It is intended for comparison and visualization of the different algebraic,
+        polar, and parametric formulations of heart-shaped curves.
+
+        Args:
+            None.
+
+        Returns:
+            None. A Streamlit-rendered figure displaying all heart designs.
+
+        Example:
+            >>> all_hearts()    
+    """
     sns.set_theme()
     fig, ax = plt.subplots(2, 3, figsize=(12, 9))
     ax = ax.ravel()
@@ -262,6 +411,29 @@ def heart_plot(sel_eq):
 
 # ----------------------------- BAT-MAN ---------------------------------- #
 def batman_eq1():
+    """
+        Plot Batman Logo — Implicit Multi-Equation Form (Version 1)
+
+        This function renders a Batman-shaped logo using six different implicit equations (eq1–eq6). 
+        Each equation corresponds to a specific anatomical part of the Batman emblem (ears, wings, head curvature, lower arcs, etc.).
+        The curves are drawn using contour plots of each implicit function at the level set f(x, y) = 0.
+
+        Internally:
+            • A dense meshgrid over x in [−7.25, 7.25] and y in [−3, 3]
+            • Six implicit formulas representing different curve regions
+            • Contour plotting with distinct colors per curve
+            • A legend labeling each equation for visual reference
+
+        Args:
+            None.
+
+        Returns:
+            None.  
+            A matplotlib figure containing the Batman emblem is displayed via Streamlit's `st.pyplot()`.
+
+        Example:
+            >>> batman_eq1()    
+    """
     eps = 1e-6
     xs = np.arange(-7.25, 7.25, 0.005)
     ys = np.arange(-3, 3, 0.005)
@@ -300,6 +472,32 @@ def batman_eq1():
     st.pyplot(fig)
 
 def batman_eq2(step=0.001):
+    """
+        Plot Batman Logo — Piecewise Parametric Form (Version 2)
+
+        This version of the Batman emblem is constructed from several explicitly defined curve segments, 
+        each computed only over a specific x-range:
+            • f(x): outer wings (left and right)
+            • i(x): inner shoulder curves
+            • g(x): side arcs near the head
+            • h(x): lower central curve
+            • A small hand-drawn polygon for the upper head connector
+
+        The function evaluates each segment independently with numerical safeguards (handling forbidden  
+        domains using masks and `np.errstate`), then plots them on a dark background with colored strokes.
+
+        Args:
+            step (float):
+                Step size used to generate x-samples for each segment.
+                Smaller step → smoother curves → longer computation time.
+
+        Returns:
+            None.  
+            A composite matplotlib figure of the Batman logo is displayed through `st.pyplot()`.
+
+        Example:
+            >>> batman_eq2(step=0.0008)
+    """
     eps = 1e-6
     def plot_segment(ax, xs, ys, **kwargs):
         xs = np.asarray(xs)
@@ -477,7 +675,24 @@ def batman_plot(sel_eq):
             batman_eq2()
 
 # ---------------------------- SPIRAL ------------------------------------ #
-def archimedean_spiral(a=0, b=0.2, n_round=6, n_points=2000):
+def archimedean_spiral(a: float = 0, b: float = 0.2, n_round: int = 6, n_points: int = 2000):
+    """
+        Plot an Archimedean spiral in polar coordinates.
+
+        Args:
+            a : float
+                Base radius shift in the spiral (r = a + b * theta).
+            b : float
+                Linear growth factor controlling spacing between loops.
+            n_round : int
+                Number of half-rotations (pi units) to generate.
+            n_points : int
+                Number of sampled points along the spiral.
+
+        Notes:
+            - Spiral equation: r = a + b * theta.
+            - Output is rendered directly using Streamlit.
+    """
     theta_max = n_round*np.pi
     theta = np.linspace(0, theta_max, n_points)
     r = a + b*theta   # Archimedean spiral equation
@@ -492,7 +707,22 @@ def archimedean_spiral(a=0, b=0.2, n_round=6, n_points=2000):
     plt.title(f"Archimedean Spiral (a={a}, b={b})")
     st.pyplot(fig)
 
-def golden_spiral(a=0, n_round=9, n_points=2000):
+def golden_spiral(a: float = 0, n_round: float = 9, n_points: int = 2000):
+    """
+        Plot a Golden Spiral controlled by the golden ratio φ.
+
+        Args:
+            a : float
+                Initial radius scaling.
+            n_round : int
+                Number of π-radians to expand.
+            n_points : int
+                Number of sampled points.
+
+        Notes
+            - Golden spiral: r = a * exp(bθ)
+            - b = ln(φ) / (π/2)    
+    """
     phi = (1 + np.sqrt(5)) / 2  # golden ratio
     b = np.log(phi) / (np.pi / 2)  # growth factor
     
@@ -593,10 +823,26 @@ def sprial_plot(sel_eq):
                 golden_spiral(a, n_round, n_points)
 
 # ---------------------------- FLOWER ------------------------------------ #
-def flower_eq1(x0=0, y0=0, r_x=0.6, r_y=0.8, N=20, n_patt = 1001, core_tp="cosine"):
+def flower_eq1(x0: float = 0, y0: float = 0, r_x: float = 0.6, r_y: float = 0.8, 
+               N: int = 20, n_patt: int = 1001, core_tp: str = "cosine"):
     """
-        Eq 1a: Modified Cosine Flowers
-        Eq 1b: Modified Sine Flowers        
+        Draw a generalized “flower” curve using cosine or sine modulation.
+
+        Args:
+            x0, y0 : float
+                Center shift of the flower.
+            r_x, r_y : float
+                Amplitude in x and y directions.
+            N : int
+                Number of petals (frequency of modulation).
+            n_patt : int
+                Sampling resolution.
+            core_tp : {"cosine", "sine"}
+                Defines the modulation base function.
+
+        Notes:
+            - Uses modified polar-form equations.
+            - Produces symmetric flower-like shapes.
     """
     t = np.linspace(0, 2*np.pi, n_patt)
     # if core is cosine in the polar-coordinate
@@ -615,10 +861,21 @@ def flower_eq1(x0=0, y0=0, r_x=0.6, r_y=0.8, N=20, n_patt = 1001, core_tp="cosin
 
 def flower_eq2(a, n, d, n_patt):
     """
-        Eq2: Rose (Rhodonea curves)
-        a : amplitude
-        n, d : rational parameters (k = n/d)
-        n_patt : number of sample points
+        Plot a Rhodonea (rose) curve.
+
+        Args:
+            a : float
+                Amplitude (maximum radius).
+            n : int
+                Numerator of parameter k = n/d.
+            d : int
+                Denominator of k.
+            n_patt : int
+                Sampling resolution.
+
+        Notes:
+            - Standard rose curve: r = a * cos(k * t).
+            - Period adjusted to t ∈ [0, 2π*d].
     """
     k = n / d
     t = np.linspace(0, 2*np.pi*d, n_patt)  # <-- important fix
@@ -634,18 +891,18 @@ def flower_eq2(a, n, d, n_patt):
 
 def flower_eq3(R, r, d, n_points=2000):
     """
-    Eq3: Epicycloid / Hypocycloid (Spirograph-like flowers)
+        Eq3: Epicycloid / Hypocycloid (Spirograph-like flowers)
 
-    Parameters
-    ----------
-    R : float
-        Radius of fixed circle
-    r : float
-        Radius of rolling circle
-    d : float
-        Distance from rolling circle center to drawing point
-    n_points : int
-        Number of sample points
+        Parameters
+        ----------
+        R : float
+            Radius of fixed circle
+        r : float
+            Radius of rolling circle
+        d : float
+            Distance from rolling circle center to drawing point
+        n_points : int
+            Number of sample points
     """
     from math import gcd
     theta_max = 2 * np.pi * R // gcd(int(R), int(r))
@@ -661,7 +918,8 @@ def flower_eq3(R, r, d, n_points=2000):
     plt.axis("equal")
     st.pyplot(fig)
 
-def flower_eq4(inner_scale, out_radius, n_wings, delta=0.2, n_points=200):
+def flower_eq4(inner_scale: float, out_radius: float, 
+               n_wings: int, delta: float = 0.2, n_points: int = 200):
     """
         Curvy-flower version: edges replaced by sinusoidal arcs.        
             inner_scale: ratio r/R
@@ -669,6 +927,10 @@ def flower_eq4(inner_scale, out_radius, n_wings, delta=0.2, n_points=200):
             n_wings: number of wings
             delta: curve strength
             n_points: resolution per edge
+
+        Notes:
+            - Creates smooth, wavy polygons.
+            - Alternates between inner and outer vertices.
     """
     R = out_radius
     r = inner_scale * out_radius
@@ -870,7 +1132,20 @@ def flower_plot(sel_eq):
             with cright:
                 flower_eq4(inner_scale, out_radius, n_wings, delta)
 
-def flower_eq5(display_leaf=True, number_of_levels=3):
+def flower_eq5(display_leaf: bool = True, number_of_levels: int = 3):
+    """
+        Render a multi-layered artistic flower with stylized cores, leaves, and petals.
+
+        Args:
+            display_leaf : bool
+                Whether to show outer leaf layers.
+            number_of_levels : {3, 4, 5}
+                Number of decorative flower layers.
+
+        Notes:
+            - Combines several nonlinear radius modulations.
+            - Produces vibrant, multi-ring decorative flower patterns.
+    """
     pi = np.pi
     theta = np.linspace(-pi, pi, 10001)
     fig = plt.figure(figsize=(5, 5))
@@ -925,7 +1200,17 @@ def flower_eq5(display_leaf=True, number_of_levels=3):
     st.pyplot(fig)
 
 # -------------------------- CARD-SUITS ---------------------------------- #
-def diamond_curves(diamond_rt=2/3):
+def diamond_curves(diamond_rt: float = 2/3):
+    """
+        Generate a contour of a stylized diamond suit symbol.
+
+        Args:
+            diamond_rt : float
+                Horizontal compression-adjustment factor.
+
+        Notes:
+            - Based on logarithmic contour equation F(X,Y)=0.
+    """
     y_max = 1.1 * (2 / diamond_rt) 
     x = np.linspace(-3, 3, 1001)
     y = np.linspace(-y_max, y_max, 1001)
@@ -940,12 +1225,20 @@ def diamond_curves(diamond_rt=2/3):
     plt.gca().set_aspect("equal")
     st.pyplot(fig)
 
-def club_curves(alpha = 0.15, y_bottom = -1.9, y_top = 3.75, w0 = 0.3):
+def club_curves(alpha: float = 0.15, y_bottom: float = -1.9, y_top: float = 3.75, w0: float = 0.3):
     """
-        alpha (in [0, 1]): widening factor
-        y_bottom : bottom base
-        y_top : position which connect to the leaf
-        w0 : half-width at top    
+        Plot the CLUB (♣) symbol using blended circular lobes and a trapezoid stem.
+
+        Args:
+            alpha : float
+                Stem widening factor.
+            y_bottom, y_top : float
+                Vertical bounds of stem.
+            w0 : float
+                Half-width of stem at top.
+
+        Notes:
+            - Combines Boolean blends of circles and polygon constraints.
     """
     x = np.linspace(-3, 3, 1001)
     y = np.linspace(-2.05, 3, 1001)
@@ -972,7 +1265,22 @@ def club_curves(alpha = 0.15, y_bottom = -1.9, y_top = 3.75, w0 = 0.3):
     plt.contour(X, Y, F, levels=[0], colors="purple")
     st.pyplot(fig)
 
-def spade_curves(alpha = 0.25, y_bottom = -3.75, y_top = -.25, w0 = 0.3):
+def spade_curves(alpha: float = 0.25, y_bottom: float = -3.75, y_top: float = -.25, w0: float = 0.3):
+    """
+        Draw the SPADE (♠) symbol using a curved heart-like top and trapezoid stem.
+
+        Args:
+            alpha : float
+                Stem widening factor.
+            y_bottom, y_top : float
+                Vertical stem limits.
+            w0 : float
+                Half-width of the stem.
+
+        Notes:
+            - Top defined via nonlinear squared curves.
+            - Stem blended using maximum/minimum composition.    
+    """
     x = np.linspace(-3, 3, 1001)
     y = np.linspace(-4, 2.2, 1001)
     X, Y = np.meshgrid(x, y)
@@ -1104,7 +1412,22 @@ def card_suits_plot(sel_eq):
             st.write("and the bottom is the `trapezoid` by the same method as in the `club`")
 
 # ----------------------------- STARS ------------------------------------ #
-def stars_eq1(inner_scale, out_radius, n_wings):
+def stars_eq1(inner_scale: float, out_radius: float, n_wings: int):
+    """
+        Draw a filled star polygon with alternating inner/outer radii.
+
+        Args:
+            inner_scale : float
+                Ratio r/R for inner vertices.
+            out_radius : float
+                Radius R for outer vertices.
+            n_wings : int
+                Number of star arms.
+
+        Notes:
+            - Creates a closed polygon.
+            - Also overlays a translucent filled patch.    
+    """
     R = out_radius
     r = inner_scale * out_radius
 
@@ -1177,19 +1500,19 @@ def stars_plot(sel_eq):
 def window_plot(facecolor_, edgecolor_, 
                 vert_line_width=8, horz_line_width=8, lean_flag=False, lean_offset=40):
     """
-    Draws a window with adjustable vertical/horizontal line thickness
-    and an optional leaning (as trapezoid instead of rectangle).
+        Draws a window with adjustable vertical/horizontal line thickness
+        and an optional leaning (as trapezoid instead of rectangle).
 
-    Parameters
-    ----------
-    vert_line_width : float
-        Thickness of vertical line.
-    horz_line_width : float
-        Thickness of horizontal line.
-    lean_flag : bool
-        If True, draw a trapezoid (leaning window).
-    lean_offset : float
-        Horizontal shift applied to top side (controls the leaning).
+        Parameters
+        ----------
+        vert_line_width : float
+            Thickness of vertical line.
+        horz_line_width : float
+            Thickness of horizontal line.
+        lean_flag : bool
+            If True, draw a trapezoid (leaning window).
+        lean_offset : float
+            Horizontal shift applied to top side (controls the leaning).
     """
 
     # Create a figure and axes
@@ -1309,27 +1632,52 @@ class TurtleSim:
         return (self.x, self.y, self.h)
 
 def s_curve(sim: TurtleSim):
+    """
+        Draw a smooth S-shaped arc by rotating left in small increments.    
+        The turtle turns left by 1 degree and moves forward by 1 unit, repeating 90 times to create 
+        a quarter-circle-like curved segment.    
+    """
     # 90 small left(1)+forward(1) steps
     for _ in range(90):
         sim.left(1)
         sim.forward(1)
 
 def r_curve(sim: TurtleSim):
+    """
+        Draw a smooth right-turning curved arc.
+        The turtle turns right by 1 degree and moves forward by 1 unit, repeated 90 times to generate 
+        a symmetric curve to s_curve().
+    """
     for _ in range(90):
         sim.right(1)
         sim.forward(1)
 
 def l_curve(sim: TurtleSim):
+    """
+         Draw a composite left-oriented curve with two S-shaped arcs.
+         The turtle draws an S-curve, moves forward, and draws another S-curve, forming a larger curved structure.
+    """
     s_curve(sim)
     sim.forward(80)
     s_curve(sim)
 
 def l_curve1(sim: TurtleSim):
+    """
+        Draw a variant of l_curve with a longer middle forward segment.
+        Similar to l_curve but extends the straight segment before drawing the second S-shaped arc.
+    """
     s_curve(sim)
     sim.forward(90)
     s_curve(sim)
 
 def half(sim: TurtleSim):
+    """
+        Draw a complex composite shape built from straight segments and curves.
+        This function coordinates multiple movements, including forward strokes, left and right rotations, 
+        S-curves, right-curves, and additional detail segments. 
+        It is designed to form one half of a larger figure. 
+        The caller is responsible for invoking any fill operations.
+    """
     sim.forward(50)
     s_curve(sim)
     sim.forward(90)
@@ -1350,6 +1698,11 @@ def half(sim: TurtleSim):
     # end_fill should be called by caller (as in original script)
 
 def get_pos(sim: TurtleSim):
+    """
+        Move the turtle to an offset starting position.
+        Lifts the pen, shifts position forward and downward relative to the current heading, 
+        then lowers the pen so drawing can resume.
+    """
     sim.penup()
     sim.forward(20)
     sim.right(90)
@@ -1358,6 +1711,11 @@ def get_pos(sim: TurtleSim):
     sim.pendown()
 
 def eye(sim: TurtleSim):
+    """
+        Draw a single eye-shaped dot on the figure. 
+        Moves the turtle to the eye's location without preserving the original position, sets the 
+        pen color to black, and draws a filled dot.
+    """
     sim.penup()
     sim.right(90)
     sim.forward(160)
@@ -1368,6 +1726,11 @@ def eye(sim: TurtleSim):
     # position doesn't get restored (same as original turtle script)
 
 def sec_dot(sim: TurtleSim):
+    """
+        Draw a secondary decorative dot at a fixed offset location.
+        Moves the turtle using pen-up motion, repositions it relative to the current heading, and 
+        places a dot without restoring the prior position.
+    """
     sim.left(90)
     sim.penup()
     sim.forward(310)

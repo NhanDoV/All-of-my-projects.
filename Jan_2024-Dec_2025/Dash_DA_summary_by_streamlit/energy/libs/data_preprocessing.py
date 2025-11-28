@@ -30,7 +30,30 @@ app_store_id_BITCH_EVN = 1408655940
 android_id_BITCH_EVN = "vn.evnspc.cskh.cskhevnspc.CSKHEVNSPC"
 
 class crawl_EVN_the_BITCH:
+    """
+        A utility class for collecting, aggregating, and exporting mobile-app
+        review data from both Apple App Store and Google Play Store.
+
+        This class provides:
+            - Automated crawling of App Store reviews for multiple countries.
+            - Automated crawling of Google Play reviews for multiple language - country pairs.
+            - Export of collected review datasets into Excel files with proper folder handling and timezone cleanup.
+    """
     def crawl_all_data_appstore(self):
+        """
+            Crawl App Store reviews for multiple countries and merge them into a single DataFrame.
+
+            Method:
+                - Iterates through a fixed list of country codes.
+                - Requests review data for each country using `AppStoreEntry`.
+                - Converts results into DataFrames.
+                - Adds a `country` column for identification.
+                - Concatenates all country results into one DataFrame.
+
+            Returns:
+                pandas.DataFrame
+                    A combined table containing all collected App Store reviews across the configured countries.
+        """
         df_all_ios = pd.DataFrame({})
         for country in ['vn', 'us', 'de', 'fr']:
             app_ios = AppStoreEntry(app_id = app_store_id_BITCH_EVN, country = country)
@@ -41,6 +64,20 @@ class crawl_EVN_the_BITCH:
         return df_all_ios
 
     def crawl_all_data_android(self):
+        """
+            Crawl Google Play reviews for multiple language–country pairs and aggregate them into a single dataset.
+
+            Method:
+                - Loops through predefined (language, country) combinations.
+                - Requests review data using the `reviews()` function.
+                - Converts results to DataFrames.
+                - Adds a `location` column in the form 'lang-country'.
+                - Concatenates all sets into a unified DataFrame.
+
+            Returns:
+                pandas.DataFrame
+                    A combined table of all downloaded Google Play review entries.
+        """
         df_all_adr = pd.DataFrame({})
         for lang, country in [('vi', 'vn'), ('en', 'us')]:
             res = reviews(app_id = android_id_BITCH_EVN, sort=Sort.NEWEST,
@@ -52,6 +89,26 @@ class crawl_EVN_the_BITCH:
         return df_all_adr
 
     def save_sentiment_data(self, df, name: str, folder: str = "sentiment_data"):
+        """
+            Save a review dataset into an Excel file, ensuring folder creation and timezone normalization.
+
+            Method:
+                - Creates target directory if it does not exist.
+                - Converts timezone-aware datetime columns into naive timestamps.
+                - Writes the DataFrame to an Excel file using openpyxl.
+
+            Args:
+                df : pandas.DataFrame
+                    DataFrame containing review data and metadata.
+                name : str
+                    File name (without extension) used for the output Excel file.
+                folder : str, optional
+                    Destination folder for storage (default "sentiment_data").
+
+            Returns:
+                str
+                    The full file path of the saved Excel file.
+        """
         os.makedirs(folder, exist_ok=True)
 
         # Drop timezone info nếu có
@@ -152,7 +209,6 @@ bitch_EVN_as_JSon = {
 } 
 
 class datetime_df_processing:
-
     def get_list_of_compared_hhmm(self, df: pd.DataFrame) -> list:
         last_ts = df["Time"].max()
         # normalize to today's date but keep HH:MM
@@ -448,6 +504,29 @@ class EVN_the_BITCH:
         return round(consumption, 2)
 
 def load_all_excels(data_root: str | Path) -> pd.DataFrame:
+    """
+        Load and merge all Excel (.xlsx) files inside a directory (recursively).
+
+        This function scans the given folder for all `.xlsx` files, reads each one into a pandas DataFrame 
+        (parsing the column `"Time"` as datetime if present), concatenates them into a single DataFrame, 
+        and removes fully duplicated rows.
+
+        Args:
+            data_root : str or pathlib.Path
+                Path to the directory containing Excel files. All subdirectories are searched.
+
+        Returns:
+            pd.DataFrame
+                A single DataFrame containing the concatenated content of all readable Excel files.
+
+        Raises
+            RuntimeError
+                If no readable Excel files are found in the directory.
+
+        Notes
+            - Files that fail to load are skipped, and a warning is printed.
+            - Duplicate rows across files are removed after concatenation.
+    """
     data_root = Path(data_root).resolve()
 
     # collect all xlsx files recursively
