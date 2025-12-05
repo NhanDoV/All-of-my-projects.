@@ -32,9 +32,12 @@ def clean_missing_and_duplicates(df: pd.DataFrame, process_with_CatBoost: bool =
     if "CardNo" in df.columns:
         df["has_card"] = df["CardNo"].notna().astype(int)
 
-    # 6. DVRStart: keep NaT, don’t impute
-    # Many models can handle datetime NA; else convert to timestamp later
-
+    # 6. Timestamp missing flags (DO NOT IMPUTE TIMESTAMPS)
+    ts_missing_cols = ["DVRStart", "start_shift", "end_shift"]
+    for col in ts_missing_cols:
+        if col in df.columns:
+            df[f"is_{col}_missing"] = df[col].isna().astype(int)
+            
     # 7. Verify no full-row duplicates
     df = df.drop_duplicates()
 
@@ -93,4 +96,160 @@ def timestamp_processor(
         (df["end_shift"] - df["start_shift"]).dt.total_seconds() / 3600
     )
 
+    # 5. Impute timestamp-derived numerical features to avoid NaN (CatBoost cannot accept NaN)
+    df["dvr_lag_sec"] = df["dvr_lag_sec"].fillna(0)
+    if "lag_DVR" in df.columns:
+        df["lag_DVR"] = df["lag_DVR"].fillna(0)
+
+    # Shift-related
+    shift_cols_zero = ["time_from_shift_start_hr", "time_to_shift_end_hr"]
+    for col in shift_cols_zero:
+        if col in df.columns:
+            df[col] = df[col].fillna(0)
+
+    if "shift_length_hr" in df.columns:
+        df["shift_length_hr"] = df["shift_length_hr"].fillna(-1)
+
     return df
+
+def build_transaction_features(df: pd.DataFrame) -> pd.DataFrame:
+    """
+        Add behavioral & transaction-level fraud features.
+    """
+    
+    # --- 1. Value-based anomalies ---
+    df["abs_amount"] = df["Total_amount"].abs()
+    df["is_refund"] = (df["Total_amount"] < 0).astype(int)
+    df["large_amount"] = (df["abs_amount"] > df["abs_amount"].median()).astype(int)
+
+    # --- 2. Exception-based ---
+    # Count number of exception items (split by ';')
+    df["exception_count"] = df["Desc"].fillna("").apply(lambda x: len(x.split(";")) if x != "" else 0)
+
+    # Refund text detection (string-based fraud signals)
+    df["contains_discount"] = df["Desc"].str.contains("Discount", case=False, na=False).astype(int)
+    df["contains_return"]   = df["Desc"].str.contains("Return", case=False, na=False).astype(int)
+
+    # --- 3. Time behavior already extracted but add velocity features ---
+    # Ensure timestamps are datetime (safe check)
+    df["TransDate"] = pd.to_datetime(df["TransDate"], errors="coerce")
+    df["DVRStart"]  = pd.to_datetime(df["DVRStart"], errors="coerce")
+    df["start_shift"] = pd.to_datetime(df["start_shift"], errors="coerce")
+    df["end_shift"]   = pd.to_datetime(df["end_shift"], errors="coerce")
+    # lag
+    df["lag_DVR"] = (df["TransDate"] - df["DVRStart"]).dt.total_seconds()
+
+    df["shift_fatigue"] = (
+        (df["end_shift"] - df["start_shift"]).dt.total_seconds() / 3600
+    ).fillna(0)
+
+    df["near_shift_end"] = (
+        df["time_to_shift_end_hr"] < 1
+    ).astype(int)
+
+    # refund patterns
+    df["abs_amount"] = df["Total_amount"].abs()
+    df["is_refund"] = (df["Total_amount"] < 0).astype(int)
+    df["large_amount"] = (df["abs_amount"] > df["abs_amount"].median()).astype(int)
+
+    # text-like exception signals
+    df["exception_count"] = df["exception_type"].apply(
+        lambda x: 0 if isinstance(x, float) else len(str(x).split(","))
+    )
+
+    df["contains_discount"] = df["Desc"].str.contains("discount", case=False, na=False).astype(int)
+    df["contains_return"]   = df["Desc"].str.contains("return",   case=False, na=False).astype(int)
+
+    return df
+
+def categorical_encoding_for_catboost(df: pd.DataFrame) -> tuple[pd.DataFrame, list]:
+    """
+        Prepare categorical features for CatBoost: 
+        - Ensure dtype = string
+        - Fill missing categories
+        - Return list of categorical columns for CatBoost
+    """
+
+    cat_cols = [
+        "Channel", "City", "RegionName", "Division", "SiteName",
+        "Payment", "exception_type", "link"
+    ]
+
+    # CardNo is categorical but high cardinality → keep as string
+    if "CardNo" in df.columns:
+        df["CardNo"] = df["CardNo"].astype(str)
+
+    # Fill missing values
+    for col in cat_cols:
+        if col in df.columns:
+            fill_value = "Unknown" if col != "link" else "NoLink"
+            df[col] = df[col].fillna(fill_value).astype(str)
+
+    # Convert numeric categories (Channel, Payment) to string
+    for col in cat_cols:
+        if col in df.columns:
+            df[col] = df[col].astype(str)
+
+    return df, cat_cols
+
+def label_imbalance_handler(y: pd.Series) -> dict:
+    """
+        Compute class weights for imbalanced fraud labels.
+        CatBoost accepts class_weights=[w0, w1].
+    """
+
+    fraud_rate = y.mean()  # proportion of fraud
+
+    # weight inversely proportional to frequency
+    w_fraud = 1 / fraud_rate
+    w_non_fraud = 1 / (1 - fraud_rate)
+
+    weights = {
+        "class_weights": [w_non_fraud, w_fraud],
+        "fraud_rate": fraud_rate
+    }
+
+    return weights
+
+def finalize_timestamp_columns(df, ts_cols=["TransDate", "DVRStart", "start_shift", "end_shift"]):
+    """
+    Convert all timestamp columns into numerical format (Unix seconds).
+    CatBoost cannot accept raw datetime64 or NaT.
+    """
+    for col in ts_cols:
+        if col in df.columns:
+            
+            # Convert to int64 (ns), divide to get seconds
+            df[col] = df[col].astype("int64") // 1_000_000_000
+            
+            # NaT becomes very large negative integer → replace with sentinel
+            df[col] = df[col].replace(-9223372036854775808, -1)
+    
+    return df
+
+def force_cat_to_string(df, cat_cols):
+    for c in cat_cols:
+        df[c] = df[c].astype(str)
+    return df
+
+def auto_detect_cat_cols(df: pd.DataFrame):
+    """
+    Auto-detect categorical columns:
+    - object/string columns
+    - OR integer columns with low cardinality
+    """
+
+    cat_cols = list(df.select_dtypes(include=["object", "category"]).columns)
+
+    # Add numerical columns with meaningfully low cardinality
+    for col in df.select_dtypes(include=["int64", "float64"]).columns:
+        if df[col].nunique() < 30 and df[col].nunique() > 1:
+            cat_cols.append(col)
+
+    # Remove columns that CatBoost should not treat as categorical
+    remove = ["Total_amount", "exception_amount",
+              "dvr_lag_sec", "lag_DVR",
+              "time_to_shift_end_hr", "time_from_shift_start_hr",
+              "shift_length_hr"]
+
+    return [c for c in cat_cols if c not in remove]
