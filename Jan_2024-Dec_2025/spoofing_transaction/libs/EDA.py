@@ -682,3 +682,14 @@ def EDA_corr_heatmap_per_col(corr_results, target_col="Label"):
     fig.show()
 
 # ====================================== 2. HIGHLIGHTED ================================================== #
+class SomeQuery:
+    def get_noted_payment_type(df: pd.DataFrame):
+        df_0 = df[ df['Label'] == 0].groupby('Payment').count()
+        df_1 = df[ df['Label'] == 1].groupby('Payment').count()
+    
+        payment_fraud_group = df_1.index.tolist()
+        payment_nonfraud_group = df_0.index.tolist()
+
+        fraud_payment_feat = set(payment_fraud_group) - set(payment_nonfraud_group)
+        
+        return fraud_payment_feat
