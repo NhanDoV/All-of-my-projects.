@@ -683,7 +683,7 @@ def EDA_corr_heatmap_per_col(corr_results, target_col="Label"):
 
 # ====================================== 2. HIGHLIGHTED ================================================== #
 class SomeQuery:
-    def get_noted_payment_type(df: pd.DataFrame):
+    def get_noted_payment_type(self, df: pd.DataFrame):
         df_0 = df[ df['Label'] == 0].groupby('Payment').count()
         df_1 = df[ df['Label'] == 1].groupby('Payment').count()
     
