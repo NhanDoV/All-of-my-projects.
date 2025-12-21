@@ -682,14 +682,129 @@ def EDA_corr_heatmap_per_col(corr_results, target_col="Label"):
     fig.show()
 
 # ====================================== 2. HIGHLIGHTED ================================================== #
+import pandas as pd
+
 class SomeQuery:
     def get_noted_payment_type(self, df: pd.DataFrame):
-        df_0 = df[ df['Label'] == 0].groupby('Payment').count()
-        df_1 = df[ df['Label'] == 1].groupby('Payment').count()
+        """
+            Classify payment types by fraud/non-fraud groups:
+            - unique_fraud_payments: appears only in fraud cases
+            - common_payments: appears in both fraud and non-fraud cases
+        """
+        df_nonfraud = df[df['Label'] == 0].groupby('Payment').count()
+        df_fraud = df[df['Label'] == 1].groupby('Payment').count()
     
-        payment_fraud_group = df_1.index.tolist()
-        payment_nonfraud_group = df_0.index.tolist()
+        payments_in_fraud = df_fraud.index.tolist()
+        payments_in_nonfraud = df_nonfraud.index.tolist()
 
-        fraud_payment_feat = set(payment_fraud_group) - set(payment_nonfraud_group)
+        unique_fraud_payments = set(payments_in_fraud) - set(payments_in_nonfraud)
+        common_payments = set(payments_in_fraud).intersection(set(payments_in_nonfraud))
         
-        return fraud_payment_feat
+        return unique_fraud_payments, common_payments
+
+    def check_target_ratio_by_batch(self, df: pd.DataFrame, test_size_ratio: float = 0.2):
+        """
+            Check fraud/non-fraud ratio between train and test sets 
+            to detect data drift in time-based splits.
+            
+            Args:
+                df: Input DataFrame
+                test_size_ratio: Test set ratio (default 20%)
+        """
+        n_samples = len(df)
+        test_size = int(test_size_ratio * n_samples)
+        
+        # Time-based split: train (earlier), test (later)
+        train_df = df.iloc[:n_samples - test_size].copy()
+        test_df = df.iloc[n_samples - test_size:].copy()
+        
+        # Count each class
+        train_counts = train_df['Label'].value_counts()
+        test_counts = test_df['Label'].value_counts()
+        
+        # Calculate fraud ratio (fraud/non-fraud)
+        train_fraud_ratio = train_counts.get(1, 0) / train_counts.get(0, 1) if 0 in train_counts else float('inf')
+        test_fraud_ratio = test_counts.get(1, 0) / test_counts.get(0, 1) if 0 in test_counts else float('inf')
+        
+        print(f"Train fraud ratio (fraud/non-fraud): {train_fraud_ratio:.4f}")
+        print(f"Test fraud ratio (fraud/non-fraud):  {test_fraud_ratio:.4f}")
+        print(f"Fraud ratio difference: {abs(train_fraud_ratio - test_fraud_ratio):.4f}")
+        
+        return train_fraud_ratio, test_fraud_ratio
+    
+    def get_main_stats_exception_amount(self, df: pd.DataFrame):
+        df_fr = df[df['Label'] == 1]  # fraud group
+        df_nr = df[df['Label'] == 0]  # non fraud group
+
+        avg_exec_fraud = df_fr['exception_amount'].mean()
+        avg_exec_nfrad = df_nr['exception_amount'].mean()
+
+        max_exec_fraud = df_fr['exception_amount'].max()
+        max_exec_nfrad = df_nr['exception_amount'].max()
+
+        med_exec_fraud = df_fr['exception_amount'].median()
+        med_exec_nfrad = df_nr['exception_amount'].median()
+
+        print(f"AVG-exeption-amount: fraud: {avg_exec_fraud:.4f} \t non-fraud: {avg_exec_nfrad:.4f}")
+        print(f"MED-exeption-amount: fraud: {med_exec_fraud} \t non-fraud: {med_exec_nfrad}")
+        print(f"MAX-exeption-amount: fraud: {max_exec_fraud} \t non-fraud: {max_exec_nfrad}")
+
+    def analyze_top_employee_txns_by_hour(self, topN: int, df: pd.DataFrame):
+        """Phân tích top employee có số lượng giao dịch cao nhất theo giờ"""
+        df['TransDate'] = pd.to_datetime(df['TransDate'])
+        df['hour_truncated'] = df['TransDate'].dt.floor('H')
+        
+        print(f"\n=== TOP {topN} EMPLOYEE - SỐ LƯỢNG GIAO DỊCH CAO NHẤT THEO GIỜ ===")
+        print("NON-FRAUD (Label=0):")
+        print(df[df['Label'] == 0]
+            .groupby(['EmployeeID', 'hour_truncated'])
+            .size()  # Số lượng giao dịch
+            .sort_values(ascending=False)
+            .head(topN))
+        
+        print("\nFRAUD (Label=1):")
+        print(df[df['Label'] == 1]
+            .groupby(['EmployeeID', 'hour_truncated'])
+            .size()
+            .sort_values(ascending=False)
+            .head(topN))
+
+    def analyze_top_card_txns_by_hour(self, topN: int, df: pd.DataFrame):
+        """Phân tích top card có số lượng giao dịch cao nhất theo giờ"""
+        df['TransDate'] = pd.to_datetime(df['TransDate'])
+        df['hour_truncated'] = df['TransDate'].dt.floor('H')
+        
+        print(f"\n=== TOP {topN} CARD - SỐ LƯỢNG GIAO DỊCH CAO NHẤT THEO GIỜ ===")
+        print("NON-FRAUD (Label=0):")
+        print(df[df['Label'] == 0]
+            .groupby(['CardNo', 'hour_truncated'])
+            .size()
+            .sort_values(ascending=False)
+            .head(topN))
+        
+        print("\nFRAUD (Label=1):")
+        print(df[df['Label'] == 1]
+            .groupby(['CardNo', 'hour_truncated'])
+            .size()
+            .sort_values(ascending=False)
+            .head(topN))
+
+    def analyze_top_card_amount_by_hour(self, topN: int, df: pd.DataFrame):
+        """Phân tích top card có tổng giá trị giao dịch cao nhất theo giờ"""
+        df['TransDate'] = pd.to_datetime(df['TransDate'])
+        df['hour_truncated'] = df['TransDate'].dt.floor('H')
+        
+        print(f"\n=== TOP {topN} CARD - TỔNG GIÁ TRỊ GIAO DỊCH CAO NHẤT THEO GIỜ ===")
+        print("NON-FRAUD (Label=0):")
+        print(df[df['Label'] == 0]
+            .groupby(['CardNo', 'hour_truncated'])['Total_amount']
+            .sum()
+            .sort_values(ascending=False)
+            .head(topN))
+        
+        print("\nFRAUD (Label=1):")
+        print(df[df['Label'] == 1]
+            .groupby(['CardNo', 'hour_truncated'])['Total_amount']
+            .sum()
+            .sort_values(ascending=False)
+            .head(topN))

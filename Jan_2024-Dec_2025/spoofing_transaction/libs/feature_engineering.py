@@ -53,6 +53,9 @@ def timestamp_processor(
         Extract useful seasonality from transaction timestamp.
         Add relational features between TransDate and shift timestamps.
     """
+    # Sort datetime w.r.t non-null columns timestamps
+    df = df.sort_values("TransDate").reset_index(drop=True)
+
     # ---------------------------------------------------------
     # 1. Convert all timestamp columns
     # ---------------------------------------------------------

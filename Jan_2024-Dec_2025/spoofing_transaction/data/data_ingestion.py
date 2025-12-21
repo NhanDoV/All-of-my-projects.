@@ -10,8 +10,8 @@ PG_DB   = os.environ["PG_DB_NAME"]
 PG_USER = os.environ["PG_USER"]
 PG_PASS = os.environ["PG_PASSWORD"]
 
-SQL_FILE = "query_joined_transactions.sql"   # SQL cùng thư mục
-OUTPUT_FILE = "data.txt"                    # file output cùng thư mục
+SQL_FILE = "query_joined_transactions.sql"   
+OUTPUT_FILE = "data.txt"                    
 
 def get_conn():
     return psycopg2.connect(

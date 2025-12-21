@@ -27,7 +27,6 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-
 # -------------------------------------------------------------------------
 # UTIL: Keep Cat Features as String
 # -------------------------------------------------------------------------
@@ -36,7 +35,6 @@ def force_cat_to_string(df, cat_cols):
         if c in df.columns:
             df[c] = df[c].astype(str)
     return df
-
 
 # -------------------------------------------------------------------------
 # UTIL: Apply Entire Feature Engineering Pipeline
@@ -48,7 +46,6 @@ def apply_feature_engineering(df):
     df = build_transaction_features(df)
     return df
 
-
 # -------------------------------------------------------------------------
 # 1) LOAD RAW DATA
 # -------------------------------------------------------------------------
@@ -58,24 +55,40 @@ df = pd.read_table(fpath)
 
 logger.info(f"Loaded dataset shape: {df.shape}")
 
-
 # -------------------------------------------------------------------------
 # 2) SPLIT DATA
 # -------------------------------------------------------------------------
 logger.info("Splitting into train/val/test...")
-X = df.drop(columns=["Label"])
-y = df["Label"]
 
-X_train_raw, X_temp_raw, y_train, y_temp = train_test_split(
-    X, y, test_size = 0.30, random_state = 42, stratify=y
-)
+def select_rule_split(df: pd.DataFrame, data_drift: bool = True, test_rate: float = 0.2):
+    if data_drift:
+        test_size = int(test_rate * len(df))
+        df_train = df.iloc[: len(df) - test_size]
+        df_test = df.iloc[test_size: ]
 
-X_val_raw, X_test_raw, y_val, y_test = train_test_split(
-    X_temp_raw, y_temp, test_size = 0.50, random_state = 42, stratify = y_temp
-)
+        X_train_raw, X_val_raw, y_train, y_val = train_test_split(
+            df_train.drop(columns=["Label"]), df_train['Label'], test_size=0.40, random_state=42, stratify=df_train['Label']
+        )
+
+        X_test_raw = df_test.drop(columns=["Label"])
+        y_test = df_test['Label']
+    else:
+        X = df.drop(columns=["Label"])
+        y = df["Label"]
+
+        X_train_raw, X_temp_raw, y_train, y_temp = train_test_split(
+            X, y, test_size = 0.30, random_state = 42, stratify=y
+        )
+
+        X_val_raw, X_test_raw, y_val, y_test = train_test_split(
+            X_temp_raw, y_temp, test_size = 0.50, random_state = 42, stratify = y_temp
+        )
+
+    return X_train_raw, X_val_raw, X_test_raw, y_train, y_val, y_test
+
+X_train_raw, X_val_raw, X_test_raw, y_train, y_val, y_test = select_rule_split(df)
 
 logger.info(f"Train={X_train_raw.shape}  Val={X_val_raw.shape}  Test={X_test_raw.shape}")
-
 
 # -------------------------------------------------------------------------
 # 3) FEATURE ENGINEERING
@@ -86,7 +99,6 @@ X_val   = apply_feature_engineering(X_val_raw.copy())
 X_test  = apply_feature_engineering(X_test_raw.copy())
 
 logger.info("FE completed.")
-
 
 # -------------------------------------------------------------------------
 # 4) CATEGORICAL COLS
@@ -100,14 +112,12 @@ X_test  = force_cat_to_string(X_test, cat_cols)
 
 logger.info(f"Detected cat cols: {cat_cols}")
 
-
 # -------------------------------------------------------------------------
 # 5) CATBOOST POOLS
 # -------------------------------------------------------------------------
 train_pool = Pool(X_train, y_train, cat_features=cat_cols)
 val_pool   = Pool(X_val,   y_val,   cat_features=cat_cols)
 test_pool  = Pool(X_test,  y_test,  cat_features=cat_cols)
-
 
 # -------------------------------------------------------------------------
 # 6) TRAIN MODEL
@@ -138,14 +148,14 @@ model.save_model(SAVE_PATH)
 
 logger.info(f"Best model saved to {SAVE_PATH}")
 
-
 # -------------------------------------------------------------------------
 # 7) TEST EVALUATION
 # -------------------------------------------------------------------------
 logger.info("Evaluating on TEST set...")
 
+proba_threshval = 0.9 # if using time-drift
 pred_proba = model.predict_proba(test_pool)[:, 1]
-pred_label = (pred_proba > 0.5).astype(int)
+pred_label = (pred_proba > proba_threshval).astype(int)
 
 auc = roc_auc_score(y_test, pred_proba)
 cm  = confusion_matrix(y_test, pred_label)
@@ -168,8 +178,6 @@ logger.info("Top 20 Feature Importances:\n" + str(feat_imp.head(20)))
 
 feat_imp.to_csv("models/feature_importances.csv", index=False)
 logger.info("Feature importances saved.")
-
-
 
 # -------------------------------------------------------------------------
 # 9) INFERENCE PIPELINE (LOAD MODEL + NEW DATASET)
