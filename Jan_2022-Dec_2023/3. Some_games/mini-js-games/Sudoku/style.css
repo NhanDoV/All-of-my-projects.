@@ -1,0 +1,169 @@
+/* === Reset cơ bản === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', 'Arial', sans-serif;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at center, #0f2027 0%, #203a43 50%, #2c5364 100%);
+    color: white;
+    overflow: hidden;
+}
+
+/* === Wrapper scale toàn bộ giao diện xuống 90% === */
+.game-wrapper {
+    transform: scale(0.9); /* Scale xuống 90% */
+    transform-origin: top center;
+}
+
+/* === Container chính === */
+.game-container {
+    text-align: center;
+    background: rgba(255,255,255,0.05);
+    padding: 35px;
+    border-radius: 20px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    transition: transform 0.3s ease;
+}
+
+.game-container:hover {
+    transform: scale(1.02);
+}
+
+/* === Title === */
+h1 {
+    font-size: 2.7em;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.7);
+    letter-spacing: 1.5px;
+    color: #fffacd;
+}
+
+/* === Sudoku Board === */
+.sudoku-board {
+    display: grid;
+    grid-template-columns: repeat(9, 50px);
+    grid-template-rows: repeat(9, 50px);
+    gap: 2px;
+    background: rgba(0,0,0,0.35);
+    padding: 10px;
+    border-radius: 15px;
+    margin: 20px auto;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.6);
+}
+
+/* === Cells === */
+.cell {
+    width: 50px;
+    height: 50px;
+    background: radial-gradient(circle at center, #4facfe 0%, #00f2fe 50%, #43e97b 100%);
+    border: none;
+    font-size: 1.6em;
+    font-weight: 700;
+    text-align: center;
+    color: #1a1a2e;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-shadow: 1px 1px 2px rgba(255,255,255,0.6);
+}
+
+.cell:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 18px rgba(0,255,255,0.4), 0 0 8px rgba(255,255,255,0.2) inset;
+}
+
+.cell.filled {
+    background: radial-gradient(circle at center, #ff6b6b 0%, #ffa500 100%);
+    cursor: default;
+    pointer-events: none;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4) inset;
+}
+
+.cell.selected {
+    background: radial-gradient(circle at center, #ffd23f 0%, #ffed4e 100%);
+    box-shadow: 0 0 20px rgba(255,215,0,0.7), 0 0 8px rgba(255,255,255,0.3) inset;
+}
+
+.cell.error {
+    background: radial-gradient(circle at center, #ff4757 0%, #ff3838 100%);
+    animation: shake 0.5s ease-in-out;
+    box-shadow: 0 0 12px rgba(255,0,0,0.7) inset;
+}
+
+/* === Shake animation === */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* === Number Pad === */
+.number-pad {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 380px;
+    margin: 20px auto;
+}
+
+.number-btn {
+    width: 55px;
+    height: 55px;
+    background: radial-gradient(circle at center, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 1.4em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.number-btn:hover {
+    transform: translateY(-3px) scale(1.1);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3), 0 0 6px rgba(255,255,255,0.2) inset;
+}
+
+/* === Status text === */
+.status {
+    font-size: 1.15em;
+    margin: 20px 0;
+    min-height: 30px;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+}
+
+/* === New Game Button === */
+.new-game-btn {
+    background: radial-gradient(circle at center, #43e97b 0%, #38f9d7 100%);
+    color: #1a1a2e;
+    border: none;
+    padding: 14px 28px;
+    font-size: 1.1em;
+    font-weight: 700;
+    border-radius: 30px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.new-game-btn:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}

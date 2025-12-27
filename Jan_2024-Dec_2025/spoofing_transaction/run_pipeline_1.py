@@ -5,7 +5,9 @@ from datetime import datetime
 import numpy as np
 import pandas as pd
 
-from libs.feature_engineering import *
+from libs.Feature_Engineering.fe_v1 import *
+from libs.EDA.eda_v1 import *
+
 from sklearn.model_selection import train_test_split
 from catboost import CatBoostClassifier, Pool
 from sklearn.metrics import classification_report, roc_auc_score, confusion_matrix

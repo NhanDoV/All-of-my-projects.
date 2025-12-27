@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maze Game - Trò Chơi Mê Cung</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-info">
+            <h1>Maze Game</h1>
+            <div class="level-info">
+                <span>Level: <span id="level">1</span></span>
+                <span>Size: <span id="size">9x12</span></span>
+            </div>
+            <div class="controls">
+                Sử dụng phím mũi tên để di chuyển
+            </div>
+        </div>
+        <canvas id="gameCanvas"></canvas>
+        <div class="game-over hidden" id="winScreen">
+            <h2>🎉 Congratulation <span id="finalLevel"> 1 </span>!</h2>
+            <button id="nextLevel">Next Level</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

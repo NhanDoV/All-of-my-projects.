@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Racing Game Pro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- PRO FONT -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- START SCREEN -->
+    <div id="startScreen">
+        <h1>🏎️ RACING PRO</h1>
+        <input id="playerName" placeholder="Nhập tên" maxlength="12">
+
+        <div class="colorBtns">
+            <button onclick="selectColor('red')">🔴</button>
+            <button onclick="selectColor('blue')">🔵</button>
+            <button onclick="selectColor('yellow')">🟡</button>
+            <button onclick="selectColor('purple')">🟣</button>
+        </div>
+
+        <button id="playBtn">🚀 PLAY</button>
+    </div>
+
+    <!-- GAME UI -->
+    <div id="gameUI" class="hidden">
+        <div id="playerInfo"></div>
+        <button id="pauseBtn">⏸️ PAUSE</button>
+    </div>
+
+    <!-- GAME OVER -->
+    <div id="gameOverScreen" class="hidden">
+        <h2>💥 GAME OVER</h2>
+        <div id="finalScore"></div>
+        <button onclick="restartGame()">🔄 PLAY AGAIN</button>
+    </div>
+
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- PAUSE OVERLAY -->
+    <div id="pauseOverlay" class="hidden">PAUSED</div>
+
+    <script src="script.js"></script>
+</body>
+</html>

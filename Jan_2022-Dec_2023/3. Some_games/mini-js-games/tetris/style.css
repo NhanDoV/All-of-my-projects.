@@ -1,0 +1,123 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background:
+    radial-gradient(circle at top, #22d3ee, transparent 40%),
+    radial-gradient(circle at bottom, #6366f1, transparent 40%),
+    #020617;
+  color: #e5e7eb;
+}
+
+.app {
+  max-width: 420px;
+  padding: 16px;
+}
+
+.title {
+  text-align: center;
+  letter-spacing: 4px;
+  margin-bottom: 12px;
+  color: #22d3ee;
+
+  -webkit-text-stroke: 1.2px #0ff; /* viền */
+  text-shadow:
+    0 0 10px #22d3ee,
+    0 0 20px #22d3ee,
+    0 0 40px #38bdf8;
+}
+
+.game-wrapper {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+#board {
+  background: #020617;
+  border-radius: 12px;
+  box-shadow:
+    0 0 20px #22d3ee,
+    inset 0 0 20px #020617;
+}
+
+.side-panel {
+  height: 576px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  padding-top: calc(576px / 6);
+  padding-bottom: calc(576px / 6);
+}
+
+.info-box {
+  background: rgba(15, 23, 42, 0.8);
+  border-radius: 10px;
+  padding: 8px;
+  text-align: center;
+  box-shadow: 0 0 12px #6366f1;
+}
+
+.info-box strong {
+  display: block;
+  font-size: 20px;
+  color: #22d3ee;
+}
+
+button {
+  border: none;
+  border-radius: 999px;
+  padding: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  background: linear-gradient(135deg, #22d3ee, #6366f1);
+  color: #020617;
+  box-shadow: 0 0 15px #22d3ee;
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+.controls {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.controls button {
+  background: rgba(15, 23, 42, 0.85);
+  color: #22d3ee;
+  font-size: 18px;
+  box-shadow: 0 0 10px #22d3ee;
+}
+
+/* hiệu ứng đặc biệt */
+@keyframes levelUpGlow {
+  0% {
+    box-shadow: 0 0 10px #22d3ee;
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 30px #22d3ee, 0 0 60px #6366f1;
+    transform: scale(1.1);
+  }
+  100% {
+    box-shadow: 0 0 10px #22d3ee;
+    transform: scale(1);
+  }
+}
+
+.level-up {
+  animation: levelUpGlow 0.6s ease-out;
+}

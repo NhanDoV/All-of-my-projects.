@@ -1,0 +1,150 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Orbitron', 'Segoe UI', sans-serif;
+    background: radial-gradient(circle at top, #1a1a3d, #0a0a1a 70%);
+    height: 100vh;
+    overflow: hidden;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* CANVAS */
+#gameCanvas {
+    border-radius: 14px;
+    border: 3px solid rgba(255,255,255,0.6);
+    box-shadow: 0 0 30px rgba(0,255,255,0.35);
+}
+
+/* BLUR WHEN PAUSED */
+canvas.paused {
+    filter: blur(6px) brightness(0.85);
+}
+
+/* SCREENS */
+#startScreen,
+#gameOverScreen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 35px 45px;
+    border-radius: 20px;
+
+    background: rgba(10,10,30,0.95);
+    border: 2px solid rgba(0,255,255,0.5);
+    box-shadow: 0 0 40px rgba(0,255,255,0.4);
+
+    color: #fff;
+    text-align: center;
+}
+
+/* TITLES */
+#startScreen h1,
+#gameOverScreen h2 {
+    color: #00ffff;
+    margin-bottom: 20px;
+    text-shadow: 0 0 20px rgba(0,255,255,0.8);
+}
+
+/* INPUT */
+#playerName {
+    width: 240px;
+    padding: 14px;
+    border-radius: 12px;
+    border: 2px solid rgba(0,255,255,0.6);
+    background: rgba(0,0,0,0.4);
+    color: #fff;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* COLOR BUTTONS */
+.colorBtns {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.colorBtns button {
+    padding: 12px 16px;
+    border-radius: 14px;
+    border: none;
+    cursor: pointer;
+    background: #111;
+    color: #fff;
+    font-size: 18px;
+    transition: 0.25s;
+}
+
+.colorBtns button:hover {
+    transform: scale(1.15);
+    box-shadow: 0 0 20px rgba(0,255,255,0.7);
+}
+
+/* BUTTONS */
+button {
+    padding: 14px 36px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 18px;
+    color: #fff;
+
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    box-shadow: 0 0 20px rgba(0,114,255,0.6);
+}
+
+/* GAME UI */
+#gameUI {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(0,255,255,0.6);
+}
+
+#playerInfo {
+    margin-bottom: 6px;
+}
+
+/* FINAL SCORE LEFT */
+#finalScore {
+    text-align: left;
+    margin: 20px 0;
+    font-size: 20px;
+    color: #ffd700;
+}
+
+/* PAUSE OVERLAY */
+#pauseOverlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 30px 60px;
+    border-radius: 20px;
+
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(8px);
+
+    color: #00ffff;
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: 4px;
+    box-shadow: 0 0 30px rgba(0,255,255,0.8);
+}
+
+.hidden {
+    display: none !important;
+}

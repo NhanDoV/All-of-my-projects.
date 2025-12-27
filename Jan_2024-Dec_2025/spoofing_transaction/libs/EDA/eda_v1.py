@@ -410,7 +410,7 @@ def numerical_boxplot(series, col):
     )
     fig.show()
 
-def numerical_ingroup(col, target_col):
+def numerical_ingroup(df, col, target_col):
         """
             # ───────────────────────────────────────────────
             #       Fraud vs Non-fraud Distribution
