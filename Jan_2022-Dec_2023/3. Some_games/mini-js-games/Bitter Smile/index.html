@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Câu Đố - Quiz Game</title>
+
+    <!-- Set color-font emoji → icon  -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    
+    <!-- Set font-chữ  -->    
+    <link 
+        href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@700&display=swap" 
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Menu chọn bộ đề -->
+        <div id="menu-screen" class="screen active">
+            <h1>
+                <i class="fa-solid fa-gamepad"></i>
+                Game Câu Đố
+            </h1>
+            <p>Chọn bộ đề để bắt đầu:</p>
+            <div class="quiz-sets">
+                <button class="set-btn" data-set="0">🦁 Bộ Đề Động Vật</button>
+                <button class="set-btn" data-set="1">🌍 Bộ Đề Địa Lý</button>
+                <button class="set-btn" data-set="2">🍎 Bộ Đề Ẩm Thực</button>
+                <button class="set-btn" data-set="3">🔬 Bộ Đề Khoa Học</button>
+                <button class="set-btn" data-set="4">🎵 Bộ Đề Âm Nhạc</button>
+            </div>
+            <p><br>Try to complete all the questions to see your score</p>
+        </div>
+
+        <!-- Màn hình chơi game -->
+        <div id="game-screen" class="screen">
+            <div class="progress">
+                <span id="set-name"></span>
+                <span id="question-progress">Câu 1/3</span>
+                <div class="score">Điểm: <span id="score">0</span></div>
+            </div>
+            
+            <div id="question-image" class="question-image"></div>
+            <div id="question-text" class="question-text"></div>
+            
+            <div id="options" class="options"></div>
+            
+            <button id="next-btn" class="next-btn" style="display:none;">Tiếp Tục</button>
+        </div>
+
+        <!-- Màn hình kết thúc -->
+        <div id="end-screen" class="screen">
+            <h2 id="final-title">🎉 Hoàn Thành!</h2>
+            <div id="final-score"></div>
+            <p id="final-message"> </p>
+            <button id="restart-btn" class="big-btn">Chơi Lại</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,225 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: radial-gradient(#9da8da, #2765b6);
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    color: white;
+    padding: 50px 0;
+}
+
+.container {
+    max-width: 450px;
+    width: 90%;
+    background: radial-gradient(#7455ca, #12043e);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 23px;
+    box-shadow: 0 20px 40px rgba(22, 65, 1, 0.3);
+}
+
+.screen {
+    display: none;
+    text-align: center;
+}
+
+.screen.active {
+    display: block;
+}
+
+h1 {
+    font-size: 2.2em;
+    margin-bottom: 20px;
+    background: linear-gradient(45deg, #fff, #f0f0f0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+    font-family: 'Roboto', cursive;
+}
+
+h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    font-family: sans-serif, cursive;
+}
+
+.quiz-sets {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.set-btn {
+    background: radial-gradient(#6babff, #0c0cbd);
+    border: none;
+    padding: 18px;
+    font-size: 1.2em;
+    border-radius: 15px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    font-family: 'sans-serif', cursive;    
+}
+
+.set-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
+}
+
+.progress {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 12px;
+}
+
+.score {
+    background: linear-gradient(45deg, #4ecdc4, #44a08d);
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.question-image {
+    width: auto;
+    margin-bottom: 12px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(66, 57, 169, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+    font-size: 4em;
+    aspect-ratio: 5 / 3;
+    height: 120px;
+    position: relative;
+    overflow: hidden;
+}
+
+.question-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 5px;
+    object-position: center;
+}
+
+.question-text {
+    font-size: 1.4em;
+    margin-bottom: 25px;
+    font-weight: 600;
+    line-height: 1.4;
+    object-position: center;
+    z-index: 2px;
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.option {
+    background: rgba(255,255,255,0.2);
+    border: 2px solid transparent;
+    padding: 15px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.option:hover {
+    background: rgba(255,255,255,0.3);
+    transform: translateY(-2px);
+}
+
+.option.correct {
+    background: linear-gradient(45deg, #56ab2f, #a8e6cf);
+    border-color: #56ab2f;
+}
+
+.option.incorrect {
+    background: linear-gradient(45deg, #ff4757, #ff6b81);
+    border-color: #ff4757;
+}
+
+.option.selected {
+    background: rgba(255,193,7,0.5);
+    border-color: #ffc107;
+}
+
+.next-btn, .big-btn {
+    background: linear-gradient(45deg, #a55eea, #4facfe);
+    border: none;
+    padding: 10px 80px;
+    width: auto;
+    font-size: 1.1em;
+    border-radius: 20px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    width: 100%;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.next-btn:hover, .big-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(165, 94, 234, 0.4);
+}
+
+#question-progress {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+#final-score {
+    font-size: 3em;
+    font-weight: bold;
+    margin: 20px 0;
+    background: linear-gradient(45deg, #ffd700, #ffed4e);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 20px;
+        margin: 10px;
+    }
+    
+    h1 {
+        font-size: 1.8em;
+    }
+    
+    .question-image {
+        height: 150px;
+        font-size: 3em;
+    }
+}
+
+h1 .fa-gamepad {
+    -webkit-text-fill-color: #e1dab6;
+    color: #ffd700;
+    text-shadow: 0 0 6px rgba(255, 215, 0, 0.7);
+}
