@@ -1,0 +1,1 @@
+This just be a demo; you can refer the better version in [math-quiz](https://github.com/NhanDoV/Lectures_notes-teaching-in-VN-/tree/master/basic_JS/advanced/mini-games/math%20quiz)
