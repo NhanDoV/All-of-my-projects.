@@ -1,0 +1,256 @@
+/* =========================
+   HIDE STREAMLIT DEFAULT UI
+========================= */
+#MainMenu { visibility: hidden; }
+footer { visibility: hidden; }
+header { visibility: hidden; }
+
+/* =========================
+   SIDEBAR
+========================= */
+section[data-testid="stSidebar"] {
+    background-image: linear-gradient(180deg, #3B82F6, #1D4ED8);
+    background-color: #2563EB !important;
+    border-right: none;
+}
+
+section[data-testid="stSidebar"] * {
+    color: white !important;
+}
+
+/* Hover item */
+section[data-testid="stSidebar"] .css-1v3fvcr {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+section[data-testid="stSidebar"] .css-1v3fvcr:hover {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Active page */
+div[data-testid="stSidebarNav"]
+li div[role="button"][aria-selected="true"] {
+    background-color: #FF4B4B !important;
+    border-radius: 8px;
+    color: white !important;
+}
+
+/* =========================
+   MAIN APP BACKGROUND
+========================= */
+.stApp {
+    background-image: linear-gradient(to bottom, #93C5FD, #60A5FA);
+    background-color: #60A5FA;
+    max-width: 100% !important;
+    width: 100% !important;
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+}
+
+/* =========================
+   INPUT / FEEDBACK
+========================= */
+.stSelectbox > div > div {
+    background-color: rgba(0, 0, 0, 0.3) !important;
+    border-radius: 12px !important;
+    color: white !important;
+}
+
+.stSuccess {
+    background-color: rgba(34, 197, 94, 0.2) !important;
+    border-radius: 12px;
+    border: 1px solid #22C55E;
+}
+
+[data-testid="stDataEditor"] div[role="gridcell"] {
+    font-size: 6px;
+}
+
+/* =========================
+   METRIC CARDS (CUSTOM)
+========================= */
+.metric-card {
+    background: linear-gradient(180deg, #7c6fb4, #3b73c6);
+    border-radius: 18px;
+    padding: 14px 16px;
+    min-height: 88px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.metric-center {
+    text-align: center;
+}
+
+/* Label: đậm + xanh đậm hợp nền */
+.metric-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #1E3A8A;   /* blue-900, hợp nền xanh nhạt */
+    margin-bottom: 2px;
+}
+
+/* Value */
+.metric-value {
+    margin-top: 2px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.metric-value-small {
+    margin-top: 2px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+/* =========================
+   STREAMLIT DEFAULT METRIC
+   (nếu còn dùng st.metric)
+========================= */
+[data-testid="metric-container"] {
+    text-align: center;
+}
+
+[data-testid="metric-container"] > div {
+    justify-content: center;
+}
+
+[data-testid="metric-container"] label {
+    justify-content: center;
+    text-align: center;
+}
+
+[data-testid="metric-container"]
+[data-testid="stMetricValue"] {
+    justify-content: center;
+    text-align: center;
+    font-weight: 700;
+}
+
+.metric-table-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;              /* khoảng cách giữa các metric */
+    margin-bottom: 14px;
+}
+
+.metric-card {
+    background: radial-gradient(#e4e3ea, #1260d4);      /* hoặc transparent nếu muốn */
+    padding: 14px 10px;
+    border-radius: 8px;    /* optional */
+}
+
+.metric-label {
+    font-size: 12px;
+    color: #04185f;
+    margin-bottom: 6px;
+}
+
+.metric-value {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* =========================
+   STREAMLIT ALERT BOXES
+   (info / success / warning / error)
+========================= */
+
+/* Base alert style */
+div[data-testid="stAlert"] {
+    border-radius: 14px;
+    padding: 14px 16px;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    backdrop-filter: blur(6px);
+}
+
+/* INFO – improved contrast */
+div[data-testid="stAlert"][class*="info"] {
+    background: rgba(14, 165, 233, 0.22); /* cyan-500 */
+    border: 1px solid rgba(14, 165, 233, 0.55);
+    color: #0C4A6E; /* cyan-900 */
+}
+
+/* SUCCESS */
+div[data-testid="stAlert"][class*="success"] {
+    background: rgba(34, 197, 94, 0.18);        /* green-500 */
+    border: 1px solid rgba(34, 197, 94, 0.45);
+    color: #14532D; /* green-900 */
+}
+
+/* WARNING */
+div[data-testid="stAlert"][class*="warning"] {
+    background: rgba(191, 151, 6, 0.794);     /* yellow-500 */
+    border: 1px solid rgba(234, 179, 8, 0.45);
+    color: #713F12; /* yellow-900 */
+}
+
+/* ERROR */
+div[data-testid="stAlert"][class*="error"] {
+    background: rgba(239, 68, 68, 0.18); /* red-500 */
+    border: 1px solid rgba(239, 68, 68, 0.45);
+    color: #7F1D1D; /* red-900 */
+}
+
+.write-box {
+    background: rgba(255,255,255,0.18);   /* <-- ĐÂY */
+    border-radius: 14px;
+    padding: 14px 16px;
+    color: white;
+    backdrop-filter: blur(6px);
+    margin-bottom: 12px;
+}
+
+
+/* =========================
+   EXPANDER HEADER (CUSTOM)
+========================= */
+div[data-testid="stExpander"] > details > summary {
+    background: linear-gradient(180deg, #1E3A8A, #1D4ED8); /* blue-900 → blue-700 */
+    color: white;
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-weight: 600;
+}
+
+/* Hover */
+div[data-testid="stExpander"] > details > summary:hover {
+    background: linear-gradient(180deg, #1D4ED8, #2563EB);
+}
+
+/* Remove default outline */
+div[data-testid="stExpander"] summary:focus {
+    outline: none;
+}
+
+/* Arrow icon */
+div[data-testid="stExpander"] summary svg {
+    color: white;
+}
+
+/* =========================
+   TABLE / DATAFRAME WRAPPER
+========================= */
+div[data-testid="stTable"],
+div[data-testid="stDataFrame"] {
+    background: radial-gradient(#240bb6, #1260d4);
+    border-radius: 14px;
+    padding: 10px 12px;
+    backdrop-filter: blur(6px);
+}
+
+/* TABLE HEADER */
+div[data-testid="stTable"] thead th,
+div[data-testid="stDataFrame"] thead th {
+    background: radial-gradient(#2102d3, #1260d4);
+    color: white !important;
+    font-weight: 600;
+    font-size: 14px;
+    text-align: center;
+}
