@@ -127,11 +127,26 @@ with play:
 
         # Board rows: a -> h
         for row in range(n):
-            row_cols = st.columns(n + 1, gap="small")
+            row_cols = st.columns(n + 1, gap="medium")
+            st.markdown("""
+                <style>
+                div[data-testid="column"] button {
+                    width: 50px !important;
+                    height: 50px !important;
+                    min-width: 50px !important;
+                    max-width: 50px !important;
+                    text-align: center !important;
+                    padding: 0 !important;
+                }
+                </style>
+            """, unsafe_allow_html=True)
             row_label = string.ascii_lowercase[row]
 
             row_cols[0].markdown(
-                f"<div style='text-align:center; font-weight:bold;'>{row_label}</div>",
+                f"""
+                    <div style='text-align:center; font-weight:bold;'>
+                        {row_label}
+                    </div>""",
                 unsafe_allow_html=True,
             )
 
@@ -158,8 +173,7 @@ with play:
 
                 # Queen hợp lệ/hint dùng primary để dễ quan sát.
                 # Queen conflict vẫn là secondary nhưng có warning icon.
-                button_type = "primary" if (is_queen and not is_conflict) or is_hint else "secondary"
-
+                button_type = "primary" if (is_queen and not is_conflict) or is_hint else "secondary"                
                 row_cols[col + 1].button(
                     label=icon,
                     key=f"cell_{cell_label}",

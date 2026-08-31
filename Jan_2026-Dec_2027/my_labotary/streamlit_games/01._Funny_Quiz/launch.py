@@ -28,6 +28,7 @@ st.markdown("""
     font-size: 32px;
     font-weight: 800;
     margin-bottom: 5px;
+    color: #FFFFFF
 }
 
 .game-subtitle {
@@ -47,7 +48,7 @@ st.markdown("""
 }
 
 .rule-box {
-    background: #117011;
+    background: #0d3b0d;
     border-radius: 12px;
     padding: 16px;
     margin-top: 10px;
@@ -55,7 +56,7 @@ st.markdown("""
 }
 
 .score-box {
-    background: #0FD10F;
+    background: #0a7a0a;
     border-radius: 12px;
     padding: 18px;
     margin-top: 10px;
@@ -69,7 +70,7 @@ st.markdown("""
 }
 
 .result-box {
-    background: #054205;
+    background: #033003;
     border-radius: 12px;
     padding: 18px;
     margin-top: 15px;
@@ -79,10 +80,13 @@ st.markdown("""
 /* ---------- Question ---------- */
 
 .question-card {
-    background: #2D802E;
+    background: #1A421E;
     border: 1px solid #e6eaf0;
     border-radius: 15px;
-    padding: 6px;
+    padding-top: 9px;
+    padding-bottom: 6px;
+    padding-left: 23px;
+    padding-right: 29px;
     margin-bottom: 18px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
@@ -90,14 +94,16 @@ st.markdown("""
 .question-number {
     font-size: 18px;
     font-weight: 700;
-    color: #E09C87;
+    color: #f0b090;
     margin-bottom: 6px;
 }
 
 .question-text {
     font-size: 18px;
+    font-family: 'Fira Code', 'Consolas', monospace;     
     font-weight: 700;
-    margin-bottom: 9px;
+    padding-left: 9px;
+    margin-bottom: 6px;
 }
 
 
@@ -107,6 +113,7 @@ st.markdown("""
     font-size: 22px;
     font-weight: 800;
     margin-bottom: 15px;
+    color: #FFFFFF;
 }
 
 </style>
@@ -131,17 +138,17 @@ if "submitted" not in st.session_state:
 if "results" not in st.session_state:
     st.session_state.results = []
 
-left_col, right_col = st.columns([4, 3], gap="large")
+left_col, right_col = st.columns([6, 5], gap="large")
 
 with left_col:
     st.markdown(
-        '<div class="game-title">🎯 Mini Quiz Game</div>',
+        '<div class="game-title">🧠 Mini Quiz Game 📝</div>',
         unsafe_allow_html=True
     )
 
     st.markdown(
         '<div class="game-subtitle">'
-            'Test your knowledge with 4 random questions!'
+            'Test your “deep knowledge” of Korea with 4 random questions'
         '</div>',
         unsafe_allow_html=True
     )
@@ -161,14 +168,15 @@ with left_col:
                         ''', unsafe_allow_html=True)
         st.write("")
 
-    c1, c2, c3 = st.columns([1, 3, 3], gap='medium')
+    _, c1, _, c2, _ = st.columns([1, 2, 3, 5, 1], gap='medium')
     with c1:
-        st.write("")
-        button_text = (
-            "🎮 NEW GAME"
-            if st.session_state.game_started
-            else "▶️ PLAY"
-        )
+        if st.session_state.game_started:
+            button_text = "🎮 NEW GAME"
+            for _ in range(20):
+                st.write(" ")
+        else:
+            st.write(" ")
+            button_text = "▶️ PLAY"
 
         if st.button(
             button_text,
@@ -212,7 +220,6 @@ with left_col:
                 unsafe_allow_html=True
             )
 
-    with c3:
         st.markdown(
             "### 📊 Answer Summary"
         )
@@ -245,7 +252,7 @@ with left_col:
 # =============================================================================
 with right_col:
     st.markdown(
-        '<div class="section-title">📋 Questions</div>',
+        '<div class="section-title">📋 Questions </div>',
         unsafe_allow_html=True
     )
 
@@ -282,28 +289,12 @@ with right_col:
                 unsafe_allow_html=True
             )
 
-            # -------------------------------------------------------------
             # 2 × 2 answer layout
-            # -------------------------------------------------------------
-
             col1, col2 = st.columns(2)
-
-            for option_idx, option in enumerate(
-                question["options"]
-            ):
-
-                target_col = (
-                    col1
-                    if option_idx % 2 == 0
-                    else col2
-                )
-
+            for option_idx, option in enumerate(question["options"]):
+                target_col = (col1 if option_idx % 2 == 0 else col2 )
                 with target_col:
-
-                    st.checkbox(
-                        option,
-                        key=f"q_{idx}_{option_idx}"
-                    )
+                    st.checkbox(option, key=f"q_{idx}_{option_idx}")
 
             # st.write("")
 

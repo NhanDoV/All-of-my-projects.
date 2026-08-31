@@ -197,16 +197,62 @@ game_html = """
             ctx.lineTo(bird.x + 12, bird.y + 10);
             ctx.fill();
 
-            // Ống
-            ctx.fillStyle = "#2eaa3f";
+            // Ống – kiểu góc cạnh hơn (thân + cap)
+            const pipeColor = "#2ecc40";
+            const pipeBorder = "#1a7a28";
+            const lipHeight = 22;   // độ cao của “môi” ống
+            const lipExtra = 8;     // phần nhô ra hai bên
 
             for (const pipe of pipes) {
+                // ===== Ống trên =====
+                // Thân ống
+                ctx.fillStyle = pipeColor;
                 ctx.fillRect(pipe.x, 0, pipe.width, pipe.top);
+
+                // Cap (môi dưới của ống trên)
                 ctx.fillRect(
-                    pipe.x,
-                    pipe.top + pipe.gap,
-                    pipe.width,
-                    canvas.height - pipe.top - pipe.gap
+                    pipe.x - lipExtra,
+                    pipe.top - lipHeight,
+                    pipe.width + lipExtra * 2,
+                    lipHeight
+                );
+
+                // Viền
+                ctx.strokeStyle = pipeBorder;
+                ctx.lineWidth = 3;
+                ctx.strokeRect(pipe.x, 0, pipe.width, pipe.top);
+                ctx.strokeRect(
+                    pipe.x - lipExtra,
+                    pipe.top - lipHeight,
+                    pipe.width + lipExtra * 2,
+                    lipHeight
+                );
+
+                // ===== Ống dưới =====
+                const bottomY = pipe.top + pipe.gap;
+                const bottomH = canvas.height - bottomY;
+
+                // Thân ống
+                ctx.fillStyle = pipeColor;
+                ctx.fillRect(pipe.x, bottomY, pipe.width, bottomH);
+
+                // Cap (môi trên của ống dưới)
+                ctx.fillRect(
+                    pipe.x - lipExtra,
+                    bottomY,
+                    pipe.width + lipExtra * 2,
+                    lipHeight
+                );
+
+                // Viền
+                ctx.strokeStyle = pipeBorder;
+                ctx.lineWidth = 3;
+                ctx.strokeRect(pipe.x, bottomY, pipe.width, bottomH);
+                ctx.strokeRect(
+                    pipe.x - lipExtra,
+                    bottomY,
+                    pipe.width + lipExtra * 2,
+                    lipHeight
                 );
             }
 
