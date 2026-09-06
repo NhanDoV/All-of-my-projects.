@@ -211,13 +211,14 @@ def render_board() -> str:
 # ────────────────────────────────────────────────
 def game_description():
     st.markdown("""
-    ### 🏛️ Tower of Hanoi
-    **Rules**
-    1. Move only **one disk** per turn.  
-    2. You may only take the **top-most** disk of a rod.  
-    3. A larger disk **cannot** be placed on a smaller disk.  
-    4. Goal: move the entire tower onto the **🎯 TARGET** rod.
-    """)
+                ### 🏛️ Tower of Hanoi
+                **Rules**
+                1. Move only **one disk** per turn.  
+                2. You may only take the **top-most** disk of a rod.  
+                3. A larger disk **cannot** be placed on a smaller disk.  
+                4. Goal: move the entire tower onto the **🎯 TARGET** rod.
+                5. <span style="color:#ffd700; font-weight:700;">How to play:</span> Click the **Rod i** bounded-box to select the top disk → then click **Rod j** to move it there (click the same Rod again to deselect).
+    """, unsafe_allow_html=True)
 
 def game_historic():
     st.markdown("#### Move history")
@@ -225,8 +226,12 @@ def game_historic():
     if not hist:
         st.caption("No moves yet.")
     else:
-        for line in hist[-14:]:
-            st.text(line)
+        recent = hist[-14:]
+        # chia 14 dòng gần nhất thành 3 cột
+        cols = st.columns(3)
+        for i, line in enumerate(recent):
+            with cols[i % 3]:
+                st.text(line)
         if len(hist) > 14:
             st.caption(f"… +{len(hist)-14} earlier")
 
@@ -275,10 +280,6 @@ with left:
     st.markdown("---")
     game_historic()
 
-    with st.expander("Optimal moves (classic 3-rod)"):
-        st.caption("Minimal moves for 3 rods = 2ⁿ − 1")
-        st.code(f"2^{n_disks} − 1 = {2**n_disks - 1}")
-
 with right:
     st.markdown("### Play Game")
 
@@ -315,3 +316,12 @@ with right:
         if st.button("Play again", type="primary"):
             init_game(st.session_state.n_rods, st.session_state.n_disks)
             st.rerun()
+
+with st.expander("Instruction", expanded=True):
+    c1, c2, c3 = st.columns(3, gap='large')
+    with c1:
+        st.image('hint1.png')
+    with c2:
+        st.image('hint2.png')
+    with c3:
+        st.image('hint3.png')
