@@ -1,6 +1,7 @@
 import streamlit as st
 import random
 from typing import List, Tuple, Optional
+from pathlib import Path
 
 # ────────────────────────────────────────────────
 # Constants
@@ -318,10 +319,8 @@ with right:
             st.rerun()
 
 with st.expander("Instruction", expanded=True):
-    c1, c2, c3 = st.columns(3, gap='large')
-    with c1:
-        st.image('hint1.png')
-    with c2:
-        st.image('hint2.png')
-    with c3:
-        st.image('hint3.png')
+    cols = st.columns(3, gap="large")
+    for i, col in enumerate(cols, start=1):
+        img_path = Path(__file__).parent / f"hint{i}.png"
+        with col:
+            st.image(img_path)
