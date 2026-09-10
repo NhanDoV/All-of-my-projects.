@@ -55,13 +55,13 @@ games = [
         "title": "Tower of Hanoi",
         "icon": "🏛️",
         "desc": "Cổ điển - Di chuyển tháp đĩa sang cột đích",
-        "page": "pages/1__TowerHanoi__.py",
+        "page": "1__TowerHanoi__.py",  # ✅ Không có "pages/" prefix
     },
     {
         "title": "Code Breaker",
         "icon": "🎨",
         "desc": "Đoán dãy màu bí mật trong số lượt giới hạn",
-        "page": "pages/2__GuessBalls__.py",
+        "page": "2__GuessBalls__.py",  # ✅
     },
     {
         "title": "Coming Soon",
