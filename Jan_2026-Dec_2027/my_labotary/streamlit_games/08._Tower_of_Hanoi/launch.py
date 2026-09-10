@@ -132,13 +132,11 @@ if "selected_game" in st.session_state:
 
     # Import và chạy game
     if selected == "tower_hanoi":
-        st.markdown("## 🏛️ Tower of Hanoi")
         # Import code game
         from tower_hanoi import run as run_tower_hanoi
         run_tower_hanoi()
 
     elif selected == "guess_balls":
-        st.markdown("## 🎨 Code Breaker")
         # Import code game
         from guess_balls import run as run_guess_balls
         run_guess_balls()
