@@ -7,7 +7,7 @@ pip install streamlit
 
 ## Some results
 `Tower of Hanoi`
-![alt text](08._Tower_of_Hanoi/image.png)
+![alt text](08._Tower_of_Hanoi/assets/tower_of_hanoi/image.png)
 
 `Stone Games`
 - **SG 1**
