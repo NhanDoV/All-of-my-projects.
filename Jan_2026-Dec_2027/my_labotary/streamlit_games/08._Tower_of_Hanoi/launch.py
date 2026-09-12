@@ -2,7 +2,7 @@ from pathlib import Path
 import streamlit as st
 
 st.set_page_config(
-    page_title="GAME WITH NHAN",
+    page_title="GAMING WITH NHAN",
     page_icon="🎮",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -18,9 +18,9 @@ st.markdown("""
 
     /* Thu hẹp sidebar */
     section[data-testid="stSidebar"] {
-        width: 210px !important;
-        min-width: 210px !important;
-        max-width: 210px !important;
+        width: 180px !important;
+        min-width: 180px !important;
+        max-width: 180px !important;
     }
 
     /* Card game */
@@ -64,8 +64,8 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ====================== GIAO DIỆN ======================
-st.title("🎮 GAME WITH NHAN")
-st.markdown("### Chọn game bạn muốn chơi")
+st.title("🎮 GAMING WITH NHAN")
+st.markdown("##### Chọn game bạn muốn chơi")
 
 games = [
     {
@@ -101,6 +101,8 @@ for idx, game in enumerate(games):
             </div>
         </div>
         """, unsafe_allow_html=True)
+
+        st.write(" ")
 
         if game["module"]:
             if st.button(

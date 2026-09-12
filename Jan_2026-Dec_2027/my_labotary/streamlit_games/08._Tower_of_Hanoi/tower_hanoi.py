@@ -6,7 +6,6 @@ from pathlib import Path
 # ====================== RESET STATE KHI CHUYỂN TAB ======================
 CURRENT_PAGE = "tower_of_hanoi"
 
-
 def reset_game_state():
     """Reset toàn bộ state khi chuyển sang game khác"""
     for key in list(st.session_state.keys()):
@@ -286,14 +285,15 @@ def run():
         with descr_col:
             game_description()
         with params_col:
-            n_rods = st.selectbox("Number of rods", [3, 4, 5], index=0, key="ui_rods")
+            n_rods = st.selectbox("Number of rods", [3, 4], index=1, key="ui_rods")
 
-            max_d = n_rods + 2
-            min_d = max(3, n_rods - 1)
+            max_d = 9
+            min_d = min(n_rods, n_rods + 2)
+
             n_disks = st.selectbox(
                 "Number of disks",
                 list(range(min_d, max_d + 1)),
-                index=0,
+                index=2,
                 key="ui_disks",
             )
 
@@ -301,7 +301,7 @@ def run():
                 init_game(n_rods, n_disks)
                 st.rerun()
 
-            hint, back = st.columns(2, gap='large')
+            hint, back = st.columns(2, gap='small')
             with hint:
                 if st.button("💡 Hint", use_container_width=True):
                     st.session_state.hint_msg = get_hint()

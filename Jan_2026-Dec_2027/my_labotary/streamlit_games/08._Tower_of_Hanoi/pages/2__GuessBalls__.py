@@ -301,7 +301,7 @@ with play_col:
                     <br> </span>
                 """, unsafe_allow_html=True)
 
-    col1, col2, col3 = st.columns([2, 2, 3], gap='small')
+    col1, col2, col3 = st.columns([1, 1, 2], gap='small')
 
     with col1:
         st.metric("Lượt đã dùng", f"{tries_used}/{st.session_state.max_tries}")
@@ -338,7 +338,7 @@ with play_col:
             with col:
                 choice = st.selectbox(
                     label=f"Ô {i + 1}",
-                    options=st.session_state.color_options,
+                    options= COLORS, # st.session_state.color_options,
                     key=f"guess_{i}",
                     label_visibility="visible",
                 )
@@ -396,7 +396,7 @@ with play_col:
 
     st.divider()
 
-    st.subheader("📜 Lịch sử đoán")
+    st.write("#### 📜 Lịch sử đoán")
     if not st.session_state.history:
         st.info("Chưa có lượt đoán nào.")
 
