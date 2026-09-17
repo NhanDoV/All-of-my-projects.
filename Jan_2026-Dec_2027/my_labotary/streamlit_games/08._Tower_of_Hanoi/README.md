@@ -17,4 +17,4 @@ streamlit run launch.py
 ![alt text](assets/guess_balls/image.png)
 
 ## Gameplay
-https://all-of-my-projects-zxovsjnrxs7dwquarzdkrd.streamlit.app/
+https://all-of-my-projects-kyebhbhzmk69njhmf6zqcj.streamlit.app/

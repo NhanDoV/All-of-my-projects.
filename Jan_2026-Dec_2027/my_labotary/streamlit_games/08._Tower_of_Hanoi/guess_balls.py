@@ -41,7 +41,7 @@ def run():
                 background: #062b4f;
                 border: 1px solid #e2e8f0;
                 border-radius: 10px;
-                padding: 10px 14px;
+                padding: 3px 14px;
                 margin-bottom: 8px;
             }
 
@@ -159,13 +159,14 @@ def run():
         with col1:
             code_length = st.selectbox(
                 "Số bóng",
-                options=[4, 5, 6],
+                options=[3, 4, 5, 6],
                 index=0,
                 key="code_length_selector",
             )
 
         with col2:
             default_max_tries = {
+                3: 8,
                 4: 10,
                 5: 12,
                 6: 15,
@@ -355,7 +356,7 @@ def run():
                 real_turn = len(st.session_state.history) - turn + 1
                 balls = color_balls(item["guess"])
 
-                c1, c2, c3 = st.columns([3, 1, 1], gap="small")
+                c1, c2, c3 = st.columns([3, 1, 1], gap="medium")
 
                 with c1:
                     st.markdown(
@@ -372,7 +373,9 @@ def run():
                 with c2:
                     st.markdown(
                         f"""
-                        Đúng vị trí : {item["exact"]}
+                        <div class="history-row">
+                            ✅ Đúng vị trí : {item["exact"]}
+                        </div>
                         """,
                         unsafe_allow_html=True,
                     )
@@ -380,7 +383,9 @@ def run():
                 with c3:
                     st.markdown(
                         f"""
-                        Sai vị trí : {item["color_only"]}
+                        <div class="history-row">
+                             🔄 Sai vị trí : {item["color_only"]}
+                        </div>
                         """,
                         unsafe_allow_html=True,
                     )
