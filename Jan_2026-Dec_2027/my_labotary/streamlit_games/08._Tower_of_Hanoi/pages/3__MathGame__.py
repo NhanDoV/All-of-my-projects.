@@ -111,12 +111,24 @@ with config_col:
                 .katex { font-size: 2.0em !important; }
 
                 .latex-box {
-                    background: linear-gradient(135deg, #0f766e 0%, #14b8a6 50%, #B6D7A8 100%);
+                    background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 50%, #93c5fd 100%);
                     border: 1px solid rgba(148, 163, 184, 0.35);
                     border-radius: 14px;
                     padding: 18px 10px;
+                    font-size: 23px;
                     text-align: center;
+                    font-weight: bold;
                     margin-bottom: 8px;
+                }
+
+                .onlytext-box {
+                    background: linear-gradient(135deg, #6d28d9 0%, #a855f7 50%, #f472b6 100%);
+                    border: 1px solid rgba(148, 163, 184, 0.35);
+                    border-radius: 14px;
+                    padding: 18px 10px;
+                    font-size: 16px;
+                    text-align: center;
+                    margin-bottom: 10px;
                 }
 
                 /* Tăng font-size chữ trong button cột compare */
@@ -147,7 +159,7 @@ with config_col:
                 </style>
                 """, unsafe_allow_html=True)
 
-            numA, compare, numB = st.columns([2.3, 1.9, 2.3], gap="medium")
+            numA, compare, numB = st.columns([2, 2.3, 2], gap="medium")
 
             with numA:
                 st.markdown('<div class="latex-box"> Num_A', unsafe_allow_html=True)
@@ -158,8 +170,7 @@ with config_col:
                 st.markdown('</div>', unsafe_allow_html=True)
 
             with compare:
-                st.markdown('<div class="latex-box"> Select one of these buttons', unsafe_allow_html=True)
-                st.write("")
+                st.markdown('<div class="onlytext-box"> Select one of these buttons', unsafe_allow_html=True)
                 if not game["finished"]:
                     _, col_gt, _, col_lt, _ = st.columns([0.1, 4, 0.5, 4, 0.1])
                     with col_gt:
@@ -202,7 +213,20 @@ with config_col:
 
             # ---------- MESSAGE + NEW GAME (cuối trang) ----------
             if game["finished"]:
+                val_A = (game['A']**(1 / root_level)) - game['n']
+                val_A = f"{val_A:6f}"
+                val_B = game['n'] - (game['B']**(1 / root_level))
+                val_B = f"{val_B:6f}"
+
+                with numA:
+                    st.write(" ")
+                    st.markdown(f'<div class="latex-box"> {val_A}', unsafe_allow_html=True)
+
+                with numB:
+                    st.markdown(f'<div class="latex-box"> {val_B}', unsafe_allow_html=True)
+
                 st.markdown("---")
+
                 mes_col, new_col = st.columns([2.5, 1], gap="medium")
 
                 with mes_col:
@@ -213,7 +237,7 @@ with config_col:
                         st.error(f"Sai rồi! Đáp án đúng là **`{game['correct']}`**")
 
                 with new_col:
-                    st.write("")  # spacer cho nút căn giữa hơn
+                    # st.write("")  # nếu cần
                     if st.button("🎮 Chơi ván mới", use_container_width=True, type="primary"):
                         generate_new_game(root_level)
                         st.rerun()
