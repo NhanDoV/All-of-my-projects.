@@ -56,6 +56,17 @@ st.markdown(
             padding: 12px 16px;
         }
 
+        /* Canh giữa value của metric */
+        [data-testid="stMetricValue"] {
+            text-align: center !important;
+            justify-content: center !important;
+        }
+
+        /* (Khuyến nghị) Canh giữa luôn cả label cho đồng bộ */
+        [data-testid="stMetricLabel"] {
+            text-align: center !important;
+            justify-content: center !important;
+        }        
         /* Divider */
         hr {
             margin: 1.2rem 0;
@@ -94,7 +105,6 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
-
 
 # ============================================================
 # CONSTANTS

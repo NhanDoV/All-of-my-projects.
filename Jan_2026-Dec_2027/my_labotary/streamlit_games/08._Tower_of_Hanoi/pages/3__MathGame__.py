@@ -1,5 +1,6 @@
 import streamlit as st
 import random
+import numpy as np
 import time
 from typing import Set
 
@@ -14,11 +15,210 @@ config_col, play_col = st.columns([3, 4], gap = 'large')
 
 with config_col:
     game_name = st.selectbox("Chọn game", ['PRIME HUNTER', 'ROOT DUEL'])
-
     if game_name == "ROOT DUEL":
-        st.warning("Sẽ sớm update")
+        # ================== SESSION STATE ==================
+        if "root_game" not in st.session_state:
+            st.session_state.root_game = {
+                "generated": False,
+                "A": None,
+                "B": None,
+                "n": None,
+                "correct": None,
+                "root_level": 3,
+                "finished": False,
+                "is_correct": None,
+                "game_id": 0,
+            }
 
-    elif game_name == 'PRIME HUNTER':
+        # ================== HÀM PHÁT SINH GAME MỚI ==================
+        def generate_new_game(level: int):
+            n = int(np.random.randint(3, 25))
+            diff = int(np.random.randint(4, 15))
+
+            up = int(np.random.randint(1, diff))
+            down = int(np.random.randint(1, diff))
+            while up == down:
+                down = int(np.random.randint(1, diff))
+
+            n_pow = n ** level
+            A = n_pow + up
+            B = n_pow - down
+
+            root_A = A ** (1 / level)
+            root_B = B ** (1 / level)
+
+            left  = root_A - n
+            right = n - root_B
+
+            if left > right:
+                correct = ">"
+            elif left < right:
+                correct = "<"
+            else:
+                correct = "="
+
+            st.session_state.root_game.update({
+                "generated": True,
+                "A": A,
+                "B": B,
+                "n": n,
+                "correct": correct,
+                "root_level": level,
+                "finished": False,
+                "is_correct": None,
+                "game_id": st.session_state.root_game["game_id"] + 1,
+            })
+
+        # ---------- CONFIG COLUMN ----------
+        with config_col:
+            param_col, but_col = st.columns(2, gap='large')
+            with param_col:
+                root_level = st.selectbox("Chọn căn bậc", [2, 3], index=1, key="root_level_select")
+            with but_col:
+                st.write(" ")
+                if st.button("🔄 New Game", type="primary", use_container_width=True):
+                    generate_new_game(root_level)
+                    st.rerun()
+
+            # Game description
+            st.markdown("---")
+            st.markdown("### 📖 Mô tả game")
+            st.markdown("""
+            So sánh hai khoảng cách tới số nguyên **n**:
+            
+            - Bên trái:  $\\sqrt[k]{A} - n$  
+            - Bên phải: $n - \\sqrt[k]{B}$
+            
+            Chọn dấu **>** hoặc **<** cho đúng.
+            
+            *Mẹo: Không cần tính căn chính xác – dùng ước lượng hoặc tính chất căn là đủ!*
+            """)
+
+        # ---------- PLAY COLUMN ----------
+        with play_col:
+            # Tạo game lần đầu
+            if not st.session_state.root_game["generated"]:
+                generate_new_game(root_level)
+                st.rerun()
+
+            game = st.session_state.root_game
+
+            st.markdown(f"### So sánh hai khoảng cách tới **{game['n']}**")
+
+            # CSS
+            st.markdown("""
+                <style>
+                .katex { font-size: 2.0em !important; }
+
+                .latex-box {
+                    background: linear-gradient(135deg, #0f766e 0%, #14b8a6 50%, #B6D7A8 100%);
+                    border: 1px solid rgba(148, 163, 184, 0.35);
+                    border-radius: 14px;
+                    padding: 18px 10px;
+                    text-align: center;
+                    margin-bottom: 8px;
+                }
+
+                /* Tăng font-size chữ trong button cột compare */
+                div[data-testid="stHorizontalBlock"] button p {
+                    font-size: 1.5rem !important;
+                    font-weight: 700 !important;
+                }
+
+                /* Gradient background cho st.button */
+                div.stButton > button {
+                    background: linear-gradient(135deg, #064e3b 0%, #0f766e 50%, #14b8a6 100%) !important;
+                    color: white !important;
+                    border: none !important;
+                    border-radius: 10px !important;
+                    font-weight: 600 !important;
+                    transition: all 0.25s ease !important;
+                }
+
+                div.stButton > button:hover {
+                    background: linear-gradient(135deg, #0d9488 0%, #2dd4bf 50%, #5eead4 100%) !important;
+                    transform: translateY(-1px);
+                    box-shadow: 0 4px 12px rgba(20, 184, 166, 0.45);
+                }
+
+                div.stButton > button:active {
+                    transform: translateY(0);
+                }
+                </style>
+                """, unsafe_allow_html=True)
+
+            numA, compare, numB = st.columns([2.3, 1.9, 2.3], gap="medium")
+
+            with numA:
+                st.markdown('<div class="latex-box"> Num_A', unsafe_allow_html=True)
+                if game["root_level"] == 2:
+                    st.latex(rf"\sqrt{{{game['A']}}} - {game['n']}")
+                else:
+                    st.latex(rf"\sqrt[3]{{{game['A']}}} - {game['n']}")
+                st.markdown('</div>', unsafe_allow_html=True)
+
+            with compare:
+                st.markdown('<div class="latex-box"> Select one of these buttons', unsafe_allow_html=True)
+                st.write("")
+                if not game["finished"]:
+                    _, col_gt, _, col_lt, _ = st.columns([0.1, 4, 0.5, 4, 0.1])
+                    with col_gt:
+                        if st.button(
+                            ">",
+                            key=f"btn_gt_{game['game_id']}",
+                            use_container_width=True,
+                            disabled=game["finished"]       
+                        ):
+                            st.session_state.root_game["finished"] = True
+                            st.session_state.root_game["is_correct"] = (">" == game["correct"])
+                            st.rerun()
+
+                    with col_lt:
+                        if st.button(
+                            "<",
+                            key=f"btn_lt_{game['game_id']}",
+                            use_container_width=True,
+                            disabled=game["finished"]          # ← disable khi đã trả lời
+                        ):
+                            st.session_state.root_game["finished"] = True
+                            st.session_state.root_game["is_correct"] = ("<" == game["correct"])
+                            st.rerun()
+                else:
+                    chosen = ">" if game.get("is_correct") and game["correct"] == ">" else \
+                            "<" if game.get("is_correct") and game["correct"] == "<" else game["correct"]
+                    st.markdown(
+                        f"<div style='text-align:center; font-size:2.4rem; font-weight:800; padding:12px 0;'>"
+                        f"{chosen}</div>",
+                        unsafe_allow_html=True
+                    )
+
+            with numB:
+                st.markdown('<div class="latex-box"> Num_B', unsafe_allow_html=True)
+                if game["root_level"] == 2:
+                    st.latex(rf"{game['n']} - \sqrt{{{game['B']}}}")
+                else:
+                    st.latex(rf"{game['n']} - \sqrt[3]{{{game['B']}}}")
+                st.markdown('</div>', unsafe_allow_html=True)
+
+            # ---------- MESSAGE + NEW GAME (cuối trang) ----------
+            if game["finished"]:
+                st.markdown("---")
+                mes_col, new_col = st.columns([2.5, 1], gap="medium")
+
+                with mes_col:
+                    if game["is_correct"]:
+                        st.success("Chính xác! 🎉")
+                        st.balloons()
+                    else:
+                        st.error(f"Sai rồi! Đáp án đúng là **`{game['correct']}`**")
+
+                with new_col:
+                    st.write("")  # spacer cho nút căn giữa hơn
+                    if st.button("🎮 Chơi ván mới", use_container_width=True, type="primary"):
+                        generate_new_game(root_level)
+                        st.rerun()
+
+    if game_name == 'PRIME HUNTER':
         # ==================== HÀM KIỂM TRA SỐ NGUYÊN TỐ ====================
         def is_prime(num: int) -> bool:
             if num < 2:
@@ -118,38 +318,70 @@ with config_col:
         <style>
         /* Ép style cho tất cả button trong board */
         div[data-testid="stHorizontalBlock"] div.stButton > button {
-            background: linear-gradient(135deg, #166534 0%, #4ade80 55%, #fef08a 100%) !important;
-            color: #14532d !important;
+            background: linear-gradient(135deg, #0f766e 0%, #14b8a6 50%, #B6D7A8 100%) !important;
+            color: #042f2e !important;
             border: none !important;
             border-radius: 10px !important;
             font-weight: 900 !important;
-            font-size: 29px !important;
+            font-size: 49px !important;
             height: 58px !important;
             transition: all 0.15s ease !important;
         }
         div[data-testid="stHorizontalBlock"] div.stButton > button:hover {
             transform: scale(1.06) !important;
-            box-shadow: 0 0 14px rgba(74, 222, 128, 0.55) !important;
+            box-shadow: 0 0 18px rgba(20, 184, 166, 0.75) !important;
         }
 
-        /* Khi đã chọn (disabled) → chuyển sang xanh dương hoặc đỏ tùy label */
+        /* Khi đã chọn (disabled) → giữ opacity */
         div[data-testid="stHorizontalBlock"] div.stButton > button:disabled {
             opacity: 1 !important;
             transform: none !important;
         }
 
-        /* Màu cho ô đúng (có dấu ✓) */
+        /* Màu cho ô đúng (có dấu ✓) – xanh dương tươi sáng */
         div[data-testid="stHorizontalBlock"] div.stButton > button[kind="primary"] {
-            background: radial-gradient(circle at center, #1e3a8a 0%, #3b82f6 55%, #93c5fd 100%) !important;
+            background: radial-gradient(circle at center, #1e3a8a 0%, #3b82f6 50%, #60a5fa 100%) !important;
             color: #ffffff !important;
-            box-shadow: 0 0 12px rgba(59, 130, 246, 0.7) !important;
+            box-shadow: 0 0 16px rgba(59, 130, 246, 0.85) !important;
         }
 
-        /* Màu cho ô sai (có dấu ✗) */
+        /* Màu cho ô sai (có dấu ✗) – đỏ rực */
         div[data-testid="stHorizontalBlock"] div.stButton > button[kind="secondary"]:disabled {
-            background: linear-gradient(135deg, #7f1d1d, #ef4444) !important;
-            color: #fecaca !important;
+            background: linear-gradient(135deg, #7f1d1d 0%, #ef4444 55%, #fca5a5 100%) !important;
+            color: #fef2f2 !important;
             opacity: 1 !important;
+        }
+        /* ========== STYLE CHO st.metric ========== */
+        div[data-testid="stMetric"] {
+            background: linear-gradient(135deg, #0f766e 0%, #14b8a6 55%, #B6D7A8 100%) !important;
+            border-radius: 12px !important;
+            padding: 12px 16px !important;
+            box-shadow: 0 4px 12px rgba(15, 118, 110, 0.35) !important;
+            text-align: center !important;
+        }
+
+        /* Label của metric – canh giữa */
+        div[data-testid="stMetricLabel"] {
+            text-align: center !important;
+            justify-content: center !important;
+            color: #042f2e !important;
+            font-weight: 700 !important;
+        }
+
+        /* Value của metric – canh giữa */
+        div[data-testid="stMetricValue"] {
+            text-align: center !important;
+            justify-content: center !important;
+            color: #042f2e !important;
+            font-weight: 900 !important;
+            -webkit-text-stroke: 1.2px #ffffff !important;
+            paint-order: stroke fill !important;
+        }
+
+        /* Delta (nếu có) cũng canh giữa */
+        div[data-testid="stMetricDelta"] {
+            text-align: center !important;
+            justify-content: center !important;
         }
         </style>
         """, unsafe_allow_html=True)
