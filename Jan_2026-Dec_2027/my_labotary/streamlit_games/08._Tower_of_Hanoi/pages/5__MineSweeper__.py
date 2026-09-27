@@ -119,21 +119,69 @@ st.markdown(f"""
             color: {CELL_TEXT} !important;
             font-size: 39px!important;
         }}
+        /* ===== SELECTBOX ===== */
+        div[data-baseweb="select"] {{
+            width: 100% !important;
+        }}
+
+        div[data-baseweb="select"] > div {{
+            min-height: 38px !important;
+            height: 38px !important;
+            background-color: #1e1460 !important;
+            border: 1px solid #786ae6 !important;
+            border-radius: 8px !important;
+        }}
+
+        /* Selected value */
+        div[data-baseweb="select"] [data-testid="stMarkdownContainer"],
+        div[data-baseweb="select"] span {{
+            color: #efe9e9 !important;
+        }}
+
+        /* Dropdown arrow */
+        div[data-baseweb="select"] svg {{
+            fill: #efe9e9 !important;
+            width: 18px !important;
+            height: 18px !important;
+        }}
     </style>
 """, unsafe_allow_html=True)
 
 # ---------- Layout ----------
-config_col, play_col = st.columns([2, 5], gap="large")
+config_col, play_col = st.columns([3, 5], gap="large")
 
 with config_col:
     st.title("💣 Minesweeper")
-    crow, ccol, cmine = st.columns(3)
-    with crow:
-        ROWS = st.selectbox("Chọn số hàng (rows)", [6, 7, 8, 9, 10, 11, 12], index=3)
-    with ccol:
-        COLS = st.selectbox("Chọn số cột (cols)", [8, 10, 12, 15, 16], index=1)
-    with cmine:
-        NUM_MINES = st.selectbox("Chọn số mìn", [10, 15, 20, 25, 30], index=1)
+    with st.container(border=True):
+        st.markdown("##### ⚙️ Cài đặt bàn chơi")
+        crow, ccol, cmine = st.columns(3)
+        with crow:
+            ROWS = st.number_input(
+                "Số hàng",
+                min_value=6, max_value=12,
+                value=6,
+                label_visibility="collapsed",
+                help="Chọn số hàng"
+            )
+            st.caption("Hàng (rows)")
+        with ccol:
+            COLS = st.number_input(
+                "Số cột",
+                min_value=8, max_value=16,
+                value=10,
+                label_visibility="collapsed",
+                help="Chọn số cột"
+            )
+            st.caption("Cột (cols)")
+        with cmine:
+            NUM_MINES = st.number_input(
+                "Số mìn",
+                min_value=10, max_value=20,
+                value=12,
+                label_visibility="collapsed",
+                help="Chọn số mìn"
+            )
+            st.caption("Mìn")
 
     st.markdown("---")
     st.markdown("""
