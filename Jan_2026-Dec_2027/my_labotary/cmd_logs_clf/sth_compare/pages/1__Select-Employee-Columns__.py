@@ -5,7 +5,7 @@ st.set_page_config(page_title="Select Employee Columns", page_icon="💣", layou
 descr_col, hint_col = st.columns([3, 2], gap='medium')
 
 with descr_col:
-    with st.expander("DESCRIPTION", expanded=True):
+    with st.expander("**:violet[DESCRIPTION]**", expanded=True):
         st.markdown(
             """
                 - In enterprise human resource pipelines, employee records often contain sensitive PII (`addresses`, `ages`) or unneeded metadata. 
@@ -29,7 +29,7 @@ with descr_col:
             }), hide_index=True)
 
 with hint_col:
-    with st.expander("Learning Objectives", expanded=True):
+    with st.expander("**:violet[LEARNING OBJECTIVES]**", expanded=True):
         st.markdown(
             """
                 1. Understand column projection using `df.select()`. 
@@ -37,6 +37,14 @@ with hint_col:
             """
             , unsafe_allow_html=True
         )
+
+    with st.expander("**:violet[EXPECTED OUTPUT SCHEMA]**", expanded=True):
+        _, schema_tab2, _ = st.columns([1,4,1])
+        with schema_tab2:
+            st.dataframe(pd.DataFrame({
+                'name': ['STRING'],
+                'salary': ['DOUBLE']
+            }), hide_index=True)
 
 # ---------------------
 pyspark_cd = """

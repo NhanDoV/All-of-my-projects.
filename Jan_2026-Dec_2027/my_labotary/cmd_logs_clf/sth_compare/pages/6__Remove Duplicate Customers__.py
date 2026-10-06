@@ -1,57 +1,46 @@
 import streamlit as st
 import pandas as pd
 
-st.set_page_config(page_title="Filter High Salary Employees", page_icon="💣", layout="wide")
+st.set_page_config(page_title="Clean Employee Null Values", page_icon="💣", layout="wide")
 descr_col, hint_col = st.columns([4, 3], gap='medium')
 
 with descr_col:
     with st.expander("**:violet[DESCRIPTION]**", expanded=True):
         st.markdown(
             """
-                - Compensation analytics teams need to identify compensation outliers across the company. 
-                - Return all employee records whose salary is strictly greater than 50000.0.
+            - Due to multiple concurrent API events or upstream retries, customer subscription events may contain duplicate rows with the same customer_id.
+            - Deduplicate the customer dataset based on `customer_id` so that each customer ID appears at most once in the output DataFrame.
 
-                <span style="color: #89CFF0"> **Input dataframe:** </span> `employees_df` or `employees` table
-
-                <span style="color: #088F8F"> **Input schema:** </span>
+            <span style="color: #89CFF0"> **Input dataframe:** </span> `customers_df` or `customers` table
             """,
             unsafe_allow_html=True
         )
-        _, schema_tab, _ = st.columns([1,9,1])
-        with schema_tab:
-            st.dataframe(pd.DataFrame({
-                'employee_id': ['INT'],
-                'name': ['STRING'],
-                'department': ['STRING'],
-                'salary': ['DOUBLE']
-            }), hide_index=True)
-
 with hint_col:
-    with st.expander("**:violet[LEARNING OBJECTIVES]**", expanded=True):
-        st.markdown(
-            """
-                1. Apply relational filtering with `df.filter()` or `df.where()`. 
-                2. Understand predicate pushdown where filters are evaluated as close to disk as possible.
-            """
-            , unsafe_allow_html=True
-        )
+    with st.expander("**:violet[INPUT SCHEMA]**", expanded=True):
+        st.dataframe(pd.DataFrame({
+            'customer_id': ['INT'],
+            'customer_name': ['STRING'],
+            'email': ['STRING'],
+            'city': ['STRING']
+        }), hide_index=True)
 
     with st.expander("**:violet[EXPECTED OUTPUT SCHEMA]**", expanded=True):
         st.dataframe(pd.DataFrame({
-            'employee_id': ['INT'],
-            'name': ['STRING'],
-            'department': ['STRING'],
-            'salary': ['DOUBLE']
+            'customer_id': ['INT'],
+            'customer_name': ['STRING'],
+            'email': ['STRING'],
+            'city': ['STRING']
         }), hide_index=True)
 
 # ---------------------
 pyspark_cd = """
-    employees_df.filter( F.col('salary') > 50000.0 )
+    customers_df.dropDuplicates(['customer_id'])
 """
 sql_code = """
-    SELECT name, salary
-    FROM employees
-    WHERE salary > 50000.0;
+    SELECT 
+            DISTINCT(customer_id),
+            customer_name, email, city
+    FROM customers;
 """
 
 st.html(f"""
@@ -192,24 +181,20 @@ st.divider()
 test_col, inp_col, otp_col = st.columns([1.75, 4, 4], gap='large')
 
 # tạo dictionary lưu input vs output
+import numpy as np
+
 data_dict = {
     'Test case 1': pd.DataFrame({
-                        "employee_id": [1, 2, 3, 4, 5],
-                        "name" : ['Alice', 'Bob', 'Charlie', 'Elena', 'Emma'],
-                        "department": ['Enginering', 'HR', 'Finance', 'Support', 'HR'],
-                        "salary": [95_000, 62_000, 48_500, 50_000, 61_200],
+                        "customer_id": [1, 2, 1, 3, 2],
+                        "customer_name" : ['Alice', 'Bob', 'Alice', 'Elena', 'Bob'],
+                        "email": ['alice@spark.com', 'boobob@fun.com', 'alice@spark.com', 'elena@.ftt.com', 'boobob@fun.com'],
+                        "city": ['New York', 'Chicago', 'New York', 'Paris', 'Chicago'],
                     }),
     'Test case 2': pd.DataFrame({
-                        "employee_id": [10, 22, 29, 39],
-                        "name" : ['Diana', 'Helen', 'Nancy', 'Pedro'],
-                        "department": ['Legal', 'Manager', 'Finance', 'Support'],
-                        "salary": [120_000, 41_600, 93_500, 26_500],
-                    }),
-    'Test case 3': pd.DataFrame({
-                        "employee_id": [101, 102, 103],
-                        "name" : ['Elena', 'Frank', 'Grace'],
-                        "department": ['Data', 'Design', 'Marketing'],
-                        "salary": [105_000, 38_000, 54_000],
+                        "customer_id": [29, 121, 244, 288, 121, 244],
+                        "customer_name" : ['Diana', 'Evan', 'Nancy', 'Tim', 'Evan', 'Nancy'],
+                        "email": ['diana@spark.com', 'evan@spark.com', 'nancy@kpop.com', 'tim@open.com', 'evan@spark.com', 'nancy@kpop.com'],
+                        "city": ['Seattle', 'Berlin', 'London', 'Lyon', 'Berlin', 'London'],
                     })
 }
 
@@ -228,4 +213,7 @@ with otp_col:
     with st.expander("**:violet[Output]**", expanded=True):
         _, oc, _ = st.columns([1,9,1])
         with oc:
-            st.dataframe(inp_df[inp_df['salary'] > 50_000.0], hide_index=True)
+            inp_df.drop_duplicates(
+                subset='customer_id', inplace=True
+            )
+            st.dataframe(inp_df, hide_index=True)

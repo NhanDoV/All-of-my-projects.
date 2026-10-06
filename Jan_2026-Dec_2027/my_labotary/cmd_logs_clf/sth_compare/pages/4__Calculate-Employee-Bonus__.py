@@ -1,57 +1,47 @@
 import streamlit as st
 import pandas as pd
 
-st.set_page_config(page_title="Filter High Salary Employees", page_icon="💣", layout="wide")
+st.set_page_config(page_title="Calculate Employee Bonus", page_icon="💣", layout="wide")
 descr_col, hint_col = st.columns([4, 3], gap='medium')
 
 with descr_col:
     with st.expander("**:violet[DESCRIPTION]**", expanded=True):
         st.markdown(
             """
-                - Compensation analytics teams need to identify compensation outliers across the company. 
-                - Return all employee records whose salary is strictly greater than 50000.0.
+            - During annual compensation reviews, each employee receives a performance bonus equal to `10% (0.10)` of their **base salary**.
+            - Derive a new column `bonus` equal to `round(salary * 0.10, 2)`.
 
-                <span style="color: #89CFF0"> **Input dataframe:** </span> `employees_df` or `employees` table
-
-                <span style="color: #088F8F"> **Input schema:** </span>
+            <span style="color: #89CFF0"> **Input dataframe:** </span> `employees_df` or `employees` table
             """,
             unsafe_allow_html=True
         )
-        _, schema_tab, _ = st.columns([1,9,1])
-        with schema_tab:
-            st.dataframe(pd.DataFrame({
-                'employee_id': ['INT'],
-                'name': ['STRING'],
-                'department': ['STRING'],
-                'salary': ['DOUBLE']
-            }), hide_index=True)
-
 with hint_col:
-    with st.expander("**:violet[LEARNING OBJECTIVES]**", expanded=True):
-        st.markdown(
-            """
-                1. Apply relational filtering with `df.filter()` or `df.where()`. 
-                2. Understand predicate pushdown where filters are evaluated as close to disk as possible.
-            """
-            , unsafe_allow_html=True
-        )
+    with st.expander("**:violet[INPUT SCHEMA]**", expanded=True):
+        st.dataframe(pd.DataFrame({
+            'employee_id': ['INT'],
+            'name': ['STRING'],
+            'salary': ['DOUBLE']
+        }), hide_index=True)
 
     with st.expander("**:violet[EXPECTED OUTPUT SCHEMA]**", expanded=True):
         st.dataframe(pd.DataFrame({
             'employee_id': ['INT'],
             'name': ['STRING'],
-            'department': ['STRING'],
-            'salary': ['DOUBLE']
+            'salary': ['DOUBLE'],
+            'bonus': ['DOUBLE']
         }), hide_index=True)
 
 # ---------------------
 pyspark_cd = """
-    employees_df.filter( F.col('salary') > 50000.0 )
+    employees_df.withColumn(
+                            "bonus", 
+                            F.round(F.col("salary") * 0.10, 2)
+                        )
 """
 sql_code = """
-    SELECT name, salary
-    FROM employees
-    WHERE salary > 50000.0;
+    SELECT *,
+           ROUND( salary * 0.10, 2 ) AS bonus 
+    FROM employees;
 """
 
 st.html(f"""
@@ -196,20 +186,17 @@ data_dict = {
     'Test case 1': pd.DataFrame({
                         "employee_id": [1, 2, 3, 4, 5],
                         "name" : ['Alice', 'Bob', 'Charlie', 'Elena', 'Emma'],
-                        "department": ['Enginering', 'HR', 'Finance', 'Support', 'HR'],
-                        "salary": [95_000, 62_000, 48_500, 50_000, 61_200],
+                        "salary": [25_450, 16_432.1, 8_500, 9_526.2, 6_200],
                     }),
     'Test case 2': pd.DataFrame({
                         "employee_id": [10, 22, 29, 39],
                         "name" : ['Diana', 'Helen', 'Nancy', 'Pedro'],
-                        "department": ['Legal', 'Manager', 'Finance', 'Support'],
-                        "salary": [120_000, 41_600, 93_500, 26_500],
+                        "salary": [121_244, 41_600, 93_500, 26_525],
                     }),
     'Test case 3': pd.DataFrame({
                         "employee_id": [101, 102, 103],
                         "name" : ['Elena', 'Frank', 'Grace'],
-                        "department": ['Data', 'Design', 'Marketing'],
-                        "salary": [105_000, 38_000, 54_000],
+                        "salary": [105_121.2, 38_244.1, 54_123],
                     })
 }
 
@@ -228,4 +215,5 @@ with otp_col:
     with st.expander("**:violet[Output]**", expanded=True):
         _, oc, _ = st.columns([1,9,1])
         with oc:
-            st.dataframe(inp_df[inp_df['salary'] > 50_000.0], hide_index=True)
+            inp_df['bonus'] = round(0.10 * inp_df['salary'], 2)
+            st.dataframe(inp_df, hide_index=True)
