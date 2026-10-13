@@ -178,7 +178,7 @@ st.html(f"""
 st.divider()
 
 # ---------------------
-test_col, inp_col, otp_col = st.columns([1.75, 4, 4], gap='large')
+test_col, inp_col, otp_col = st.columns([1.05, 4, 4], gap='large')
 
 # tạo dictionary lưu input vs output
 import numpy as np
@@ -205,13 +205,13 @@ with test_col:
 with inp_col:
     with st.expander("**:violet[Input]**", expanded=True):
         inp_df = data_dict[input_df_case]
-        _, ic, _ = st.columns([1,9,1])
+        _, ic, _ = st.columns([1,19,1])
         with ic:
             st.dataframe(inp_df, hide_index=True)
 
 with otp_col:
     with st.expander("**:violet[Output]**", expanded=True):
-        _, oc, _ = st.columns([1,9,1])
+        _, oc, _ = st.columns([1,19,1])
         with oc:
             inp_df.drop_duplicates(
                 subset='customer_id', inplace=True
