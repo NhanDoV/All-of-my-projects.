@@ -1,5 +1,0 @@
-matplotlib
-plotly
-Pillow
-numpy
-pandas
