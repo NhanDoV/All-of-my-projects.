@@ -178,7 +178,7 @@ st.html(f"""
 st.divider()
 
 # ---------------------
-test_col, inp_col, otp_col = st.columns([1.05, 4, 4], gap='large')
+test_col, inp_col, otp_col = st.columns([1.25, 4, 4], gap='medium')
 
 # tạo dictionary lưu input vs output
 import numpy as np
@@ -200,7 +200,7 @@ data_dict = {
 
 with test_col:
     st.subheader("Results")
-    input_df_case = st.selectbox("Chọn một trong các test case sau", [f"Test case {i}" for i in range(1, 4)])
+    input_df_case = st.selectbox("Chọn một trong các test case sau", [f"Test case {i}" for i in range(1, 3)])
 
 with inp_col:
     with st.expander("**:violet[Input]**", expanded=True):
