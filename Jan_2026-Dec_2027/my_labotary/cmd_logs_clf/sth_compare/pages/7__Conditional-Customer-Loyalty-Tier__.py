@@ -39,8 +39,8 @@ with hint_col:
 # ---------------------
 pyspark_cd = """
     customers_df.withColumn(
-                "tier", 
-                F.when(F.col('total_spent') >= 1000, 'Platinum')\\
+                   "tier", 
+                   F.when(F.col('total_spent') >= 1000, 'Platinum')\\
                     .when(F.col('total_spent') >= 500, 'Gold') \\
                     .when(F.col('total_spent') >= 200, 'Silver') \\
                     .otherwise('Bronze')

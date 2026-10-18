@@ -35,7 +35,7 @@ with hint_col:
 
 # ---------------------
 pyspark_cd = """
-    employees_df.groupBy("department")\
+    employees_df.groupBy("department")\\
                 .agg(
                     F.count('*').alias('employee_count'),
                     F.sum(F.col('salary')).alias('total_salary')

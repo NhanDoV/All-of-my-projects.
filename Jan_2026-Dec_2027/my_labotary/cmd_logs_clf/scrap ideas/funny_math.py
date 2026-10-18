@@ -40,7 +40,7 @@ st.markdown(
     }
     [data-testid="stHeader"] { background: rgba(11,16,32,.78); }
     [data-testid="stToolbar"] { right: 1rem; }
-    .block-container { max-width: 1120px; padding-top: 2rem; padding-bottom: 3rem; }
+    .block-container { max-width: 1260px; padding-top: 2rem; padding-bottom: 3rem; }
     h1, h2, h3, h4 { font-family: 'Space Grotesk', sans-serif !important; color: var(--fm-text) !important; }
     p, label, span, div { font-family: 'DM Sans', sans-serif; }
     .hero {
@@ -157,6 +157,53 @@ QUESTION_BANK = {
                 ],
                 "answer": "$\\boxed{\\text{Cạnh }9\\,\\text{cm};\\ S=81\\,\\text{cm}^2}$",
             },
+            {
+                "id": "g5-06",
+                "question": "Một mảnh đất hình chữ nhật với chiều dài $52$ m và chiều rộng bằng $\\frac{3}{5}$ chiều dài. Tính chu vi và diện tích của mảnh đất.",
+                "steps": [
+                    "Chiều rộng là $52 \\times \\frac{3}{5} = 31.2$ m.",
+                    "Chu vi là $(52 + 31.2) \\times 2 = 166.4$ m.",
+                    "Diện tích là $52 \\times 31.2 = 1622.4$ m$^2$.",
+                ],
+                "answer": "$\\boxed{\\text{Chu vi }166.4\\,\\text{m};\\ \\text{Diện tích }1622.4\\,\\text{m}^2}$",
+            },
+            {
+                "id": "g5-07",
+                "question": "Một tấm bìa hình chữ nhật có chiều dài $23$ cm và chiều rộng kém chiều dài $5$ cm. Tính diện tích tấm bìa hình vuông có chu vi bằng chu vi của tấm bìa hình chữ nhật kể trên.",
+                "steps": [
+                    "Chiều rộng là $23 - 5 = 18$ cm.",
+                    "Chu vi của tấm bìa hình chữ nhật là $(23 + 18) \\times 2 = 82$ cm.",
+                    "Độ dài cạnh của hình vuông là $82:4 = 20.5$ cm.",
+                    "Diện tích của hình vuông là $20.5 \\times 20.5 = 420.25$ cm$^2$.",
+                ],
+                "answer": "$\\boxed{\\text{Chu vi }82\\,\\text{cm};\\ \\text{Diện tích }420.25\\,\\text{cm}^2}$",
+            },
+            {
+                "id": "g5-08",
+                "question": "Một hình thang có diện tích bằng $60$ m$^2$, hiệu hai đáy là $4$ m. Tính độ dài mỗi đáy, biết rằng nếu đáy lớn được tăng thêm $2$ m thì diện tích hình thang cũng tăng thêm $6$ m$^2$.",
+                "steps": [
+                    "Gọi đáy lớn là $a$ và đáy nhỏ là $b$. Ta có $a - b = 4$.",
+                    "Diện tích hình thang là $S = \\frac{(a + b)h}{2} = 60$ m$^2$.",
+                    "Khi đáy lớn tăng thêm $2$ m, diện tích mới là $S' = \\frac{(a + 2 + b)h}{2} = 66$ m$^2$.",
+                    "Từ hai phương trình diện tích, ta có hệ phương trình: $\\begin{cases} \\frac{(a + b)h}{2} = 60 \\\\ \\frac{(a + 2 + b)h}{2} = 66 \\end{cases}$",
+                    "Suy ra $\dfrac{a+b+2}{a+b} = \dfrac{66}{60} = \dfrac{11}{10}$ hay $\dfrac{2}{a+b} = \dfrac{1}{10}$, tức là $a + b = 20$.",
+                    "Kết hợp với $a - b = 4$, ta tìm được $a$ và $b$."
+                ],
+                "answer": "$\\boxed{\\text{Đáy lớn } a = 12\\,\\text{m};\\ \\text{Đáy nhỏ } b = 8\\,\\text{m}}$",
+            },
+            {
+                "id": "g5-09",
+                "question": "Một thửa ruộng hình chữ nhật có chu vi $192$ m; nếu chiều dài giảm đi $3$ m và chiều rộng tăng thêm $3$ m thì thửa ruộng đó trở thành hình vuông. Tính diện tích của thửa ruộng hình chữ nhật.",
+                "steps": [
+                    "Gọi chiều dài là $a$ và chiều rộng là $b$. Ta có hệ phương trình: $\\begin{cases} 2(a + b) = 192 \\\\ a - 3 = b + 3 \\end{cases}$",
+                    "Từ phương trình thứ hai: $a - b = 6$.",
+                    "Cộng hai phương trình: $2a + 2b + a - b = 192 + 6$, suy ra $3a + b = 198$.",
+                    "Thay $b = a - 6$ vào phương trình trên: $3a + (a - 6) = 198$, giải được $a = 51$.",
+                    "Suy ra $b = 45$.",
+                    "Diện tích thửa ruộng là $a \\times b = 51 \\times 45 = 2295$ m$^2$."
+                ],
+                "answer": "$\\boxed{\\text{Diện tích } 2295\\,\\text{m}^2}$",
+            },
         ],
         "Số học": [
             {
@@ -195,6 +242,53 @@ QUESTION_BANK = {
                 ],
                 "answer": "$\\boxed{90\\text{ quyển vở}}$",
             },
+            {
+                "id": "a5-06",
+                "question": "Trong vườn có $45$ cây vừa cam, vừa chanh, vừa bưởi. Số cây cam bằng $\\frac{3}{4}$ số cây chanh và số cây chanh chỉ bằng một nửa số cây bưởi. Hỏi trong vườn có bao nhiêu cây cam, cây chanh và cây bưởi?",
+                "steps": [
+                    "Gọi số cây bưởi là $x$.",
+                    "Số cây chanh là $\\frac{1}{2}x$ và số cây cam là $\\frac{3}{4}\\cdot\\frac{1}{2}x=\\frac{3}{8}x$.",
+                    "Tổng số cây: $x + \\frac{1}{2}x + \\frac{3}{8}x = 45$.",
+                    "Giải phương trình: $\\frac{15}{8}x = 45 \\Rightarrow x = 24$."
+                ],
+                "answer": "$\\boxed{\\text{Cam: } 9\\text{ cây};\\ \\text{Chanh: } 12\\text{ cây};\\ \\text{Bưởi: } 24\\text{ cây}}$"
+            },
+            {
+                "id": "a5-07",
+                "question": "Tổng số tuổi của hai anh em An và Bình năm nay là $18$ tuổi. Biết rằng sáu năm nữa thì tuổi của An bằng $\\frac{2}{3}$ tuổi của Bình. Hỏi hiện nay mỗi người bao nhiêu tuổi?",
+                "steps": [
+                    "Gọi tuổi của An hiện nay là $x$ và tuổi của Bình hiện nay là $y$.",
+                    "Từ đề bài, ta có hệ phương trình: $\\begin{cases} x + y = 18 \\\\ x + 6 = \\frac{2}{3}(y + 6) \\end{cases}$",
+                    "Từ phương trình thứ hai: $3(x + 6) = 2(y + 6)$, suy ra $3x + 18 = 2y + 12$, hay $3x - 2y = -6$.",
+                    "Giải hệ phương trình: $\\begin{cases} x + y = 18 \\\\ 3x - 2y = -6 \\end{cases}$",
+                    "Nhân phương trình thứ nhất với 2: $2x + 2y = 36$.",
+                    "Cộng với phương trình thứ hai: $5x = 30 \\Rightarrow x = 6$.",
+                    "Suy ra $y = 12$."
+                ],
+                "answer": "$\\boxed{\\text{An: } 6\\text{ tuổi};\\ \\text{Bình: } 12\\text{ tuổi}}$"
+            },
+            {
+                "id": "a5-08",
+                "question": "Thực hiện phép tính sau: $6$ năm $7$ tháng $+$ $4$ năm $8$ tháng",
+                "steps": [
+                    "Cộng năm với năm và tháng với tháng: $6 + 4 = 10$ năm, $7 + 8 = 15$ tháng.",
+                    "Chuyển $15$ tháng thành $1$ năm $3$ tháng.",
+                    "Tổng cộng: $10 + 1 = 11$ năm và $3$ tháng.",
+                ],
+                "answer": "$\\boxed{11\\text{ năm } 3\\text{ tháng}}$"
+            },
+            {
+                "id": "a5-09",
+                "question": "Một chiếc BMW chạy trên cao tốc, trong $3$ giờ đầu tiên mỗi giờ đi được $100$ km. Sau đó vào thành phố, mỗi giờ đi được $40$ km và xe dừng chân sau $2$ giờ. Hỏi trung bình mỗi giờ chiếc BMW đi được bao nhiêu km?",
+                "steps": [
+                    "Quãng đường đi trong $3$ giờ đầu: $3 \\times 100 = 300$ km.",
+                    "Quãng đường đi trong $2$ giờ sau: $2 \\times 40 = 80$ km.",
+                    "Tổng quãng đường: $300 + 80 = 380$ km.",
+                    "Tổng thời gian: $3 + 2 = 5$ giờ.",
+                    "Vận tốc trung bình: $\\frac{380}{5} = 76$ km/h.",
+                ],
+                "answer": "$\\boxed{76\\text{ km/h}}$"
+            }
         ],
     },
     9: {
@@ -231,29 +325,80 @@ QUESTION_BANK = {
             },
             {
                 "id": "g9-05",
-                "question": "Một hình nón có bán kính đáy $r=4\\,\\text{cm}$, chiều cao $h=3\\,\\text{cm}$. Tính thể tích hình nón.",
-                "steps": ["Công thức thể tích hình nón: $V=\\frac{1}{3}\\pi r^2h$.", "$V=\\frac13\\pi\\times4^2\\times3=16\\pi\\,\\text{cm}^3$."],
-                "answer": "$\\boxed{16\\pi\\,\\text{cm}^3}$",
+                "question": "Cho tam giác $ABC$ cân tại $A$, còn $I$ là tâm đường tròn nội tiếp, $K$ là tâm đường tròn bàng tiếp góc $A$; và $O$ là trung điểm của IK. \n 1) CMR 4 điểm $B, C, I, K$ cùng một đường tròn \n 2) CMR $AC$ là tiếp tuyến của đường tròn $(O)$ \n 3) Tính bán kính đường tròn $(O)$ nếu biết $AB = AC = 20$ cm và $BC = 24$ cm",
+                "steps": [
+                    "Vì $I$ là tâm đường tròn nội tiếp và $K$ là tâm đường tròn bàng tiếp góc $A$, nên $BI, BK$ là các tia phân giác của các góc kề bù đỉnh $B$, do đó $\\widehat{IBK} = 90^\circ$. \n Tương tự, $\\widehat{ICK} = 90^\circ$. \n $\\Rightarrow$ Suy ra 4 điểm $B, C, I, K$ $\\boxed{\\text{cùng nằm trên đường tròn đường kính}}$ $IK$.",
+                    "Vì $CI$ là tia phân giác của góc $C$, nên $\\widehat{ACI} = \\widehat{ICB}$ (i).",
+                    "Gọi $H$ là giao điểm của $AI$ và $BC$, khi đó $\\widehat{IHC} = 90^\\circ \\Rightarrow \\widehat{ICB} + \\widehat{HIC} = 90^\\circ$",
+                    "Ngoài ra, $\\Delta OIC$ cân tại $O$ nên $\\widehat{OIC} = \\widehat{ICO}$ (iii);",
+                    "Từ 3 dữ kiện (i), (ii), (iii) trên, ta được $\\widehat{ACI} + \\widehat{ICO} = 90^\circ \Rightarrow AC \\bot OC$",
+                    "Vậy $AC$ là $\\boxed{\\text{tiếp tuyến của đường tròn}}$ tâm $O$ đường kính $IK$.",
+                    "Từ các giả thiết về độ dài đã cho, $CH = 12$ cm (do $H$ đồng thời là trung điểm $BC$)",
+                    "Áp dụng định lý Pythagore trong tam giác $ACH$, ta được $AH = \\sqrt{AC^2 - HC^2} = 16$ cm",
+                    "Xét tam giác $AOC$ vuông tại $C$ với đường cao $CH$, ta có $CH^2 = AH \\cdot OH \\Rightarrow OH = \\frac{CH^2}{AH} = 9$ cm",
+                    "Cuối cùng, xét tam giác $OHC$ vuông tại $H$, nên $OC = \\sqrt{OH^2 + HC^2} = 15$ cm",
+                ],
+                "answer": "$\\boxed{15\\, \\text{cm}}$",
             },
-        ],
+            {
+                "id": "g9-06",
+                "question": "Cho tam giác $ABC$ vuông tại $A$, có $AB=6\\,\\text{cm}$, $AC=8\\,\\text{cm}$. Gọi $H$ là đường cao kẻ từ $A$ và $M$ là trung điểm của $BC$. Tính độ dài đoạn $HM$.",
+                "steps": [
+                    "Tính $BC$ bằng định lý Pythagore: $BC^2 = AB^2 + AC^2 = 6^2 + 8^2 = 36 + 64 = 100 \\Rightarrow BC = 10$ cm.",
+                    "Ngoài ra, $AH$ là đường cao nên $AH = \\frac{AB \\cdot AC}{BC} = \\frac{6 \\cdot 8}{10} = 4.8$ cm.",
+                    "Trung điểm $M$ của $BC$ có tọa độ trung bình của $B$ và $C$, nên $BM = MC = \\frac{BC}{2} = 5$ cm.",
+                    "Xét tam giác vuông $BAH$ có $BH = \sqrt{AB^2 - AH^2} = \sqrt{6^2 - 4.8^2} = \sqrt{36 - 23.04} = \sqrt{12.96} = 3.6$ cm.",
+                    "Suy ra, $HM = BM - BH = 5 - 3.6 = 1.4$ cm.",
+                ],
+                "answer": "$\\boxed{1.4\\, \\text{cm}}$",
+            },
+            {
+                "id": "g9-07",
+                "question": "Cho tam giác $ABC$ cân tại $A$, các đường cao $AD$ và $BE$ cắt nhau tại $H$. Gọi $O$ là tâm đường tròn ngoại tiếp tam giác $AHE$. \n 1) CMR tứ giác $CEHD$ nội tiếp \n 2) CMR 4 điểm $A, E, D, B$ cùng thuộc một đường tròn \n 3) CMR $DE = \\dfrac{1}{2} BC$ và $DE$ là tiếp tuyến của $())$ \n 4) Tính độ dài $DE$ nếu biết $AH = 6$ cm và $DH = 2$ cm",
+                "steps": [
+                    "Trong tứ giác $CEHD$, ta có $\\widehat{CEH} = 90^\\circ$ ($BE$ là đường cao) và $\\widehat{CDH} = 90^\circ$ (do $AD$ là đường cao).",
+                    "Như vậy, $\\widehat{CEH} + \\widehat{CDH} = 180^\\circ$ và tứ giác $CEHD$ nội tiếp trong một đường tròn đường kính $CH$",
+                    "Vì $AD$ và $BE$ là các đường cao nên $\\widehat{AEB} = \\widehat{ADB} = 90^\\circ$; dẫn đến các đỉnh $E, D$ cùng nhìn $AB$ dưới góc vuông.",
+                    "Do đó, tứ giác $AEDB$ nội tiếp trong một đường tròn đường kính $AB$.",
+                    "Do $ABC$ cân tại $A$ với $AD$ là đường cao nên cũng đồng thời là đường trung tuyến, suy ra $D$ là trung điểm của $BC$.",
+                    "Hơn nữa, $\\widehat{BEC} = 90^\\circ$, nên tam giác $BEC$ vuông tại $E$ và $DE$ là trung tuyến nên $DE = \\frac{1}{2} BC$.",
+                    "Vì $O$ là tâm đường tròn ngoại tiếp tam giác $AHE$, nên $O$ là trung điểm $AH$; dẫn đến $OAE$ là tam giác cân (tại $O$) nên $\\widehat{OAE} = \\widehat{OEA}$.",
+                    "Ngoài ra, tam giác $DBE$ cân tại $D$ nên $\\widehat{DEB} = \\widehat{DBE}$.",
+                    "Mà $\\widehat{DBE} = \\widehat{OAE}$ (cùng phụ với $\\widehat{ACB}$) do đó $$\\widehat{DEB} = \\widehat{OEA}$$",                    
+                    "Cộng cả 2 vế cho góc $\\widehat{OEB}$, suy ra $\\widehat{DEB} + \\widehat{OEB} = \\widehat{OEA} + \\widehat{OEB} = 90^\\circ \\Rightarrow DE \\perp OE$; do đó $DE$ là tiếp tuyến của đường tròn $(O)$.",
+                    "Từ các giả thiết về độ dài đã cho, ta được $OH = OE = 3$ cm; suy ra $OD = 5$ cm (do $DH = 2$ cm).",
+                    "Xét tam giác vuông $ODE$, ta có $ED = \\sqrt{OD^2 - OE^2} = \\sqrt{25 - 9} = \\sqrt{16} = 4$ cm.",
+                ],
+                "answer": "$\\boxed{4 \\, \\text{cm}}$"
+            }
+         ],
         "Số học": [
             {
                 "id": "a9-01",
-                "question": "Rút gọn phân thức $\\frac{x^2-9}{x+3}$, với điều kiện $x\\ne-3$.",
-                "steps": ["Phân tích tử thành hiệu hai bình phương: $x^2-9=(x-3)(x+3)$.", "Vì $x\\ne-3$, rút gọn được $\\frac{(x-3)(x+3)}{x+3}=x-3$."],
-                "answer": "$\\boxed{x-3\\quad (x\\ne-3)}$",
+                "question": "Rút gọn phân thức $\\frac{x^2-9}{x+3}$, với điều kiện $x \\neq -3$.",
+                "steps": ["Phân tích tử thành hiệu hai bình phương: $x^2-9=(x-3)(x+3)$.", "Vì $x \\neq -3$, rút gọn được $\\frac{(x-3)(x+3)}{x+3}=x-3$."],
+                "answer": "$\\boxed{x-3\\quad (x\\neq-3)}$",
             },
             {
                 "id": "a9-02",
-                "question": "Giải phương trình: $3x-7=11$.",
-                "steps": ["Chuyển $-7$ sang vế phải: $3x=11+7=18$.", "Chia hai vế cho 3: $x=6$."],
-                "answer": "$\\boxed{x=6}$",
+                "question": "Cho phương trình: $3x^2 - 5x + 3 = 0$ có 2 nghiệm $x_1, x_2$. Hãy tính $x_1^3 + x_2^3$.",
+                "steps": [
+                            "Tổng quát với tam thức bậc hai $ax^2 + bx + c = 0$ có hai nghiệm $x_1, x_2$, ta có: $x_1 + x_2 = -\\frac{b}{a}$ và $x_1 x_2 = \\frac{c}{a}$.", 
+                            "Chú ý rằng $x_1^3 + x_2^3 = (x_1 + x_2)^3 - 3x_1x_2(x_1 + x_2)$.",
+                            "Thay các giá trị vào và ta được $x_1 + x_2 = \\frac{5}{3}$ và $x_1 x_2 = 1$.",
+                        ],
+                "answer": "$\\boxed{\\frac{95}{27}}$",
             },
             {
                 "id": "a9-03",
-                "question": "Phân tích đa thức thành nhân tử: $x^2-5x+6$.",
-                "steps": ["Tìm hai số có tích bằng 6 và tổng bằng $-5$: đó là $-2$ và $-3$.", "Suy ra $x^2-5x+6=(x-2)(x-3)$."],
-                "answer": "$\\boxed{(x-2)(x-3)}$",
+                "question": "Phân tích đa thức thành nhân tử: $2 x^3 - 9 x^2 + 7 x + 6$.",
+                "steps": [
+                            "Ta nhận thấy rằng $2 x^3 - 9 x^2 + 7x + 6 = (2x^3 - 4x^2) - (5x^2 - 10x) - (3x - 6)$",
+                            "Tiếp theo, lấy $(x-2)$ làm nhân tử chung; ta được $(x-2)(2x^2 - 5x - 3)$",
+                            "Cuối cùng, phân tích tiếp $2x^2 - 5x - 3 = (x-3)(2x+1)$",
+                            "Vậy $2 x^3 - 9 x^2 + 7 x + 6 = (x-2)(x-3)(2x+1)$"
+                        ],
+                "answer": "$\\boxed{(x-2)(x-3)(2x+1)}$",
             },
             {
                 "id": "a9-04",
@@ -267,6 +412,39 @@ QUESTION_BANK = {
                 "steps": ["Có tổng cộng $3+2=5$ viên bi, trong đó có 2 viên xanh.", "Xác suất bằng số kết quả thuận lợi chia tổng số kết quả đồng khả năng: $P=\\frac25$."],
                 "answer": "$\\boxed{\\frac25}$",
             },
+            {
+                "id": "a9-06",
+                "question": "Rút gọn căn thức $\\dfrac{1}{2 - \\sqrt{3}} +  \\sqrt{7 - 4\\sqrt{3}}$",
+                "steps": [
+                    "Rút gọn phân thức: $\\dfrac{1}{2 - \\sqrt{3}} = \\dfrac{2 + \\sqrt{3}}{(2 - \\sqrt{3})(2 + \\sqrt{3})} = 2 + \\sqrt{3}$.",
+                    "Rút gọn căn thức: $\\sqrt{7 - 4\\sqrt{3}} = \\sqrt{(2 - \\sqrt{3})^2} = 2 - \\sqrt{3}$.",
+                    "Cộng hai kết quả: $(2 + \\sqrt{3}) + (2 - \\sqrt{3}) = 4$.",
+                ],
+                "answer": "$\\boxed{4}$",
+            },
+            {
+                "id": "a9-07",
+                "question": "Rút gọn biểu thức: $\\sqrt{21 - 8\\sqrt{5}} + 2 \\sqrt{6 - 2\\sqrt{5}}$",
+                "steps": [
+                    "Đầu tiên, $\\sqrt{21 - 8\\sqrt{5}} = |4 - 2\\sqrt{5}| = 4 - 2\\sqrt{5}$.",
+                    "Tiếp theo, $\\sqrt{6 - 2\\sqrt{5}} = |\\sqrt{5} - 1| = \\sqrt{5} - 1$.",
+                    "Vậy $\\sqrt{21 - 8\\sqrt{5}} + 2\\sqrt{6 - 2\\sqrt{5}} = (4 - 2\\sqrt{5}) + 2(\\sqrt{5} - 1) = 2$."
+                ],
+                "answer": "$\\boxed{2}$"
+            },
+            {
+                "id": "a9-08",
+                "question": "CMR $A = 1 + 2^3 + 3^3 + \\ldots + 2026^3$ chia hết cho $2027$.",
+                "steps": [
+                        "Nhận thấy rằng $A$ có $1013$ cặp số, và ta có thể nhóm chúng lại như sau: $(1^3 + 2026^3) + (2^3 + 2025^3) + \\ldots + (1013^3 + 1014^3)$.",
+                        "Áp dụng hằng đẳng thức $(a^3 + b^3) = (a + b)(a^2 - ab + b^2)$.",
+                        "Với cặp số đầu tiên, $1^3 + 2026^3 = (1 + 2026)(1^2 - 1*2026 + 2026^2) = 2027(1 - 2026 + 2026^2)$, nên chia hết cho $2027$.",
+                        "Tương tự, với cặp số thứ hai, $2^3 + 2025^3 = (2 + 2025)(2^2 - 2*2025 + 2025^2) = 2027(4 - 4050 + 2025^2)$, cũng chia hết cho $2027$.",
+                        "Tiếp tục như vậy, tất cả các cặp số đều chia hết cho $2027$.",
+                        "Vậy $A$ là tổng của $1013$ cặp số và mọi cặp số đều chia hết cho $2027$."
+                    ], 
+                "answer": "$\\boxed{A \\text{ chia hết cho } 2027}$"
+            }
         ],
     },
     12: {
@@ -330,7 +508,7 @@ QUESTION_BANK = {
             {
                 "id": "a12-05",
                 "question": "Tìm giá trị lớn nhất của hàm số $f(x)=-x^2+4x+1$ trên $\\mathbb{R}$.",
-                "steps": ["Hoàn thành bình phương: $f(x)=-(x-2)^2+5$.", "Vì $(x-2)^2\\ge0$, nên $f(x)\\le5$, đạt được khi $x=2$."],
+                "steps": ["Hoàn thành bình phương: $f(x)=-(x-2)^2+5$.", "Vì $(x-2)^2\\ge 0$, nên $f(x)\\le5$, đạt được khi $x=2$."],
                 "answer": "$\\boxed{\\max f(x)=5\\text{ tại }x=2}$",
             },
         ],
@@ -432,7 +610,7 @@ if st.session_state.quiz and st.session_state.quiz_config:
                 unsafe_allow_html=True,
             )
             for step_no, step in enumerate(item["steps"], start=1):
-                st.markdown(f"**Bước {step_no}.** {step}")
+                st.markdown(f"**Bước {step_no}.** {step}", unsafe_allow_html=True)
             st.markdown(f"**Đáp án:** {item['answer']}")
             st.markdown("</div></div>", unsafe_allow_html=True)
         else:

@@ -31,8 +31,9 @@ with hint_col:
 
 # ---------------------
 pyspark_cd = """
-    employees_df.groupBy("department")\
-                .agg( F.round(F.avg("salary"), 2).alias("avg_salary"))\
+    employees_df.groupBy("department")\\
+                .agg( F.round(F.avg("salary"), 2)\\
+                       .alias("avg_salary") )\\
                 .orderBy(F.col("department").asc())
 """
 sql_code = """

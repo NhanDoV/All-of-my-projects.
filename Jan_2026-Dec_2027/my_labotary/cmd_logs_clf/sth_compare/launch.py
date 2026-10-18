@@ -64,7 +64,7 @@ Compare DataFrame operations with their SQL equivalents.
 </div>
 """, unsafe_allow_html=True)
 
-col1, col2, col3 = st.columns(3)
+col1, col2, col3 = st.columns([3,5,4])
 
 with col1:
     st.markdown("""
@@ -79,7 +79,7 @@ with col2:
     in PySpark and SQL.
     """)
 
-    _, c, _ = st.columns([1,4,1])
+    _, c, _ = st.columns([1,6,1])
     with c:
         st.markdown("""
         <div class="comparison-map">
