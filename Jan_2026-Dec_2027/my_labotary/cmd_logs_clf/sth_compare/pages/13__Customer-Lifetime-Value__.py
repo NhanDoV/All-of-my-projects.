@@ -236,7 +236,8 @@ with otp_col:
         with oc:
             res = customers_df.merge(
                                 orders_df, on = 'customer_id', how = 'left'
-                            ).fillna(0).groupby(
+                            ).fillna({'amount': 0})\
+                             .groupby(
                                 ['customer_id', 'customer_name']
                             ).agg(
                                 order_count = ('order_id', 'count'),

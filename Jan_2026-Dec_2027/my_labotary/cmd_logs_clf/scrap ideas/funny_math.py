@@ -40,7 +40,7 @@ st.markdown(
     }
     [data-testid="stHeader"] { background: rgba(11,16,32,.78); }
     [data-testid="stToolbar"] { right: 1rem; }
-    .block-container { max-width: 1260px; padding-top: 2rem; padding-bottom: 3rem; }
+    .block-container { max-width: 1160px; padding-top: 2rem; padding-bottom: 3rem; }
     h1, h2, h3, h4 { font-family: 'Space Grotesk', sans-serif !important; color: var(--fm-text) !important; }
     p, label, span, div { font-family: 'DM Sans', sans-serif; }
     .hero {
@@ -61,7 +61,7 @@ st.markdown(
     .hero-tag { padding: 6px 11px; border: 1px solid #3a4c6c; border-radius: 999px; color: #dbeafe; background: rgba(15,23,42,.35); font-size: .78rem; }
     .section-kicker { color: var(--fm-cyan); font-size: .75rem; text-transform: uppercase; letter-spacing: .14em; font-weight: 700; margin-bottom: 5px; }
     .section-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.45rem; font-weight: 700; color: var(--fm-text); margin-bottom: 4px; }
-    .section-copy { color: var(--fm-muted); font-size: .92rem; margin-bottom: 18px; }
+    .section-copy { color: var(--fm-muted); font-size: .83rem; margin-bottom: 18px; }
     .stSelectbox label, .stRadio label, .stSlider label, .stNumberInput label { color: #dce7fa !important; font-weight: 600 !important; }
     [data-baseweb="select"] > div { background: #121a2d; border-color: #33435f; border-radius: 12px; color: #eef4ff; }
     [data-testid="stRadio"] > div { gap: 12px; }
@@ -87,21 +87,35 @@ st.markdown(
         box-shadow: 0 9px 26px rgba(0,0,0,.10);
     }
     .question-top { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom: 13px; }
-    .question-number { color: var(--fm-cyan); font-size:.76rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
-    .question-level { color:#c7d2fe; background:rgba(129,140,248,.12); border:1px solid rgba(165,180,252,.25); padding:4px 9px; border-radius:999px; font-size:.74rem; white-space:nowrap; }
-    .question-text { color:#f0f5ff; font-size:1.04rem; line-height:1.75; }
+    .question-number { color: var(--fm-cyan); font-size:.71rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+    .question-level { color:#c7d2fe; background:rgba(129,140,248,.12); border:1px solid rgba(165,180,252,.25); padding:4px 9px; border-radius:999px; font-size:.72rem; white-space:nowrap; }
+    .question-text { color:#f0f5ff; font-size:15px; }
     .solution-card { border:1px solid rgba(134,239,172,.28); border-radius:14px; padding:17px 19px; margin: 8px 0 20px; background:linear-gradient(135deg,rgba(20,57,51,.35),rgba(18,26,45,.92)); }
     .solution-title { color:var(--fm-green); font-weight:700; margin-bottom:9px; }
     .solution-body { color:#d9e8e5; line-height:1.8; }
     .empty-state { text-align:center; padding:35px 20px; border:1px dashed #3a4964; border-radius:18px; color:var(--fm-muted); background:rgba(18,26,45,.55); }
-    .footer { text-align:center; color:#71819d; font-size:.8rem; padding-top:28px; }
+    .footer { text-align:center; color:#71819d; font-size:.72rem; padding-top:28px; }
     [data-testid="stMarkdownContainer"] hr { border-color:#27334b; }
     @media (max-width: 640px) {
         .block-container { padding: 1rem 1rem 2rem; }
         .hero { padding: 23px 20px; }
-        .hero:after { right: 5px; font-size: 120px; top: 2px; }
+        .hero:after { right: 5px; font-size: 110px; top: 2px; }
         .question-card { padding: 16px; }
     }
+    /* Font size cho LaTeX (KaTeX) */
+    .katex {
+        font-size: 1.05em !important;   /* hoặc 0.95em, 14px, ... tùy bạn muốn nhỏ hơn */
+    }
+
+    /* Nếu muốn nhỏ hơn nữa cho công thức trong solution */
+    .solution-body .katex {
+        font-size: 0.95em !important;
+    }
+
+    /* Công thức display ($$...$$) nếu sau này dùng */
+    .katex-display {
+        font-size: 1.1em !important;
+    }    
     </style>
     """,
     unsafe_allow_html=True,
@@ -186,7 +200,7 @@ QUESTION_BANK = {
                     "Diện tích hình thang là $S = \\frac{(a + b)h}{2} = 60$ m$^2$.",
                     "Khi đáy lớn tăng thêm $2$ m, diện tích mới là $S' = \\frac{(a + 2 + b)h}{2} = 66$ m$^2$.",
                     "Từ hai phương trình diện tích, ta có hệ phương trình: $\\begin{cases} \\frac{(a + b)h}{2} = 60 \\\\ \\frac{(a + 2 + b)h}{2} = 66 \\end{cases}$",
-                    "Suy ra $\dfrac{a+b+2}{a+b} = \dfrac{66}{60} = \dfrac{11}{10}$ hay $\dfrac{2}{a+b} = \dfrac{1}{10}$, tức là $a + b = 20$.",
+                    "Suy ra $\\dfrac{a+b+2}{a+b} = \\dfrac{66}{60} = \\dfrac{11}{10}$ hay $\\dfrac{2}{a+b} = \\dfrac{1}{10}$, tức là $a + b = 20$.",
                     "Kết hợp với $a - b = 4$, ta tìm được $a$ và $b$."
                 ],
                 "answer": "$\\boxed{\\text{Đáy lớn } a = 12\\,\\text{m};\\ \\text{Đáy nhỏ } b = 8\\,\\text{m}}$",
@@ -327,11 +341,11 @@ QUESTION_BANK = {
                 "id": "g9-05",
                 "question": "Cho tam giác $ABC$ cân tại $A$, còn $I$ là tâm đường tròn nội tiếp, $K$ là tâm đường tròn bàng tiếp góc $A$; và $O$ là trung điểm của IK. \n 1) CMR 4 điểm $B, C, I, K$ cùng một đường tròn \n 2) CMR $AC$ là tiếp tuyến của đường tròn $(O)$ \n 3) Tính bán kính đường tròn $(O)$ nếu biết $AB = AC = 20$ cm và $BC = 24$ cm",
                 "steps": [
-                    "Vì $I$ là tâm đường tròn nội tiếp và $K$ là tâm đường tròn bàng tiếp góc $A$, nên $BI, BK$ là các tia phân giác của các góc kề bù đỉnh $B$, do đó $\\widehat{IBK} = 90^\circ$. \n Tương tự, $\\widehat{ICK} = 90^\circ$. \n $\\Rightarrow$ Suy ra 4 điểm $B, C, I, K$ $\\boxed{\\text{cùng nằm trên đường tròn đường kính}}$ $IK$.",
+                    "Vì $I$ là tâm đường tròn nội tiếp và $K$ là tâm đường tròn bàng tiếp góc $A$, nên $BI, BK$ là các tia phân giác của các góc kề bù đỉnh $B$, do đó $\\widehat{IBK} = 90^\\circ$. \n Tương tự, $\\widehat{ICK} = 90^\\circ$. \n $\\Rightarrow$ Suy ra 4 điểm $B, C, I, K$ $\\boxed{\\text{cùng nằm trên đường tròn đường kính}}$ $IK$.",
                     "Vì $CI$ là tia phân giác của góc $C$, nên $\\widehat{ACI} = \\widehat{ICB}$ (i).",
                     "Gọi $H$ là giao điểm của $AI$ và $BC$, khi đó $\\widehat{IHC} = 90^\\circ \\Rightarrow \\widehat{ICB} + \\widehat{HIC} = 90^\\circ$",
                     "Ngoài ra, $\\Delta OIC$ cân tại $O$ nên $\\widehat{OIC} = \\widehat{ICO}$ (iii);",
-                    "Từ 3 dữ kiện (i), (ii), (iii) trên, ta được $\\widehat{ACI} + \\widehat{ICO} = 90^\circ \Rightarrow AC \\bot OC$",
+                    "Từ 3 dữ kiện (i), (ii), (iii) trên, ta được $\\widehat{ACI} + \\widehat{ICO} = 90^\\circ \\Rightarrow AC \\bot OC$",
                     "Vậy $AC$ là $\\boxed{\\text{tiếp tuyến của đường tròn}}$ tâm $O$ đường kính $IK$.",
                     "Từ các giả thiết về độ dài đã cho, $CH = 12$ cm (do $H$ đồng thời là trung điểm $BC$)",
                     "Áp dụng định lý Pythagore trong tam giác $ACH$, ta được $AH = \\sqrt{AC^2 - HC^2} = 16$ cm",
@@ -347,7 +361,7 @@ QUESTION_BANK = {
                     "Tính $BC$ bằng định lý Pythagore: $BC^2 = AB^2 + AC^2 = 6^2 + 8^2 = 36 + 64 = 100 \\Rightarrow BC = 10$ cm.",
                     "Ngoài ra, $AH$ là đường cao nên $AH = \\frac{AB \\cdot AC}{BC} = \\frac{6 \\cdot 8}{10} = 4.8$ cm.",
                     "Trung điểm $M$ của $BC$ có tọa độ trung bình của $B$ và $C$, nên $BM = MC = \\frac{BC}{2} = 5$ cm.",
-                    "Xét tam giác vuông $BAH$ có $BH = \sqrt{AB^2 - AH^2} = \sqrt{6^2 - 4.8^2} = \sqrt{36 - 23.04} = \sqrt{12.96} = 3.6$ cm.",
+                    "Xét tam giác vuông $BAH$ có $BH = \\sqrt{AB^2 - AH^2} = \\sqrt{6^2 - 4.8^2} = \\sqrt{36 - 23.04} = \\sqrt{12.96} = 3.6$ cm.",
                     "Suy ra, $HM = BM - BH = 5 - 3.6 = 1.4$ cm.",
                 ],
                 "answer": "$\\boxed{1.4\\, \\text{cm}}$",
@@ -356,7 +370,7 @@ QUESTION_BANK = {
                 "id": "g9-07",
                 "question": "Cho tam giác $ABC$ cân tại $A$, các đường cao $AD$ và $BE$ cắt nhau tại $H$. Gọi $O$ là tâm đường tròn ngoại tiếp tam giác $AHE$. \n 1) CMR tứ giác $CEHD$ nội tiếp \n 2) CMR 4 điểm $A, E, D, B$ cùng thuộc một đường tròn \n 3) CMR $DE = \\dfrac{1}{2} BC$ và $DE$ là tiếp tuyến của $())$ \n 4) Tính độ dài $DE$ nếu biết $AH = 6$ cm và $DH = 2$ cm",
                 "steps": [
-                    "Trong tứ giác $CEHD$, ta có $\\widehat{CEH} = 90^\\circ$ ($BE$ là đường cao) và $\\widehat{CDH} = 90^\circ$ (do $AD$ là đường cao).",
+                    "Trong tứ giác $CEHD$, ta có $\\widehat{CEH} = 90^\\circ$ ($BE$ là đường cao) và $\\widehat{CDH} = 90^\\circ$ (do $AD$ là đường cao).",
                     "Như vậy, $\\widehat{CEH} + \\widehat{CDH} = 180^\\circ$ và tứ giác $CEHD$ nội tiếp trong một đường tròn đường kính $CH$",
                     "Vì $AD$ và $BE$ là các đường cao nên $\\widehat{AEB} = \\widehat{ADB} = 90^\\circ$; dẫn đến các đỉnh $E, D$ cùng nhìn $AB$ dưới góc vuông.",
                     "Do đó, tứ giác $AEDB$ nội tiếp trong một đường tròn đường kính $AB$.",
@@ -479,6 +493,20 @@ QUESTION_BANK = {
                 "steps": ["Dùng công thức $V=\\frac13\\pi r^2h$.", "$V=\\frac13\\pi\\times9\\times4=12\\pi\\,\\text{cm}^3$."],
                 "answer": "$\\boxed{12\\pi\\,\\text{cm}^3}$",
             },
+            {
+                "id": "g12-06",
+                "question": "Cho tứ diện $ABCD$, ở mỗi mặt, ta lấy các trọng tâm $A'$ ở $(BCD)$; $B'$ ở $(ACD)$; $C'$ ở $(ABD)$ và $D'$ ở $(ABC)$. Hãy tính tỷ lệ thể tích giữa 2 khối $A'B'C'D'$ và $ABCD$",
+                "steps": [
+                    "Chọn điểm $O$ làm gốc tọa độ. Gọi $\\vec{a}=\\overrightarrow{OA}$, $\\vec{b}=\\overrightarrow{OB}$, $\\vec{c}=\\overrightarrow{OC}$, $\\vec{d}=\\overrightarrow{OD}$ lần lượt là các vectơ vị trí của bốn đỉnh $A,B,C,D$.",
+                    "Vì $A',B',C',D'$ lần lượt là trọng tâm các tam giác $BCD,ACD,ABD,ABC$, nên ta có: $\\vec{a'}=\\dfrac{\\vec{b}+\\vec{c}+\\vec{d}}{3}$, $\\vec{b'}=\\dfrac{\\vec{a}+\\vec{c}+\\vec{d}}{3}$, $\\vec{c'}=\\dfrac{\\vec{a}+\\vec{b}+\\vec{d}}{3}$ và $\\vec{d'}=\\dfrac{\\vec{a}+\\vec{b}+\\vec{c}}{3}$.",
+                    "Ta có: $\\overrightarrow{A'B'}=\\overrightarrow{OB'} - \\overrightarrow{OA'} = \\vec{b'}-\\vec{a'} = \\dfrac{\\vec{a}-\\vec{b}}{3} = -\\dfrac{1}{3}\\overrightarrow{AB}$.",
+                    "Tương tự, $\\overrightarrow{A'C'}=-\\dfrac{1}{3}\\overrightarrow{AC}$ và $\\overrightarrow{A'D'}=-\\dfrac{1}{3}\\overrightarrow{AD}$.",
+                    "Như vậy, ba vectơ cạnh xuất phát từ $A'$ lần lượt bằng $-\\dfrac{1}{3}$ các vectơ cạnh tương ứng xuất phát từ $A$. Do đó, các cạnh tương ứng song song, ngược hướng và có độ dài bằng $\\dfrac{1}{3}$ cạnh ban đầu.",
+                    "Suy ra tứ diện $A'B'C'D'$ đồng dạng với tứ diện $ABCD$ theo tỉ số đồng dạng $k=\\dfrac{1}{3}$.",
+                    "Tỉ số thể tích bằng lập phương tỉ số đồng dạng: $\\dfrac{V_{A'B'C'D'}}{V_{ABCD}}=k^3=\\left(\\dfrac{1}{3}\\right)^3=\\dfrac{1}{27}$."
+                ],
+                "answer": "$\\boxed{\\dfrac{1}{27}}$"
+            }
         ],
         "Số học": [
             {
@@ -511,6 +539,26 @@ QUESTION_BANK = {
                 "steps": ["Hoàn thành bình phương: $f(x)=-(x-2)^2+5$.", "Vì $(x-2)^2\\ge 0$, nên $f(x)\\le5$, đạt được khi $x=2$."],
                 "answer": "$\\boxed{\\max f(x)=5\\text{ tại }x=2}$",
             },
+            {
+                "id": "a12-06",
+                "question": "Cho số nguyên $k > 2$, trong các dãy sau thì dãy nào có giới hạn về 0 \n $\\qquad A. \\left( \\frac{2k+1}{2k+2} \\right)^k \\qquad B. (2k - 1)^k \\qquad C. (2k + 1)^k \\qquad D. \\left( \\frac{2k-1}{2k-2} \\right)^k$",
+                "steps": [
+                    "Đầu tiên, để ngắn gọn ta sẽ gán $a = \\frac{2k+1}{2k+2}; b = 2k-1; c = 2k+1$ và $d = \\frac{2k-1}{2k-2}$",
+                    "Với $k > 2$ thì $b, c, d > 1$ chỉ riêng $a < 1$, một dãy $x^k$ hội tụ về $0$ nếu $x < 1$"
+                ],
+                "answer": "$\\boxed{\\text{A}\\, \\left( \\frac{2k+1}{2k+2} \\right)^k}$"
+            },
+            {
+                "id": "a12-07",
+                "question": "Cho $f(x)$ là một đa thức, biết rằng $f(x) - f'(x) = (x+1)^2$, hãy tìm giá trị của $f(2)$",
+                "steps": [
+                    "Vì $f$ là một đa thức và $f(x) - f'(x) = x^2 + 2x + 1$ nên bậc tối đa của đa thức là 2, ta gọi $f(x) = ax^2 + bx + c$",
+                    "Khi đó, $f - f' = ax^2 + (b - 2a)x + (c - b)$",
+                    "Đồng nhất thức, ta được $\\begin{cases}a = 1\\\\b-2a=2\\\\c-b=1 \\end{cases}$, suy ra $\\begin{cases}a=1\\\\b=4\\\\c=5 \\end{cases}$",
+                    "Thay các giá trị tìm được, ta có $f(x) = x^2 + 4x + 5$; suy ra $f(2) = 17$", 
+                ],
+                "answer": "$\\boxed{17}$"
+            }
         ],
     },
 }
@@ -599,7 +647,10 @@ if st.session_state.quiz and st.session_state.quiz_config:
                 """,
                 unsafe_allow_html=True,
             )
+            st.markdown('<div class="question-text">', unsafe_allow_html=True)
             st.markdown(item["question"])
+            st.markdown('</div>', unsafe_allow_html=True)
+            
         # A unique key per question ensures independent reveal/hide behavior.
         if question_id in st.session_state.shown_solutions:
             if st.button("🙈  Hide solution", key=f"hide_{question_id}", use_container_width=False):
