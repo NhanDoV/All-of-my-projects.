@@ -1,9 +1,7 @@
 import random
 import html
 import streamlit as st
-
-# FunnyMath — single-file Streamlit app
-# Run with: streamlit run FunnyMath.py
+from pathlib import Path
 
 st.set_page_config(
     page_title="FunnyMath | Math Practice",
@@ -660,10 +658,25 @@ if st.session_state.quiz and st.session_state.quiz_config:
                 '<div class="solution-card"><div class="solution-title">✓ Solution · Lời giải</div><div class="solution-body">',
                 unsafe_allow_html=True,
             )
-            for step_no, step in enumerate(item["steps"], start=1):
-                st.markdown(f"**Bước {step_no}.** {step}", unsafe_allow_html=True)
-            st.markdown(f"**Đáp án:** {item['answer']}")
-            st.markdown("</div></div>", unsafe_allow_html=True)
+            if question_id.startswith("g"):
+                img_col, step_cols = st.columns([2, 5])
+                with step_cols:
+                    for step_no, step in enumerate(item["steps"], start=1):
+                        st.markdown(f"**Bước {step_no}.** {step}", unsafe_allow_html=True)
+                    st.markdown(f"**Đáp án:** {item['answer']}")
+                    st.markdown("</div></div>", unsafe_allow_html=True)
+                with img_col:
+                    class_level, lv_id = question_id.split("-")
+                    img_path = Path(__file__).parent / "assets" / f"{class_level}" / f"{lv_id}.png"
+                    if img_path.exists():
+                        st.image(img_path)
+                        st.caption('Hình minh họa')
+
+            else:
+                for step_no, step in enumerate(item["steps"], start=1):
+                    st.markdown(f"**Bước {step_no}.** {step}", unsafe_allow_html=True)
+                st.markdown(f"**Đáp án:** {item['answer']}")
+                st.markdown("</div></div>", unsafe_allow_html=True)
         else:
             if st.button("💡  Show solution", key=f"show_{question_id}", use_container_width=False):
                 st.session_state.shown_solutions.add(question_id)
