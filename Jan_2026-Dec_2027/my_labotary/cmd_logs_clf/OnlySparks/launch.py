@@ -11,8 +11,12 @@ topic_title_dict = {
             'Bs06. Salt_key for skewed data',
         ],
     'EDA': [
-            'Eda01. Drop duplicates then Repartition',
-            'Eda02. Find Missing_val, nunique & mode'
+            'Eda01. Schema, columns & partition count',
+            'Eda02. Null profiling',
+            'Eda03. Numeric distribution',
+            'Eda04. Quantiles & outlier screening',
+            'Eda05. Drop duplicates then Repartition',
+            'Eda06. Skewness notes'
     ],
     'GroupAgg': [
             'GA01. Monthly Transaction',
@@ -308,16 +312,67 @@ if topic == 'Basic':
             oc.dataframe(left_anti_df, hide_index=True)
 
     elif title == "Bs06. Salt_key for skewed data":
-        c1, c2 = st.columns([7, 5], gap='large')
+        c1, c2 = st.columns(2, gap='large')
         with c1:
             st.write(f"##### :blue[{title}]")
+            st.write("**Khi nào nên dùng đến**")
             st.dataframe(pd.DataFrame({
-
+                'Tình huống': ['Một vài customer_id có hàng triệu giao dịch, trong khi đa số chỉ có vài giao dịch',
+                               'Join hai bảng lớn và một số join key xuất hiện cực kỳ thường xuyên',
+                               'Một partition chứa lượng dữ liệu lớn bất thường, gây spill hoặc OOM do skewness data',
+                               'Dữ liệu phân bố tương đối đồng đều',
+                               'OOM do mỗi executor giữ quá nhiều dữ liệu hoặc do cache toàn bộ DataFrame'
+                            ],
+                'Quyết định': ['Có thể xài', 'Cần cân nhắc', 'Nên dùng', 'không cần', 'Salting không xử lý được gốc rễ']
             }), hide_index=True)
             st.write(f"""
-                        Ví dụ trong banking, một merchant_id lớn hoặc một customer_id có lịch sử giao dịch đặc biệt dày có thể tạo ra skew. 
+                        Ví dụ trong banking, một `merchant_id` lớn hoặc một `customer_id` có lịch sử giao dịch đặc biệt dày có thể tạo ra skew. 
                         Nếu tất cả records của key đó bị gom về một partition trong shuffle, một task có thể mất nhiều thời gian hoặc hết bộ nhớ, trong khi các task khác đã hoàn thành.
+
+                        Trong ví dụ sau đây, `transactions_df` có hơn 100 triệu giao dịch (`tx_id`) nhưng 
+                        - `customer_id = 121` chiếm gần 35 triệu rows, các KH còn lại chia sẻ 60 hơn triệu rows
+                        - Khi shuffle partition theo `customer_id`, các records có cùng key thường được hash vào cùng một partition. Vì vậy, nếu key `121` chiếm 35 triệu rows, partition tương ứng có thể quá lớn và gây `data skew`.
+
+                        → repartition phân phối theo key không đồng nghĩa với chia nhỏ một hot key thành nhiều partition
                     """,)
+        with c2:
+            st.write(""" 
+                        **Salt-key giải quyết ntn??**
+
+                        Ta thêm một salt có nhiều giá trị cho các records mang hot key,
+                    """)
+            st.code(
+"""
+  # 1. Chia hot key trong fact thành 10 salt groups
+  salted_tx = transactions_df.withColumn("salt_key",
+                                          F.when(
+                                            F.col("customer_id") == 121, 
+                                            F.floor(F.rand(seed=42) * 10).cast("int")
+                                        ).otherwise( F.lit(0) ) )
+
+  # 2. Replicate customer 121 thành 10 records tương ứng salt 0-9
+  salted_customers = customers_df.withColumn("salt_key",
+                                             F.explode(
+                                                F.when(
+                                                  F.col("customer_id") == 121,
+                                                  F.sequence(F.lit(0), F.lit(9))
+                                              ).otherwise(F.array(F.lit(0))) ) 
+                                            )
+
+  # 3. Join theo customer_id + salt_key
+  result = salted_tx.join(salted_customers, 
+                          on = ["customer_id", "salt_key"], how = "inner")
+"""
+            )
+            st.write("""
+                    Cơ chế lúc này:
+                    - Fact có customer_id = 121 được chia ngẫu nhiên vào salt 0–9.
+                    - Customer 121 ở bảng dimension được nhân thành 10 bản sao, mỗi bản mang một salt tương ứng.
+                    - Các customer còn lại vẫn dùng salt 0 ở cả hai bảng.
+                    - Khi join, mỗi giao dịch vẫn khớp với customer tương ứng, nhưng workload của hot key có cơ hội được phân phối qua nhiều partition.
+                    Lưu ý: salting làm tăng số bản ghi của bảng dimension đối với hot key, và không đảm bảo tuyệt đối workload cân bằng. Số salt cần chọn dựa trên mức độ skew và tài nguyên cluster.
+                    """)
+
 
 elif topic == "Window":
     if title == "Wd01. Rising Temperatures":
@@ -942,4 +997,249 @@ elif topic == "GroupPivot":
                 'Laptop_cnt': [2, 1, 1, 2, 1],
                 'Mouse_t.amount': [30, 25, 0, 20, 15],
                 'Mouse_cnt': [1, 1, 0, 1, 1]
+            }), hide_index=True) 
+
+elif topic == "EDA":
+    if title == 'Eda01. Schema, columns & partition count':
+        c1, c2 = st.columns([9, 7], gap='large')
+        with c1:
+            st.write(f'''
+                        ##### :blue[{title}]
+                        Trong EDA (chỉ bàn về Performance & Data Quality), chứ không chỉ EDA thông thường; mỗi phép phân tích phải trả lời được ít nhất một câu hỏi:
+                        - Data có vấn đề gì: null, duplicate, outlier, skew?
+                        - Phép xử lý nào có thể gây shuffle, spill hoặc OOM?
+                        - Có cách nào giảm số lần scan, giảm lượng dữ liệu và rút ngắn execution time không?
+
+                        Đầu tiên, với dữ liệu FACT table `transactions_df`, Hãy
+                        - kiểm tra số cột, data types, file formats, số partitions, kích thước dữ liệu đầu vào. 
+                        - Tìm các cột không cần thiết và các kiểu dữ liệu quá tốn bộ nhớ.
+                    ''')
+            st.write('**:green[Input dataframe]**')
+            st.dataframe(pd.DataFrame({
+                'InvoiceNo': ['536365', '536365', '536365', '536365', '536365', '...', '544812', 'C538847'],
+                'StockCode': ['85123A', '71053', '84406B', '84029G', '84029E', '...', '22087', '85232B'],
+                'Description': ['WHITE HANGING HEART T-LIGH..',
+                                'WHITE METAL LANTERN',
+                                'CREAM CUPID HEARTS COAT HA..',
+                                'KNITTED UNION FLAG HOT WAT...',
+                                'RED WOOLLY HOTTIE WHITE HE...', '...',
+                                'PAPER BUNTING WHITE LACE', 'SET OF 3 BABUSHKA...'
+                                ],
+                'Quantity': ['6', '6', '8', '6', '6', '...', '3', '-240'],
+                'InvoiceDate': ['12/1/2010 8:26',
+                                '12/1/2010 8:26',
+                                '12/1/2010 8:26',
+                                '12/1/2010 8:26',
+                                '12/1/2010 8:26', '...', '2/23/2011 15:58', '12/14/2010 13:27'                         
+                                ],
+                'UnitPrice': ['2.55', '3.39', '2.75', '3.39', '3.39', '...', '5.79', '4,95'],
+                'CustomerID': ['17850', '17850', '17850', '17850', '17850', '...', 'NULL', '17404'], 
+                'Country': ['United Kingdom',
+                            'United Kingdom',
+                            'United Kingdom',
+                            'United Kingdom',
+                            'United Kingdom', '...', 'United Kingdom', 'Sweeden'
+                        ]
             }), hide_index=True)
+        with c2:
+            st.write("**Schema & data dimension**")
+            st.code(
+'''
+  transactions_df.printSchema()
+
+  print("Columns:", len(transactions_df.columns))
+  print("Partitions:", transactions_df.rdd.getNumPartitions())
+''', language='python'
+            )
+            st.write("""
+                        **Output**
+
+                                root
+                                |-- InvoiceNo: string (nullable = true)
+                                |-- StockCode: string (nullable = true)
+                                |-- Description: string (nullable = true)
+                                |-- Quantity: integer (nullable = true)
+                                |-- InvoiceDate: string (nullable = true)
+                                |-- UnitPrice: double (nullable = true)
+                                |-- CustomerID: integer (nullable = true)
+                                |-- Country: string (nullable = true)
+
+                                Columns: 8
+                                Partitions: 2
+
+                        Không nên mặc định dùng `df.count()` chỉ để xem kích thước. `count()` có thể quét toàn bộ dữ liệu nguồn, đặc biệt tốn thời gian với file lớn hoặc nguồn không có metadata hữu ích.
+                    """)
+
+    elif title == 'Eda02. Null profiling':
+        c1, c2, c3 = st.columns([7, 8, 3.5], gap='large')
+        with c1:
+            st.write(f'''
+                        ##### :blue[{title}]
+                        Khi đếm `null-values` ở tất cả các cột; thay vì gọi `filter().count()` cho từng cột, tạo một aggregation cho tất cả cột cần kiểm tra.
+
+                        Một số lưu ý khác:
+                        - `count(col)` bỏ qua `null`, nhưng `count(when(...))` đếm đúng số `null`.
+                        - `NaN` trong cột floating-point không giống `NULL`; cần kiểm tra riêng.
+                        - Nếu có hàng nghìn cột, đừng tạo một `aggregation` khổng lồ; hãy chia thành các nhóm cột để tránh query plan quá lớn.
+
+                        Ta vẫn sử dụng dữ liệu `transactions_df` đã giới thiệu ở `Eda01.`
+                    ''')
+        with c2:
+            null_df =  {'col': {0: 'InvoiceNo',
+                                1: 'StockCode',
+                                2: 'Description',
+                                3: 'Quantity',
+                                4: 'InvoiceDate',
+                                5: 'UnitPrice',
+                                6: 'CustomerID',
+                                7: 'Country'},
+                                'null_cnt': {0: 0, 1: 0, 2: 299, 3: 0, 4: 0, 5: 0, 6: 34935, 7: 0},
+                                'null_perc': {0: 0.0,
+                                1: 0.0,
+                                2: 0.3,
+                                3: 0.0,
+                                4: 0.0,
+                                5: 0.0,
+                                6: 34.85,
+                                7: 0.0}}
+            st.write("**Giải pháp**")
+            st.code(
+'''
+  agg_exprs = [F.count(F.lit(1)).alias("_rows")]
+
+  agg_exprs += [
+                F.count(
+                    F.when(F.col(c).isNull(), 1)
+                ).alias(c)
+                for c in transactions_df.columns
+            ]
+
+  stats = transactions_df.agg(*agg_exprs).first().asDict()
+  n = stats.pop("_rows")
+  pd.DataFrame({
+        "col": stats.keys(),
+        "null_cnt": stats.values(),
+        "null_perc": [round(v / n * 100, 2) for v in stats.values()]
+    })
+'''
+            )
+        c3.write("**Output**")
+        c3.dataframe(null_df, hide_index=True)
+
+    elif title == 'Eda03. Numeric distribution':
+        c1, c2 = st.columns([3, 7], gap='large')
+        with c1:
+            st.write(f'''
+                        ##### :blue[{title}]
+                        Ví dụ ở đây ta sẽ quan tâm 2 cột numeric là `Quantity` và `UnitPrice`.
+
+                        Trong các bước triển khai nâng cao, ta có thể tạo cột `amount` bằng cách `UnitPrice * Quantity`
+
+                        Ngoài ra, EDA nâng cao ta sẽ phân tích luôn cả `negative rate` và `zero_rate`
+                    ''')
+
+        with c2:
+            st.code(
+'''
+  numeric_cols = ['Quantity', 'UnitPrice']
+  transactions_df.select(*[
+        expr
+        for c in numeric_cols
+        for expr in [
+            F.min(c).alias(f"{c}_min"),
+            F.max(c).alias(f"{c}_max"),
+            F.round(F.mean(c).alias(f"{c}_mean"), 2).alias(f'{c}_avg'),
+            F.round(F.stddev(c).alias(f"{c}_std"), 2).alias(f'{c}_std')
+        ]
+    ]).show()
+''', language='python'
+            )
+            st.write("**Output**")
+            st.dataframe(pd.DataFrame({
+'Quantity_min': {0: -74215},
+ 'Quantity_max': {0: 74215},
+ 'Quantity_avg': {0: 8.89},
+ 'Quantity_std': {0: 336.15},
+ 'UnitPrice_min': {0: 0.0},
+ 'UnitPrice_max': {0: 16888.02},
+ 'UnitPrice_avg': {0: 5.39},
+ 'UnitPrice_std': {0: 120.74}
+            }), hide_index=True)
+
+    elif title == 'Eda04. Quantiles & outlier screening':
+        c1, c2 = st.columns([4, 7], gap='large')
+        with c1:
+            st.write(f'''
+                        ##### :blue[{title}]
+                        Khi xét đến phân vị (`quantiles`) thì `approxQuantile()` là lựa chọn thực tế để ước lượng percentile mà không phải sort toàn bộ dataset để lấy quantile chính xác.
+
+                        Trong bài toán này, ta vẫn dùng `transactions_df`, ở đây ta muốn xét các phân vị trong `transaction_amount`
+                    ''')
+        with c2:
+            st.code(
+"""
+  transactions_df = transactions_df.withColumn(
+                                        "transaction_amount", 
+                                        col("Quantity") * col("UnitPrice"))
+  quantiles = transactions_df.approxQuantile(
+                                    "transaction_amount",
+                                    [0.01, 0.25, 0.50, 0.75, 0.95, 0.99],
+                                    0.01
+                                )
+  quantiles
+""", language = 'python'
+            )
+            st.write("""
+                    **Output**
+
+                        [-77183.6, 3.36, 8.42, 16.94, 50.98, 77183.6]
+                    """)
+
+    elif title == 'Eda05. Drop duplicates then Repartition':
+        c1, c2 = st.columns([6, 7], gap='large')
+        with c1:
+            st.write(f'''
+                        ##### :blue[{title}]
+                        Với dữ liệu `transactions_df` này, ta sẽ
+                        - Kiểm tra duplicate theo `InvoiceNo`
+                        - Ước tính số `InvoiceNo` distinct
+                    ''')
+        with c2:
+            st.code(
+'''
+transactions_df.groupBy("InvoiceNo").count().filter(F.col("count") > 1) \\
+                .orderBy(F.desc("count")).show(5)
+'''
+            )
+            st.write("**Output**")
+            _, oc1, _ = st.columns([1,2,1])
+            with oc1:
+                st.dataframe(pd.DataFrame({'InvoiceNo': {0: '537434',
+                                            1: '538071',
+                                            2: '538349',
+                                            3: '537638',
+                                            4: '537237'},
+                                            'count': {0: 675, 1: 652, 2: 620, 3: 601, 4: 597}}), hide_index=True)
+            st.divider()
+            st.code(
+"""
+transactions_df.agg(
+                    F.count("InvoiceNo").alias("non_null_ids"),
+                    F.approx_count_distinct("InvoiceNo").alias("approx_distinct_ids")
+                ).show()
+""", language='python'
+            )
+            st.write("**Output**")
+            _, oc2, _ = st.columns(3)
+            with oc2:
+                st.dataframe(pd.DataFrame({'non_null_ids': {0: 100247}, 'approx_distinct_ids': {0: 4963}}), hide_index=True)
+
+    elif title == 'Eda06. Skewness notes':
+        c1, c2 = st.columns([6, 7], gap='large')
+        with c1:
+            st.write(f'''
+                        ##### :blue[{title}]
+                        Trong banking, một vài customer hoặc merchant có thể chiếm tỷ trọng giao dịch rất lớn. Để biết mức độ tập trung của hot keys, có thể lấy tổng số records của top keys so với tổng dữ liệu. Đừng chỉ nhìn số lượng distinct customer: 1 triệu customer không có nghĩa là phân phối giao dịch đồng đều.
+
+                        Kiểm tra dimension trước khi join. Đây là một trong những kỹ năng quan trọng nhất để tránh join làm tăng số lượng dòng ngoài dự kiến.
+                    ''')

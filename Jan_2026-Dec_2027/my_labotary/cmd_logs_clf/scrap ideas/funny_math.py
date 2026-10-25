@@ -366,7 +366,7 @@ QUESTION_BANK = {
             },
             {
                 "id": "g9-07",
-                "question": "Cho tam giác $ABC$ cân tại $A$, các đường cao $AD$ và $BE$ cắt nhau tại $H$. Gọi $O$ là tâm đường tròn ngoại tiếp tam giác $AHE$. \n 1) CMR tứ giác $CEHD$ nội tiếp \n 2) CMR 4 điểm $A, E, D, B$ cùng thuộc một đường tròn \n 3) CMR $DE = \\dfrac{1}{2} BC$ và $DE$ là tiếp tuyến của $())$ \n 4) Tính độ dài $DE$ nếu biết $AH = 6$ cm và $DH = 2$ cm",
+                "question": "Cho tam giác $ABC$ cân tại $A$, các đường cao $AD$ và $BE$ cắt nhau tại $H$. Gọi $O$ là tâm đường tròn ngoại tiếp tam giác $AHE$. \n 1) CMR tứ giác $CEHD$ nội tiếp \n 2) CMR 4 điểm $A, E, D, B$ cùng thuộc một đường tròn \n 3) CMR $DE = \\dfrac{1}{2} BC$ và $DE$ là tiếp tuyến của $(O)$ \n 4) Tính độ dài $DE$ nếu biết $AH = 6$ cm và $DH = 2$ cm",
                 "steps": [
                     "Trong tứ giác $CEHD$, ta có $\\widehat{CEH} = 90^\\circ$ ($BE$ là đường cao) và $\\widehat{CDH} = 90^\\circ$ (do $AD$ là đường cao).",
                     "Như vậy, $\\widehat{CEH} + \\widehat{CDH} = 180^\\circ$ và tứ giác $CEHD$ nội tiếp trong một đường tròn đường kính $CH$",
