@@ -216,6 +216,16 @@ QUESTION_BANK = {
                 ],
                 "answer": "$\\boxed{\\text{Diện tích } 2295\\,\\text{m}^2}$",
             },
+            {
+                "id": "g5-10",
+                "question": "Xác định chiều cao và cạnh đáy của một tam giác biết rằng diện tích tam giác là $4 \\; cm^2$, nhưng nếu tăng chiều cao đó thêm $1 \\ cm$ thì diện tích tam giác mới là $5 \\; cm^{2}$", 
+                "steps": [
+                    "Đặt $a, h$ lần lượt là độ dài của cạnh đáy và chiều cao của tam giác",
+                    "Khi đó $\\begin{cases} \\dfrac{a \\times h}{2} = 4 \\\\ \\dfrac{a \\times (h+2)}{2} = 5 \\end{cases}$",
+                    "Trừ phương trình thứ hai cho phương trình thứ nhất, ta được $a=1$ cm, suy ra $h=4$ cm"
+                ],
+                "answer": "$\\boxed{a=1 \\text{cm} \\quad h=4 \\text{cm}}$"
+            }
         ],
         "Số học": [
             {
@@ -300,6 +310,18 @@ QUESTION_BANK = {
                     "Vận tốc trung bình: $\\frac{380}{5} = 76$ km/h.",
                 ],
                 "answer": "$\\boxed{76\\text{ km/h}}$"
+            },
+            {
+                "id": "a5-10",
+                "question": "Sắp xếp các phân số sau theo thứ tự tăng dần: $ \\dfrac{1}{2}, \\, \\dfrac{1}{3}, \\, \\dfrac{3}{8} \\, \\dfrac{2}{5} $ và $\\dfrac{4}{11}$",
+                "steps": [
+                    "Xét mẫu số chung của tất cả các phân số trên là $3 \\times 5 \\times 8 \\times 11 = 1320$",
+                    "Khi đó, $\\dfrac{1}{2} = \\dfrac{3 \\times 5 \\times 4 \\times 11}{1320} = \\dfrac{660}{1320}$",
+                    "Tương tự, $\\dfrac{1}{3} = \\dfrac{440}{1320}$, $\\dfrac{3}{8} = \\dfrac{495}{1320}$, $\\dfrac{2}{5} = \\dfrac{528}{1320}$ và $\\dfrac{4}{11} = \\dfrac{480}{1320}$",
+                    "Lúc này, tất cả các phân số đều đã có cùng mẫu số, do đó $\\dfrac{440}{1320} < \\dfrac{480}{1320} < \\dfrac{495}{1320} < \\dfrac{528}{1320} < \\dfrac{660}{1320}$",
+                    "Tức là $\\dfrac{1}{3} < \\dfrac{4}{11} < \\dfrac{3}{8} < \\dfrac{2}{5} < \\dfrac{1}{2}$"
+                ],
+                "answer": "$\\boxed{\\frac{1}{3} < \\frac{4}{11} < \\frac{3}{8} < \\frac{2}{5} < \\frac{1}{2}}$"
             }
         ],
     },
@@ -382,22 +404,30 @@ QUESTION_BANK = {
                     "Xét tam giác vuông $ODE$, ta có $ED = \\sqrt{OD^2 - OE^2} = \\sqrt{25 - 9} = \\sqrt{16} = 4$ cm.",
                 ],
                 "answer": "$\\boxed{4 \\, \\text{cm}}$"
+            },
+            {
+                "id": "g9-08",
+                "question": "Cho thửa đất hình thang $ABCD$ với đáy $AB = 12$ m và $CD = 20$ m. Trên các cạnh $AD$ và $BC$, lần lượt lấy các điểm $M, N$ sao cho $MN$ song song với các đáy, đồng thời nó cũng chia $ABCD$ thành 2 phần có diện tích bằng nhau. Tính độ dài đoạn $MN$.",
+                "steps": [
+                    "Gọi $h$ là chiều cao của hình thang $ABCD$ và $x$ là độ dài của $MN$",
+                ],
+                "answer": "$\\boxed{ }$"
             }
          ],
         "Số học": [
             {
                 "id": "a9-01",
-                "question": "Rút gọn phân thức $\\frac{x^2-9}{x+3}$, với điều kiện $x \\neq -3$.",
-                "steps": ["Phân tích tử thành hiệu hai bình phương: $x^2-9=(x-3)(x+3)$.", "Vì $x \\neq -3$, rút gọn được $\\frac{(x-3)(x+3)}{x+3}=x-3$."],
-                "answer": "$\\boxed{x-3\\quad (x\\neq-3)}$",
+                "question": "Rút gọn phân thức $\\dfrac{x^2-9}{x+3}$, với điều kiện $x \\neq -3$.",
+                "steps": ["Phân tích tử thành hiệu hai bình phương: $x^2-9=(x-3)(x+3)$.", "Vì $x \\neq -3$, rút gọn được $\\dfrac{(x-3)(x+3)}{x+3}=x-3$."],
+                "answer": "$\\boxed{x-3\\quad (x \\neq -3)}$",
             },
             {
                 "id": "a9-02",
                 "question": "Cho phương trình: $3x^2 - 5x + 3 = 0$ có 2 nghiệm $x_1, x_2$. Hãy tính $x_1^3 + x_2^3$.",
                 "steps": [
-                            "Tổng quát với tam thức bậc hai $ax^2 + bx + c = 0$ có hai nghiệm $x_1, x_2$, ta có: $x_1 + x_2 = -\\frac{b}{a}$ và $x_1 x_2 = \\frac{c}{a}$.", 
+                            "Tổng quát với tam thức bậc hai $ax^2 + bx + c = 0$ có hai nghiệm $x_1, x_2$, ta có: $x_1 + x_2 = -\\dfrac{b}{a}$ và $x_1 x_2 = \\dfrac{c}{a}$.", 
                             "Chú ý rằng $x_1^3 + x_2^3 = (x_1 + x_2)^3 - 3x_1x_2(x_1 + x_2)$.",
-                            "Thay các giá trị vào và ta được $x_1 + x_2 = \\frac{5}{3}$ và $x_1 x_2 = 1$.",
+                            "Thay các giá trị vào và ta được $x_1 + x_2 = \\dfrac{5}{3}$ và $x_1 x_2 = 1$.",
                         ],
                 "answer": "$\\boxed{\\frac{95}{27}}$",
             },
@@ -456,6 +486,16 @@ QUESTION_BANK = {
                         "Vậy $A$ là tổng của $1013$ cặp số và mọi cặp số đều chia hết cho $2027$."
                     ], 
                 "answer": "$\\boxed{A \\text{ chia hết cho } 2027}$"
+            },
+            {
+                "id": "a9-09",
+                "question": "Cho phương trình $2x^2 - 7x + 4 = 0$. Không giải phương trình hãy chứng minh phương trình trên có 2 nghiệm phân biệt $x_1, x_2$ và sau đó tính giá trị của $x_1(4x_2 + x_1) + x_2^2$",
+                "steps": [
+                        "Dễ thấy rằng $\\triangle = (-7)^2 - 4 \\times 2 \\times 4 = 17 > 0$ nên phương trình có $2$ nghiệm phân biệt $x_1$ và $x_2$",
+                        "Hơn nữa, ta có $x_1 x_2 = \\dfrac{4}{2} = 2$ và $x_1 + x_2 = -\\dfrac{(-7)}{2} = \\dfrac{7}{2}$",
+                        "Do đó, $x_1(4x_2 + x_1) + x_2^2 = \\left( x_1^2 + x_2^2 \\right) + 4x_1 x_2 = \\left( x_1 + x_2 \\right)^2 + 2x_1 x_2 = \\dfrac{49}{4} + 4 = \\dfrac{65}{4}$"
+                ],
+                "answer": "$\\boxed{ \\dfrac{65}{4} }$"
             }
         ],
     },
@@ -504,6 +544,51 @@ QUESTION_BANK = {
                     "Tỉ số thể tích bằng lập phương tỉ số đồng dạng: $\\dfrac{V_{A'B'C'D'}}{V_{ABCD}}=k^3=\\left(\\dfrac{1}{3}\\right)^3=\\dfrac{1}{27}$."
                 ],
                 "answer": "$\\boxed{\\dfrac{1}{27}}$"
+            },
+            {
+                "id": "g12-07",
+                "question": "Cho hình chóp $S.ABCD$ có đáy $ABCD$ là hình bình hành và $SA \\perp (ABCD)$. Biết rằng $SA = h, AB=a, AD=b,$ hãy tính thể tích khối chóp theo $a, b$ và $h$, biết rằng góc $A = 120^\\circ$",
+                "steps": [
+                    "Từ các giả thiết, ta có thể tính diện tích đáy $ABCD$ bằng công thức: <br> $\\qquad \\qquad S_{ABCD} = \\overrightarrow{AB} \\cdot \\overrightarrow{AD} = a \\cdot b \\cdot \\sin(120^\\circ) = a b \\cdot \\dfrac{\\sqrt{3}}{2}$",
+                    "Thể tích khối chóp $S.ABCD$ được tính bằng công thức: <br> $\\qquad \\qquad V = \\dfrac{1}{3} S_{ABCD} \\cdot SA = \\dfrac{1}{3} \\cdot a b \\cdot \\dfrac{\\sqrt{3}}{2} \\cdot h = \\dfrac{a b h \\sqrt{3}}{6}$"
+                ],
+                "answer": "$\\boxed{\\dfrac{a b h \\sqrt{3}}{6}}$"
+            },
+            {
+                "id": "g12-08",
+                "question": "Trong $Oxyz$ cho mặt cầu $(S)$ với tâm $I(1; 2; -1)$ và tiếp xúc mặt phẳng $(P): 2x-2y-z-8=0$. Hãy viết phương trình tổng quát của mặt cầu $(S)$",
+                "steps": [
+                    "Vì mặt cầu $(S)$ tâm $I(1;2;-1)$ tiếp xúc với mặt phẳng $(P): 2x-2y-z-8=0$ nên bán kính $R$ bằng khoảng cách từ $I$ đến $(P)$, tức là <br><br> $\\qquad R = d(I,(P)) = \\dfrac{|2\\cdot1 - 2\\cdot2 - (-1) - 8|}{\\sqrt{2^2 + (-2)^2 + (-1)^2}} = \\dfrac{|2-4+1-8|}{\\sqrt{9}} = \\dfrac{|-9|}{3} = 3$",
+                    "Phương trình mặt cầu tâm $I$, bán kính $3$: <br><br> $\\qquad \\qquad \\qquad \\quad \\quad (x-1)^2 + (y-2)^2 + (z+1)^2 = 9$",
+                    "Khai triển ra dạng tổng quát: $(x^2 - 2x + 1) + (y^2 - 4y + 4) + (z^2 + 2z + 1) - 9 = 0$."
+                ],
+                "answer": "$\\boxed{x^2 + y^2 + z^2 - 2x - 4y + 2z - 3 = 0}$"
+            },
+            {
+                "id": "g12-09",
+                "question": "Trong $Oxy$ cho hình chữ nhật $ABCD$ với $I(6; 2)$ là giao điểm 2 đường chéo $AC$ và $BD$. Gọi $M(1;5) \\in AB$ và $E$ là trung điểm của $CD$ thuộc đường thẳng $(\\Delta): x+y-5=0$. Hãy viết phương trình đường thằng $AB$",
+                "steps": [
+                    "Gọi $N$ là điểm đối xứng của $M$ qua $I$ (khi đó $N \\in CD$), suy ra $N(11; -1)$.",
+                    "Gọi $F$ là điểm đối xứng với $E$ qua $I$ (như vậy $F \\in AB$).",
+                    "Lấy $E(x; y)$; khi đó $\\overrightarrow{IE} = (x-6; y-2)$ và $\\overrightarrow{NE} = (x-11; y+1)$.",
+                    "Ta thấy rằng $IE \\perp NE$ nên $\\overrightarrow{IE} \\cdot \\overrightarrow{NE} = 0$, tức là <br><br> $\\qquad \\quad (x-6)(x-11) + (y-2)(y+1) = 0$ hay $x^2 - 17x + y^2 - y + 64= 0$",
+                    "Ngoài ra, $E \\in (\\Delta): x+y-5=0$ nên $y = 5-x$; thay nó vào phương trình trên, ta được <br><br> $\\qquad \\qquad \\qquad \\qquad \\qquad \\begin{cases}x_1 = 7 \\\\ y_1 = -2 \\end{cases}$ và $\\begin{cases}x_2 = 6 \\\\ y_2 = -1 \\end{cases}$.",
+                    "Vậy $E_1(7; -2)$ hoặc $E_2(6; -1)$, suy ra $F_1(5; 6)$ hoặc $F_2(6; 5)$.",
+                    "Do đó, phương trình đường thẳng $AB$ là $x-4y+19=0$ hoặc $y=5$."
+                ],
+                "answer": "$\\boxed{ y=5 \\text{ or } x-4y+19=0 }$"
+            },
+            {
+                "id": "g12-10",
+                "question": "Trong không gian $Oxyz,$ cho mặt phẳng $(P): 2x - 2y -z - 4=0$ và mặt cầu $(S): x^2 + y^2 + z^2 - 2x - 4y - 6z - 11 = 0.$ CMR mặt phẳng $(P)$ cắt mặt cầu $(S)$ theo một đường tròn và tìm tâm, bán kính của đường tròn đó.",
+                "steps": [
+                    "Từ phương trình mặt cầu $(S)$, ta có tâm $I(1; 2; 3)$ và bán kính $R = \\sqrt{1^2 + 2^2 + 3^2 + 11} = 5$.",
+                    "Khoảng cách từ tâm $I$ đến mặt phẳng $(P)$ là: <br><br> $\\qquad d(I, (P)) = \\dfrac{|2\\cdot1 - 2\\cdot2 - 3 - 4|}{\\sqrt{2^2 + (-2)^2 + (-1)^2}} = \\dfrac{|-9|}{3} = 3$.",
+                    "Vì $d(I, (P)) < R$, nên mặt phẳng $(P)$ cắt mặt cầu $(S)$ theo một đường tròn.",
+                    "Lấy $H$ là hình chiếu của $I$ lên mặt phẳng $(P)$, suy ra $H$ là giao điểm của $(P)$ và đường thẳng đi qua $I$ và vuông góc với $(P)$, do đó $H(3; 0; 2)$.",
+                    "Do đó, bán kính của đường tròn cắt là $r = \\sqrt{R^2 - d^2} = \\sqrt{5^2 - 3^2} = 4$."
+                ],
+                "answer": "$\\boxed{\\text{Tâm: } H(3; 0; 2), \\text{ Bán kính: } r = 4}$"
             }
         ],
         "Số học": [
@@ -534,7 +619,7 @@ QUESTION_BANK = {
             {
                 "id": "a12-05",
                 "question": "Tìm giá trị lớn nhất của hàm số $f(x)=-x^2+4x+1$ trên $\\mathbb{R}$.",
-                "steps": ["Hoàn thành bình phương: $f(x)=-(x-2)^2+5$.", "Vì $(x-2)^2\\ge 0$, nên $f(x)\\le5$, đạt được khi $x=2$."],
+                "steps": ["Viết lại hàm số trên thành: $f(x)=-(x-2)^2+5$.", "Vì $(x-2)^2\\ge 0$, nên $f(x)\\le5$, đạt được khi $x=2$."],
                 "answer": "$\\boxed{\\max f(x)=5\\text{ tại }x=2}$",
             },
             {
@@ -556,6 +641,36 @@ QUESTION_BANK = {
                     "Thay các giá trị tìm được, ta có $f(x) = x^2 + 4x + 5$; suy ra $f(2) = 17$", 
                 ],
                 "answer": "$\\boxed{17}$"
+            },
+            {
+                "id": "a12-08",
+                "question": "Nguyên hàm của $2^x + \\sin x$ là",
+                "steps": [
+                    "Ta có $\\displaystyle \\int \\sin x dx = -\\cos x + c_1$",
+                    "Hơn nữa, $\\displaystyle \\int 2^x dx = \\dfrac{2^x}{\\ln 2} + c_2$"
+                ],
+                "answer": "$\\boxed{ \\dfrac{2^x}{\\ln 2} - \\cos x + C}$"
+            },
+            {
+                "id": "a12-09",
+                "question": "Giải BPT sau $\\log_{\\frac{1}{2}} \\left( 9 - x^2 \\right) < 0$",
+                "steps": [
+                    "Tập xác định: $x \\in \\left( -3, 3 \\right)$",
+                    "Dễ thấy rằng $\\log_{\\frac{1}{2}} \\left( 9 - x^2 \\right) = -\\log_{2} \\left( 9 - x^2 \\right)$",
+                    "Như vậy, BPT trên trở thành $\\log_{2} \\left( 9 - x^2 \\right) > 0$ hay có nghiệm thỏa $9 - x^2 > 1$"
+                ],
+                "answer": "$\\boxed{ \\left( -2 \\sqrt{2}, 2 \\sqrt{2} \\right) }$"
+            },
+            {
+                "id": "a12-10",
+                "question": "Giải phương trình $2\\sqrt[3]{3x - 2} + 3\\sqrt{6 - 5x} - 8 = 0$ với $x \\in \\mathbb{R}$",
+                "steps": [
+                    "Điều kiện xác định $6 - 5x \\geq 0 \\Rightarrow x \\leq \\dfrac{6}{5}$",
+                    "Đặt $\\begin{cases} u = \\sqrt[3]{3x - 2} \\\\ v = \\sqrt{6 - 5x} \\end{cases}$ với $v \\geq 0$ khi đó <br><br> $ \\qquad \\qquad \\begin{cases} u^3 = 3x-2 \\\\ v^2 = 6-5x \\end{cases} $ do đó $\\begin{cases} 2u + 3v = 8 \\\\ 5u^3 + 3v^2 = 8 \\end{cases} \\Rightarrow \\begin{cases} v = \\dfrac{8 - 2u}{3} \\\\ 5u^3 + 3\\left(\\dfrac{8 - 2u}{3}\\right)^2 = 8 \\end{cases}$",
+                    "Phương trình trên trở thành <br><br> $\\qquad 15u^3 + 4u^2 - 32u + 40 = 0 \\Leftrightarrow (u + 2)(15u^2 - 26u + 20) = 0$",
+                    "Mà PT $15u^2 - 26u + 20 = 0$ vô nghiệm nên $u = -2$, do đó $x = -2$",
+                ],
+                "answer": "$\\boxed{x = -2}$"
             }
         ],
     },
@@ -602,7 +717,7 @@ with st.container(border=True):
     with col_topic:
         topic = st.selectbox("Chủ đề", options=["Hình học", "Số học"], key="topic")
     with col_count:
-        num_questions = st.selectbox("Số câu hỏi", options=[3, 4, 5], index=0, format_func=lambda x: f"{x} câu", key="num_questions")
+        num_questions = st.selectbox("Số câu hỏi", options=[3, 5, 6], index=0, format_func=lambda x: f"{x} câu", key="num_questions")
 
     st.markdown("")
     generate_col, note_col = st.columns([1, 2.5], vertical_alignment="center")
