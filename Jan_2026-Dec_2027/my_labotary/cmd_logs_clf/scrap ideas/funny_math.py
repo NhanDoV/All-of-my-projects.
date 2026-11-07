@@ -395,7 +395,7 @@ QUESTION_BANK = {
                     "Vì $AD$ và $BE$ là các đường cao nên $\\widehat{AEB} = \\widehat{ADB} = 90^\\circ$; dẫn đến các đỉnh $E, D$ cùng nhìn $AB$ dưới góc vuông.",
                     "Do đó, tứ giác $AEDB$ nội tiếp trong một đường tròn đường kính $AB$.",
                     "Do $ABC$ cân tại $A$ với $AD$ là đường cao nên cũng đồng thời là đường trung tuyến, suy ra $D$ là trung điểm của $BC$.",
-                    "Hơn nữa, $\\widehat{BEC} = 90^\\circ$, nên tam giác $BEC$ vuông tại $E$ và $DE$ là trung tuyến nên $DE = \\frac{1}{2} BC$.",
+                    "Hơn nữa, $\\widehat{BEC} = 90^\\circ$, nên $\\triangle \\, BEC$ vuông tại $E$ và $DE$ là trung tuyến nên $DE = \\frac{1}{2} BC$.",
                     "Vì $O$ là tâm đường tròn ngoại tiếp tam giác $AHE$, nên $O$ là trung điểm $AH$; dẫn đến $OAE$ là tam giác cân (tại $O$) nên $\\widehat{OAE} = \\widehat{OEA}$.",
                     "Ngoài ra, tam giác $DBE$ cân tại $D$ nên $\\widehat{DEB} = \\widehat{DBE}$.",
                     "Mà $\\widehat{DBE} = \\widehat{OAE}$ (cùng phụ với $\\widehat{ACB}$) do đó $$\\widehat{DEB} = \\widehat{OEA}$$",                    
@@ -409,9 +409,36 @@ QUESTION_BANK = {
                 "id": "g9-08",
                 "question": "Cho thửa đất hình thang $ABCD$ với đáy $AB = 12$ m và $CD = 20$ m. Trên các cạnh $AD$ và $BC$, lần lượt lấy các điểm $M, N$ sao cho $MN$ song song với các đáy, đồng thời nó cũng chia $ABCD$ thành 2 phần có diện tích bằng nhau. Tính độ dài đoạn $MN$.",
                 "steps": [
-                    "Gọi $h$ là chiều cao của hình thang $ABCD$ và $x$ là độ dài của $MN$",
+                    "Gọi $h_1$ và $h$ là lần lượt là chiều cao của hình thang $ABNM$ và $ABCD$",
+                    "Gọi $x = \\dfrac{h_1}{h} \\in (0, 1)$, dễ thấy rằng $x = \\dfrac{AM}{AD} = \\dfrac{BN}{BC}$ và <br><br> $\\qquad \\qquad MN = CD \\cdot x + AB \\cdot (1-x) = 8x + 12$",
+                    "Ta có $S_{ABNM} = \\dfrac{1}{2}(AB + MN) \\cdot h_1 = \\dfrac{1}{2}(12 + 8x + 12) \\cdot h_1 = (12 + 4x) \\cdot h_1$",
+                    "Tương tự, $S_{ABCD} = \\dfrac{1}{2}(AB + CD) \\cdot h = \\dfrac{1}{2}(12 + 20) \\cdot h = 16h$",
+                    "Vì $\\dfrac{S_{ABNM}}{S_{ABCD}} = \\dfrac{1}{2}$ tức là $\\dfrac{3 + x}{4} \\cdot \\dfrac{h_1}{h} = \\dfrac{1}{2}$",
+                    "Mà $x = \\dfrac{h_1}{h}$, nên $(x + 3) \\cdot x = 2 \\Rightarrow x^2 + 3x - 2 = 0$",
+                    "Kết hợp với điều kiện $x \\in (0, 1)$, ta được $x = \\dfrac{-3 + \\sqrt{17}}{2} \\; \\Rightarrow \\; MN = 8x + 12 = 4 \\sqrt{17}$ m",
                 ],
-                "answer": "$\\boxed{ }$"
+                "answer": "$\\boxed{4\\sqrt{17} \\, \\text{m}}$"
+            },
+            {
+                "id": "g9-09",
+                "question": "Cho 2 đường tròn $(O \\, ; R)$ và $(O'\\, ; R')$ cắt nhau tại $A, B$ (với $O$ và $O'$ thuộc 2 nửa mặt phẳng bờ $AB$). Gọi $C$ và $D$ lần lượt là giao điểm của $(O)$ với $OA$ và $O'A$; gọi $E, F$ lần lượt là giao điểm của $(O')$ với $OA$ và $O'A$. \n 1) CMR $3$ điểm $C,B,F$ và tứ giác $CDEF$ nội tiếp. \n 2) CMR $AD . AF = AE. AC$",
+                "steps": [
+                    "Ta thấy rằng $\\triangle \\, ABC$ nội tiếp đường tròn đường kính $AC$, nên $\\widehat{ABC} = 90^{\\circ}$",
+                    "Tương tự, $\\triangle \\, ABF$ nội tiếp đường tròn đường kính $AC$, nên $\\widehat{FBA} = 90^{\\circ}$",
+                    "Từ đây, suy ra $\\boxed{ 3 \\text{ điểm } C, B, F \\text{ thẳng hàng} }$",
+                    "Ngoài ra, các góc $\\widehat{CDA}$ và $\\widehat{FEA}$ đều là các góc vuông do chúng lần lượt là các góc nội tiếp của các đường tròn $(O)$ và  $(O')$. Như vậy cả $\\widehat{CDA}$ và $\\widehat{FEA}$ cùng nhìn cạnh $FC$ dưới góc $90^{\\circ}$ nên $\\boxed{ \\text{tứ giác } CDEF \\text{ nội tiếp} }$",
+                    "Xét cặp tam giác $\\triangle \\, CDA$ và $\\triangle FEA$ có $\\begin{cases} \\widehat{D} = \\widehat{E} = 90^{\\circ} \\\\ \\widehat{A_1} = \\widehat{A_2} \\; \\text{(đ. đ)} \\end{cases}$ nên $\\triangle \\, CDA \\; \\sim \\; \\triangle \\, FEA$ (g,g)",
+                    "Do đó, $\\dfrac{AD}{AC} = \\dfrac{AE}{AF}$ do đó $\\boxed{AD . AF = AE. AC }$"
+                ],
+                "answer": ""
+            },
+            {
+                "id": "g9-10",
+                "question": "Trên $(O)$, lấy $2$ điểm $B, C$ sao cho $O$ không thuộc $BC$; trên cung nhỏ $BC$ lấy điểm $A$ sao cho $AB$ khác $AC$. Gọi $A' \\in (O)$ và $D \\in BC$ sao cho $A'A$ là đường kính, còn $AD \\perp BC$. Cuối cùng, gọi $E, F$ lần lượt là chân đường cao kẻ từ $B, C$ đến $A'A$ \n 1) CMR tứ giác $AEDB$ nội tiếp và $DF$ song song với $A'B$, và $DE \\perp AC$ \n 2) Biết $\\widehat{ACB} = 30^{\\circ}$ và $OA = 6$ cm, tính $S_{\\triangle ABO}$",
+                "steps": [
+                    "Ta thấy rằng $\\widehat{BDA} = \\widehat{AEB} = 90^{\\circ}$ nên"
+                ],
+                "answer": "$\\boxed{12 \\pi cm^3}$"
             }
          ],
         "Số học": [
@@ -717,7 +744,7 @@ with st.container(border=True):
     with col_topic:
         topic = st.selectbox("Chủ đề", options=["Hình học", "Số học"], key="topic")
     with col_count:
-        num_questions = st.selectbox("Số câu hỏi", options=[3, 5, 6], index=0, format_func=lambda x: f"{x} câu", key="num_questions")
+        num_questions = st.selectbox("Số câu hỏi", options=[3, 5, 9], index=0, format_func=lambda x: f"{x} câu", key="num_questions")
 
     st.markdown("")
     generate_col, note_col = st.columns([1, 2.5], vertical_alignment="center")

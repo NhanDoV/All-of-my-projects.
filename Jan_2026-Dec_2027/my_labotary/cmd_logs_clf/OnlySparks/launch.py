@@ -3,6 +3,7 @@ import pandas as pd
 
 topic_title_dict = {
     'Basic': [
+            'Bs00. Loading, Import & Write',
             'Bs01. Top High Salary Employees', 
             'Bs02. Big Economy but small area',
             'Bs03. BroadCast small dataset joinning',
@@ -30,6 +31,10 @@ topic_title_dict = {
             'GP02. Purchase per category for each customer',
             'GP03. Dynamic High-Cardinality'
         ],
+    'NestedStructProcessing': [
+            'NSP01. Extract Simple Dict Col',
+            'NSP02. Complexity Nested Struct'
+        ],
     'Timestamp Processor': [
             'TP01. Extract daypart',
             'TP02. Previous & Next date',
@@ -44,6 +49,10 @@ topic_title_dict = {
             'RC04. Customers used E-wallet & gmail',
             'RC05. Valid-IP & confused transaction-description'
         ],
+    'UDF vs UDTF': [
+            'UDF01. Row -> Values or Multi Values',
+            'UDF02. Custom Fraud Classification'
+        ],
     'Window': [
             'Wd01. Rising Temperatures',
             'Wd02. Distinguish rank, dense_rank & row_num',
@@ -57,11 +66,12 @@ topic_title_dict = {
 topic_titles = list(topic_title_dict.keys())
 
 with st.sidebar:
-    topic = st.selectbox('Chọn topic', topic_titles)
-    title = st.selectbox('Chọn title', topic_title_dict[topic])
+    topic = st.radio('**:red[Chọn topic]**', topic_titles)
+    st.divider()
+    title = st.radio('**:orange[Chọn title]**', topic_title_dict[topic])
 
 # Main app
-st.title('Pyspark only')
+st.title(':rainbow[Pyspark only]')
 st.set_page_config(page_title="OnlySpark", page_icon="⚡", layout="wide")
 
 if topic == 'Basic':
@@ -152,7 +162,7 @@ if topic == 'Basic':
                     )
             st.dataframe(res, hide_index=True)
 
-    if title == "Bs03. BroadCast small dataset joinning":
+    elif title == "Bs03. BroadCast small dataset joinning":
         c1, c2 = st.columns([3, 2], gap='large')
         with c1:
             st.write(f'##### :blue[{title}]')
@@ -386,6 +396,254 @@ if topic == 'Basic':
                     :red[**Lưu ý**: salting làm tăng số bản ghi của bảng dimension đối với hot key, và không đảm bảo tuyệt đối workload cân bằng. Số salt cần chọn dựa trên mức độ skew và tài nguyên cluster].
                     """)
 
+    elif title == "Bs00. Loading, Import & Write":
+        st.write(f"##### :blue[{title}]")
+        with st.expander(":green[1. Importing groups]", expanded=True):
+            c1, c2, c3 = st.columns([2, 1.2, 6], gap='medium')
+            with c1:
+                st.write("""
+                        Khi sử dụng :orange[Pyspark], ta thường sẽ thấy đoạn
+                        ```python
+                        from pyspark.sql import ...
+                        ```
+                        và thông thường, chúng ta chỉ cần quan tâm đến 5 nhóm chính                     
+                        """)
+            with c2:
+                importing_group = ["**SparkSession**", "**DataFrame API**", "**functions**", "**Window**", "**types**"]
+                sel_group = st.radio("**:yellow[Common importing group]**", importing_group)
+            with c3:
+                if sel_group == "**SparkSession**":
+                    st.write("""
+                            Với nhóm **:orange[SparkSession]**, ta thường dùng nó để tạo :blue[end-point] của :orange[Spark]
+                            ```python
+                            from pyspark.sql import SparkSession
+
+                            spark = SparkSession.builder.appName('Nhan').getOrCreate()
+                            df = spark.createDataFrame(...)
+                            ```
+                            """)
+                    
+                elif sel_group == "**DataFrame API**":
+                    st.write("""
+                            Trong nhóm **:orange[DataFrame API]** này, ta không :blue[import] riêng nhưng lại sử dụng trực tiếp sau khi đã có :orange[spark dataframe]
+
+                            Dưới đây là một số :green[modules] mà ta thường dùng, [tham khảo thêm mục :red[Eda 05] để hiểu rõ hơn :green[coalesce], :green[repartition], etc]
+
+                                df.select()            df.withColumn()            df.union()            df.repartition()        df.cahe()
+                                df.filter()            df.drop()                  df.unionByName()      df.coalesce()           df.persist()
+                                df.where()             df.distinct()
+                                df.groupBy()
+                                df.agg()
+                                df.join()
+                            """)
+
+                elif sel_group == "**functions**":
+                    descr_col, clf_col = st.columns([2.2, 3], gap='medium')
+                    with descr_col:
+                        st.write("""
+                                Nhóm **:orange[functions]** là nhóm mà hầu hết chúng ta sẽ gặp và dùng nhiều nhất khi thao tác trên Spark
+                                ```python
+                                from pyspark.sql import functions as F
+
+                                df.groupBy("gender") \\
+                                  .agg(
+                                     F.avg("age").alias('avg_age'),
+                                     F.sum('amount').alias('total_amount')
+                                    )
+                                ```
+                                """)
+                    with clf_col:
+                        func_gr = st.selectbox("Hơn nữa, tùy thuộc mục đích sử dụng, ta sẽ tổ chức lại như sau:",
+                                               [
+                                                "Aggregate", "Array / Struct processing", 
+                                                "Column manipulation", "Conditional",
+                                                "DateTime", "String"
+                                                ])
+                        if func_gr == "Aggregate":
+                            st.write(''' 
+                                    Nhóm này thường sử dụng nhất là:
+
+                                        1. F.count()    F.sum()    F.min()    F.max()
+                                        2. F.avg()      F.std()
+                                        3. F.collect_set()      F.collect_list()
+                                    ''')
+                        elif func_gr == "Array / Struct processing":
+                            st.write(""" 
+                                    Xử lý :green[array & struct] thường gặp ở :blue[Data Lake],
+
+                                        1. F.explode()  vs   F.posexplode()
+                                        2. F.size()     vs   F.array_contains()
+                                        3. F.struct()
+                                        4. F.get_json_object()  vs   F.from_json()   vs   F.to_json() 
+                                    """)
+                        elif func_gr == "Column manipulation":
+                            st.write('''
+                                    Thường gặp nhất là
+
+                                        1. F.col()
+                                        2. F.lit()   vs     F.coallesce()
+                                        3. F.expr()
+                                        4. F.when()
+                                    ''')
+                        elif func_gr == "Conditional":
+                            st.write('''
+                                    Thường gặp nhất là
+
+                                        1. F.when()
+                                        2. F.nvl()
+                                        3. F.coalesce()
+                                    ''')
+                        elif func_gr == "DateTime":
+                            st.write('''
+                                    Thường gặp nhất là
+
+                                        1. F.to_date()          F.to_timestamp()
+                                        2. F.current_date()     F.current_timestamp()
+                                        3. F.date_add()         F.date_sub()
+                                        4. F.datediff()
+                                        5. F.year()         F.month()        F.dayofmonth()      etc
+                                    ''')
+                        elif func_gr == "String":
+                            st.write('''
+                                    Thường gặp nhất là
+
+                                        1. F.lower()      F.upper()         F.substring()
+                                        2. F.trim()       F.length()  
+                                        3. F.split()      F.concat()
+                                        4. F.regexp_replace()       F.regexp_extract()  
+                                    ''')
+
+                elif sel_group == "**Window**":
+                    descr_col, clf_col = st.columns([6, 5], gap='medium')
+                    with descr_col:
+                        st.write("""
+                                Với nhóm **:orange[Window]**, ta thường dùng nó để xếp hạng (:green[ranking]) hoặc tính toán thống kê trên cửa sổ trượt (:green[rolling window])
+                                ```python
+                                from pyspark.sql.window import Window
+
+                                wd_rk = Window.partitionBy('category').orderBy('amount')
+                                wd_lg = Window.orderBy('tx_date')
+
+                                df.withColumn('rank', F.dense_rank().over(wd)) \\
+                                  .withColumn('prev_amt', F.lag('amount', 1).over(wd)) \\
+                                  .withColumn('curr_amt', F.sum('amount').over(wd_rgn))
+                                ```
+                                """)
+                    with clf_col:
+                        st.write(''' 
+                                Ta thường chia nhóm này thành các mục đích nhỏ, (2 mục đầu tiên đã minh họa ở bên trái):
+                                - **:blue[1. Row number/Rank/Dense Rank]**: Tham khảo [:red[Wd02]]
+                                - **:blue[2. Lag/ Lead]**: thường sử dụng trong behavior analytics
+                                - **:blue[3. Running total]**: Tính toán động trong 1 khoảng nào đó
+
+                                ```python
+                                wd_rgn = Window.partitionBy('cust_id') \\
+                                               .orderBy('tx_date') \\ 
+                                               .rowsBetween(
+                                                    Window.unboundedPreceding,
+                                                    Window.currentRow
+                                               )
+                                ```
+                                ''')
+
+                elif sel_group == "**types**":
+                    descr_col, clf_col = st.columns([3, 2.5], gap='medium')
+                    with descr_col:
+                        st.write("""
+                                **:orange[types]** thường dùng để đọc dữ liệu :red[JSON] hoặc định nghĩa định dạng :red[schema]
+                                ```python
+                                from pyspark.sql.types import *
+
+                                def fraud_clf(...):
+                                    # your logic here
+                                
+                                fraud_udf = F.udf(fraud_clf, StringType())
+                                ```
+                                """)
+                    with clf_col:
+                        st.write(""" 
+                                Một số kiểu dữ liệu thường dùng như:
+
+
+                                    1. StringType 
+                                    2. IntegerType        DoubleType
+                                    3. DateType         TimestampType
+                                    4. ArrayType
+                                    5. MapType          StructType 
+                                    6. StructField
+                                """)
+                    
+        with st.expander(":green[2. Loading & writing dataset]", expanded=True):
+            from_file, from_table, from_cloud = st.columns(3, gap='medium')
+            with from_file:
+                st.write(''' 
+                        ##### :violet[From File]
+                        **:orange[Loading dataset]**
+                        ```python
+                        # gán df tùy thuộc kiểu file 
+                        df_csv = spark.read.csv(path_to_csv, header=True)
+                        df_prq = spark.read.parquet(path_to_parquet)
+                        df_jsn = spark.read.json(path_to_json)
+
+                        # from Delta Lake
+                        df_del = spark.read.table("catalog.schema.table_name")
+                        # hoặc
+                        df_del = spark.read.format("delta").load(path2delta)
+                        ```
+
+                        **:orange[Writing dataset]**
+                        ```python
+                        df_prq.write.mode('overwrite').parquet(path2save)
+                        # hoặc trên delta thì
+                        df_del.write.format('delta') \\
+                              .mode('overwrite').parquet(path2delta)
+                        ```
+                        ''')
+
+            with from_table:
+                st.write(''' 
+                        ##### :violet[From Existed Table]
+                        **:orange[Loading dataset]**
+                        ```python
+                        # Hive Metastore
+                        spark.table("sales.customers")  # hoặc
+                        spark.sql("SELECT * FROM sales.customers")
+
+                        # Databricks Unity Catalog
+                        spark.table("catalog.schema.table_name")
+
+                        # JDBC driver phải có sẵn trong Spark environment.
+                        # JDBC database (SQL Sever/ Oracle/ MySQL/ Postrges)
+                        spark.read.format("jdbc") \\
+                                  .option('url', jdbc_url) \\
+                                  .option('db_table', 'dbo.customers').load()
+                        ```
+
+                        **:orange[Writing dataset]**
+                        ```python
+                        df.write.format("jdbc") \\
+                            .option("url", jdbc_url) \\
+                            .option("dbtable", "dbo.customer_agg") \\
+                            .mode("overwrite") \\
+                            .save()
+                        ```
+                        ''')
+
+            with from_cloud:
+                st.write(''' 
+                        ##### :violet[From Cloud Connection]
+                        **:orange[Loading dataset]**
+                        ```python
+                        # S3-AWS
+                        spark.read.parquet('s3://bucket_path')
+                        ```
+
+                        **:orange[Writing dataset]**
+                        ```python
+                        df.write.mode('overwrite') \\
+                                 .parquet('s3a://bucket_saved_path')
+                        ```
+                        ''')
 
 elif topic == "Window":
     if title == "Wd01. Rising Temperatures":
@@ -1146,7 +1404,7 @@ elif topic == "Timestamp Processor":
         with c2:
             st.code(
 '''
-  transactions_df.withColumn('tx_ts', F.to_timestamp('tx_date', 'yyyyMMddHHmmss')) \\
+transactions_df.withColumn('tx_ts', F.to_timestamp('tx_date', 'yyyyMMddHHmmss')) \\
                  .withColumn('tx_year', F.year('tx_ts') ) \\
                  .withColumn('tx_month', F.month('tx_ts') ) \\
                  .withColumn('tx_week', F.weekofyear('tx_ts') ) \\
@@ -2111,6 +2369,394 @@ elif topic == "GroupPivot":
                     'watch_time_minutes': ['0', '0', '1,240']
                 }), hide_index=True)
 
+elif topic == 'NestedStructProcessing':
+    if title == "NSP01. Extract Simple Dict Col":
+        c11, c12 = st.columns([6, 7], gap='large')
+        with c11:
+            st.write(f''' 
+                    ##### :blue[{title}]
+                    Đầu tiên, ta sẽ đến với phần đơn giản nhất là nếu trong :orange[spark dataframe] có một cột dạng :red[dictionary] chỉ chứa các mảng riêng lẻ, chẳng hạn
+
+                    ```python
+                    {{'address': 'A-288', 'city': 'Paris', 'country': 'France'}}
+                    ```
+
+                    Khi đó, để tách các dữ liệu này thành các cột :green[address], :green[city] và :green[country] bằng syntax
+                    ```python
+                    F.col(...)['address'] #hoặc 
+                    F.col(...).address
+                    ```
+                    ''')
+        with c12:
+            st.write('''
+                ```python
+                df.select('*', F.col('address_info')['address'].alias('address'), 
+                               F.col('address_info')['city'].alias('city'),
+                               F.col('address_info')['country'].alias('country')  
+                        ).show(truncate=False)                
+                ```
+                **:green[Output]**
+
+                        +---+------------------------------------------------------+-------+------+-------+
+                        |id |address_info                                          |address|city  |country|
+                        +---+------------------------------------------------------+-------+------+-------+
+                        |21 |{country -> France, city -> Paris, address -> A-288}  |A-288  |Paris |France |
+                        |22 |{country -> Germany, city -> Berlin, address -> B-411}|B-411  |Berlin|Germany|
+                        |23 |{country -> Italy, city -> Rome, address -> C-244}    |C-244  |Rome  |Italy  |
+                        +---+------------------------------------------------------+-------+------+-------+                
+            ''')
+
+        c21, c22 = st.columns([6, 7], gap='large')
+        with c21:
+            st.write('''
+                    Tiếp theo, ta sẽ tạo một dữ liệu mẫu (sample data) tương tự nhưng lần này
+                    - các items sẽ là tên hãng (brands)
+                    - mục tiêu đầu ra của bài toán :red[chỉ tạo ra đúng 2 cột là "key", "value"] với function :green[F.explode()]
+
+                    ```python
+                    df = spark.createDataFrame(
+                        data = [
+                            (1001, {'laptop': 'Lenovo', 'phone': 'Samsung', 'vehicle': 'Toyota'}),
+                            (1002, {'laptop': 'HP', 'phone': 'Apple'}),
+                            (1003, {'laptop': 'Apple', 'phone': 'Apple', 'vehicle': 'Porsche'}),
+                            (1004, {'laptop': 'Dell', 'phone': 'Sony', 'vehicle': 'Audi'}),
+                            (1005, {'phone': 'Apple', 'vehicle': 'Lexus'})        
+                        ], schema = ['emp_id', 'items']
+                    )
+                    ```
+
+                    Tùy thuộc vào ta có muốn đặt/đổi tên mới `key -> item` và `value -> brand`, ta sẽ thực hiện như sau:
+                    
+                            .alias('item', 'brand')
+                    ''')
+        with c22:
+            st.write(''' 
+                    ```python
+                    df.select('*', F.explode('items').alias('item', 'brand')).show(truncate=False)
+                    ```
+                    **:green[Output]**
+
+                            +------+-------------------------------------------------------+-------+-------+
+                            |emp_id|items                                                  |item   |brand  |
+                            +------+-------------------------------------------------------+-------+-------+
+                            |1001  |{laptop -> Lenovo, phone -> Samsung, vehicle -> Toyota}|laptop |Lenovo |
+                            |1001  |{laptop -> Lenovo, phone -> Samsung, vehicle -> Toyota}|phone  |Samsung|
+                            |1001  |{laptop -> Lenovo, phone -> Samsung, vehicle -> Toyota}|vehicle|Toyota |
+                            |1002  |{laptop -> HP, phone -> Apple}                         |laptop |HP     |
+                            |1002  |{laptop -> HP, phone -> Apple}                         |phone  |Apple  |
+                            |1003  |{laptop -> Apple, phone -> Apple, vehicle -> Porsche}  |laptop |Apple  |
+                            |1003  |{laptop -> Apple, phone -> Apple, vehicle -> Porsche}  |phone  |Apple  |
+                            |1003  |{laptop -> Apple, phone -> Apple, vehicle -> Porsche}  |vehicle|Porsche|
+                            |1004  |{laptop -> Dell, phone -> Sony, vehicle -> Audi}       |laptop |Dell   |
+                            |1004  |{laptop -> Dell, phone -> Sony, vehicle -> Audi}       |phone  |Sony   |
+                            |1004  |{laptop -> Dell, phone -> Sony, vehicle -> Audi}       |vehicle|Audi   |
+                            |1005  |{phone -> Apple, vehicle -> Lexus}                     |phone  |Apple  |
+                            |1005  |{phone -> Apple, vehicle -> Lexus}                     |vehicle|Lexus  |
+                            +------+-------------------------------------------------------+-------+-------+
+                    ''')
+
+    elif title == "NSP02. Complexity Nested Struct":
+        c1, c2 = st.columns([20, 11], gap='large')
+        with c1:
+            st.write(f"##### :blue[{title}]")
+            st.write('''
+                    :red[Nested struct] là cấu trúc lồng nhiều cấu trúc vào một mảng dữ liệu
+
+                            [ struct_1, struct_2, ..., struct_n ]
+
+                    Chẳng hạn như các giá trị trong cột `items` lưu trong mảng các `dictionary` trong sample data sau:
+
+                    ```python
+                    df = spark.createDataFrame(
+                        data = [
+                            ('O01', 'C01', [
+                                                {'quantity': 2, 'unit_price': 15, 'category': 'Books', 'item_id': 'i1'},
+                                                {'quantity': 3, 'unit_price': 22, 'category': 'Clothing', 'item_id': 'i2'}
+                                            ]),
+                            ('O02', 'C02', [
+                                                {'quantity': 2, 'unit_price': 15, 'category': 'Electronics', 'item_id': 'i1'},
+                                                {'quantity': 3, 'unit_price': 25, 'category': 'Clothing', 'item_id': 'i2'},
+                                                {'quantity': 2, 'unit_price': 20, 'category': 'Clothing', 'item_id': 'i2'}
+                                            ]),
+                        ], schema = ['order_id', 'customer_id', 'items']
+                    )
+                    ```
+
+                    Nếu muốn tính tổng giá trị đơn hàng, tổng số lượng hoặc tổng giá trị đơn:
+
+                    ```python
+                    total_value = F.aggregate(
+                                        F.col("items"), F.lit(0.0),
+                                        lambda acc, x: acc + x['quantity'].cast(DoubleType()) * x['unit_price'].cast(DoubleType()) 
+                                    )
+                    df.select('order_id', 
+                            F.cardinality('items').alias('n_orders'),
+                            F.aggregate(F.col('items'), F.lit(0.0), lambda acc, x: acc + x['quantity']).alias('total_quantity'),
+                            F.round(total_value, 2).alias('total_order_value') 
+                            ).show(truncate=False)
+                    ```
+                    ''')
+        with c2:
+            st.write('''
+                    **:green[Output]**
+
+                            +--------+--------+--------------+-----------------+
+                            |order_id|n_orders|total_quantity|total_order_value|
+                            +--------+--------+--------------+-----------------+
+                            |O01     |2       |5.0           |96.0             |
+                            |O02     |3       |7.0           |145.0            |
+                            +--------+--------+--------------+-----------------+
+                    
+                    Khi dữ liệu này lớn hơn, nếu ta cố cưỡng ép sử dụng :green[F.explode()] để tạo cặp :orange[key-value] trước khi :green[groupBy()] nó sẽ tạo thêm lượng lớn các records (như ví dụ cuối trong :red[[NPS01]])
+
+                    Ta có thể sử dụng trực tiếp :green[F.aggregate()] như sau
+
+                        F.aggregate(col, 
+                                    init_val,
+                                    merge_func, finish_func    
+                                )
+
+                    Còn để đếm các phần tử trong mảng lồng, ta chỉ cần các hàm như 
+                    - :green[F.cardinality()] nếu muốn đếm các phần tử trong mảng
+                    - :green[F.size(F.filter(...))], xem trong ví dụ :red[GA03]                    -
+
+                    ''')
+
+elif topic == 'UDF vs UDTF':
+    if title == "UDF01. Row -> Values or Multi Values":
+        descr, tab_il = st.columns([3, 2.7], gap='medium')
+        with descr:
+            st.write(f"##### :blue[{title}]")
+            st.write(''' 
+                Trong các bài toán thực tế của tài chính ngân hàng, ta nên ưu tiên các :orange[Pyspark Built-in Functions] trước khi nghĩ đến sử dụng :red[UDF] hay :red[UDTF]. 
+                Thực tế, ta thường có thứ tự ưu tiên nó như sau
+
+                        Pysparks Common Built-in functions >> Window >> SQL expression >> UDF >> UDTF
+
+                Cả :red[UDF] hay :red[UDTF] đều không phải công cụ mặc định để xử lý dữ liệu, mà là giải pháp mở rộng khi logic nghiệp vụ quá đặc thù hoặc khó có thể biểu diễn được bằng các :green[functions] có sẵn.
+
+                Vì các :orange[build-in functions] được :orange[Spark Catalyst] tối ưu hóa trong các :green[execution plan] nên :red[UDF] thường phải trao đổi dữ liệu giữa :blue[JVM] và :blue[Python worker], tạo thêm `serialization/ deserialization overhead`
+
+                Trước khi tìm hiểu kỹ hơn việc hạn chế lạm dụng :red[UDF/ UDTF], ta cũng nên nhìn lại một số ví dụ về chúng 
+            ''')
+        with tab_il:
+            st.write('**:yellow[Quick Comparison]**')
+            st.dataframe(pd.DataFrame({
+                '': ['input', 'output', 'relationship', 'processor', 'Python overhead', 'Good for Big data'],
+                'Built-in': ['1 or more columns', 'Scalar/ Array/ Struct...', '', 'Native Spark', 'KO có python udf boundary', 'Ưu tiên'],
+                'UDF (User Defined Function)': ['1 or more columns', '1 value for each row', 'Row -> Value', 'Python/ JVM', 'Maybe', 'cân nhắc'],
+                'UDTF (User Defined Table Function)': ['1 or more columns', '0,1 or many rows', 'Row -> Table', 'Python/ JVM', 'Maybe', 'cân nhắc']
+            }).set_index(''))
+
+        udf, udtf = st.columns(2, gap='large')
+        with udf:
+            ip_udf, script_udf = st.columns([2, 3], gap='medium')
+            with ip_udf:
+                st.write(''' 
+                        **:red[UDF]**
+                        ```python
+                        df = spark.createDataFrame(
+                            data = [
+                               (101, 'nhan@gmail.com'),
+                               (102, 'xuan@yahoo.com')
+                            ], 
+                            schema = ['id', 'email']
+                        )
+                        ```
+
+                        Tuy nhiên, ta có thể sử dụng các hàm có sẵn như :green[F.split] để thực hiện nhanh hơn
+                        ```python
+                        df.withColumn(
+                              'domain', 
+                              F.split('email', '@')[1]
+                            ).show()
+                        ```
+                        ''')
+            with script_udf:
+                st.write(
+                    '''
+                    **Example**
+                    ```python
+                    @F.udf('string')
+                    def get_email_domain(email):
+                        return email.split('@')[1]
+
+                    df.withColumn('domain', 
+                                  get_email_domain('email')).show()
+                    ```
+                    **Output**
+
+                        +---+--------------+---------+
+                        | id|         email|   domain|
+                        +---+--------------+---------+
+                        |101|nhan@gmail.com|gmail.com|
+                        |102|xuan@yahoo.com|yahoo.com|
+                        +---+--------------+---------+                    
+                    '''
+                )
+
+        with udtf:
+            ip_udtf, script_udtf = st.columns([5, 4], gap='medium')
+            with ip_udtf:
+                st.write(
+                    '''
+                    :red[UDTF]
+                    ```python
+                    df = spark.createDataFrame(
+                        data = [
+                            (21, 'iPhone,Airpods,Macbook'),
+                            (22, 'pen'),
+                            (23, ',notebook,textbook')
+                        ], schema = ['order_id', 'items']
+                    )
+                    @F.udtf(returnType="item string")
+                    class Split_Product:
+                        def eval(self, products):
+                            for x in products.split(","):
+                                yield (x, )                    
+                    ```
+                    Tuy nhiên, ta có thể xài :green[F.explode] để đạt kết quả nhanh hơn
+                    ```python
+                    df.select('order_id', 
+                              F.explode(
+                                    F.split(F.col('items'), ',')
+                                ).alias('item')
+                            ).show()
+                    ```
+                    '''
+                )
+            with script_udtf:
+                st.write(
+                    ''' 
+                    ```python
+                    spark.udtf.register("split_product", 
+                                        Split_Product)
+                    df.createOrReplaceTempView("orders")
+                    spark.sql("""
+                        SELECT order_id, item 
+                        FROM orders, 
+                        LATERAL split_product(items)
+                    """).show()
+                    ```
+                    **Output**
+
+                            +--------+--------+
+                            |order_id|    item|
+                            +--------+--------+
+                            |      21|  iPhone|
+                            |      21| Airpods|
+                            |      21| Macbook|
+                            |      22|     pen|
+                            |      23|        |
+                            |      23|notebook|
+                            |      23|textbook|
+                            +--------+--------+
+                    '''
+                )
+
+    elif title == 'UDF02. Custom Fraud Classification':
+        c1, c2 = st.columns([5, 6], gap='large')
+        with c1:
+            st.write(f"##### :blue[{title}]")
+            st.write(
+                '''
+                Trên thực tế, khi logic nghiệp vụ của bài toán trở nên phức tạp và các :orange[PySpark Built-in Functions] không thể biểu diễn một cách trực quan, chúng ta có thể cân nhắc sử dụng :green[User Defined Functions (UDFs)].
+                Tuy nhiên, cần cân bằng giữa tính dễ hiểu, khả năng bảo trì và hiệu suất xử lý:
+
+                - Nếu **UDF** giúp đơn giản hóa business logic, hãy **:red[benchmark execution plan]** và **:blue[runtime]** giữa :green[Scalar UDF], :green[Pandas UDF] và :green[Built-in Functions].
+
+                - Nếu **UDF** gây bất lợi về hiệu suất, hãy thử refactor logic thành tổ hợp các :green[Built-in Functions]. Ưu tiên các phép toán native của :orange[Spark] để tận dụng **:blue[Catalyst Optimizer]** và hạn chế **:yellow[Python serialization overhead]**.
+
+                Trong bài tập này, chúng ta sẽ xây dựng cột **:red[final_fraud_status]** dựa trên :yellow[ML prediction score] kết hợp với các :green[rule-based transaction behaviors]:
+
+                1. Fraud: Nếu `ML_fraud_score` > 0.9. \n
+                2. Alert: Nếu `ML_fraud_score` > 0.5 và thỏa mãn ít nhất một trong các điều kiện:
+
+                - Có hơn 5 giao dịch high-value trong 30 phút trước đó (giá trị giao dịch lớn hơn mức trung bình 30 ngày gần nhất).
+                - Có hơn 10 giao dịch trong 15 phút trước đó.
+                - Có hơn 20 giao dịch trong khung giờ ban đêm.
+                - `tx_description` chứa các từ khóa đáng ngờ như :orange[Bypass], :orange[Unauthorized], etc.
+
+                3. Warning: Nếu `ML_fraud_score` > 0.5 nhưng không phải Alert. \n
+                4. Normal: Các trường hợp còn lại.
+
+                **:green[Input schema]**
+                '''
+            )
+            st.dataframe(pd.DataFrame({
+                'tx_id': ['...'],
+                'cust_id': ['...'],
+                'tx_date': ['...'],
+                'tx_desciption': ['...'],
+                'amount': ['...'],
+                'ML_fraud_score': ['...']
+            }), hide_index=True)
+
+            st.write(
+                '''
+                Trong đó, việc sử dụng :green[udf] có thể sẽ là bắt buộc nếu `detect_suspicious_tx` chứa logic xử lý phức tạp mà các :orange[built-in functions] không thể hỗ trợ
+                ```python
+                def detect_suspicious_tx(description):
+                    if description is None:
+                        return False
+
+                    # Complex custom business rules
+                    # Pattern matching
+                    # Context-based conditions
+                    # Custom parsing ...
+
+                    return suspicious_flag
+                ```
+                '''
+            )
+        with c2:
+            st.write(
+                ''' 
+                **:yellow[Các features cần chuẩn bị thêm hoặc trực tiếp sử dụng]**: 
+                - `n_tx_15m, n_tx_30m, n_hi_tx_30m`: số giao dịch trong 15, 30 phút gần nhất (sử dụng :green[Window function] [xem bài :green[TP03. Transactions's statistics over 30 days]]); 
+                và số giao dịch high-values (đếm nếu số lần `amount > avg_amt_30d` với `avg_amt_30d`: trung bình lượng tiền giao dịch trong 30 ngày gần nhất (cũng sử dụng :green[window function], xem :green[TP03])
+                - `n_night_tx`: số giao dịch diễn ra một đêm :green[khung giờ ban đêm], dựa trên `is_night_time` (nếu giao dịch xảy ra :green[từ 23:00 đến 05:00])
+                - `supsi_flag`: nếu `tx_description` có chứa ít nhất các :green[list_keywords] như `Bypass, Unauthorized, TeamMemberDiscount` 
+
+                Ngoài ra, trong thực tế chúng ta còn khảo sát thêm nếu có sự thay đổi liên tục về `IP_address` cũng như `device_id` trong một khoảng thời gian nhất định
+                
+                **:green[Sử dụng UDF]**
+                ```python
+                def fraud_clf(ml, n_tx_15, n_hi_tx_30, n_ni_tx, supsi_flag):
+                    if ml is None or ml <= 0.5: return 'Normal'
+                    if ml > 0.9: return 'Fraud'
+                    if ((n_hi_tx_30 is not None and n_hi_tx_30 > 5)
+                        or (n_tx_15 is not None and n_tx_15 > 10)
+                        or (n_ni_tx is not None and n_ni_tx > 20)
+                        or (supsi_flag is True)
+                    ):return 'Alert'
+                    return 'Warning'
+
+                detect_suspicious_udf = F.udf(detect_suspicious_tx, BooleanType())                
+                fraud_udf = F.udf(fraud_clf, StringType())
+                
+                tx_df.withColumn('supsi_flag', detect_suspicious_udf(col("tx_description")) \\
+                     .withColumn('final_fraud_status', 
+                                 fraud_udf('ML_score', 'n_tx_15m', 'n_hi_tx_30m', 'n_night_tx', 'supsi_flag')
+                                ).show()
+                ```
+
+                **:green[Built-in functions]**
+                ```python
+                tx_df.withColumn('final_fraud_status',
+                                  F.when(F.col('ML_score') > 0.9, 'Fraud')
+                                   .when( (col('ML_score') > 0.5) &
+                                           ( (col('n_hi_tx_30m') > 5) | (col('n_tx_15m') > 10) |
+                                             (col('n_night_tx_30m') > 20) | (col('supsi_flag') == True)
+                                           ), 'Alert'
+                                        )
+                                    .when(col('ML_score') > 0.5, 'Warning')
+                                    .otherwise('Normal')
+                                    )
+                ```
+                '''
+            )
+
 elif topic == "EDA":
     if title == 'Eda01. Schema, columns & partition count':
         c1, c2 = st.columns([9, 7], gap='large')
@@ -2259,11 +2905,13 @@ elif topic == "EDA":
         with c1:
             st.write(f'''
                         ##### :blue[{title}]
-                        Ví dụ ở đây ta sẽ quan tâm 2 cột numeric là `Quantity` và `UnitPrice`.
+                        Ví dụ ở đây ta sẽ quan tâm 2 cột numeric là `Quantity` và `UnitPrice` trong dữ liệu `transactions_df` đã giới thiệu ở :red[EDA 01]
 
                         Ngoài ra, đối với 2 cột này, ta sẽ đặc biệt chú ý những giá trị bất thường (**:yellow[abnormal values]**) nếu chúng bị âm hoặc bằng 0.
 
-                        Trong các bước triển khai nâng cao, ta có thể tạo cột `amount` bằng cách `UnitPrice * Quantity` (xem ở `Eda04`)
+                        Để tìm hoặc tính toán các giá trị phân phối phức tạp hơn, chẳng hạn như các mức phân vị, ta sẽ sử dụng :green[F.percentile_approx()] hoặc :green[df.approxQuantile]. 
+                        
+                        Trong section tiếp theo :red[EDA 04], ta sẽ tạo cột `amount` bằng cách `UnitPrice * Quantity` và phân tích các số liệu phân vị của nó
                     ''')
 
         with c2:
@@ -2282,7 +2930,7 @@ elif topic == "EDA":
     ]).show()
 ''', language='python'
             )
-            st.write("**Output**")
+            st.write("**:blue[Output]**")
             _, oc1 = st.columns([1, 9])
             with oc1:
                 st.dataframe(pd.DataFrame({
@@ -2306,7 +2954,7 @@ transactions_df.agg(
                 ).show()
 '''
             )
-            st.write("**Output**")
+            st.write("**:blue[Output]**")
             _, oc2 = st.columns([1, 6])
             with oc2:
                 st.dataframe(pd.DataFrame({
@@ -2317,82 +2965,193 @@ transactions_df.agg(
                 }), hide_index=True)
 
     elif title == 'Eda04. Quantiles & outlier screening':
-        c1, c2 = st.columns([4, 7], gap='large')
+        c1, c2 = st.columns([6, 6.6], gap='large')
         with c1:
             st.write(f'''
                         ##### :blue[{title}]
                         Khi xét đến phân vị (`quantiles`) thì `approxQuantile()` là lựa chọn thực tế để ước lượng percentile mà không phải sort toàn bộ dataset để lấy quantile chính xác.
 
-                        Trong bài toán này, ta vẫn dùng `transactions_df`, ở đây ta muốn xét các phân vị trong `'transaction_amount'` với thuật toán `approxQuantile`
+                        Trong bài toán này, ta vẫn dùng `transactions_df`, ta cần tính các phân vị trong `'tx_amount'`
 
                         **:yellow[Syntax]**
 
-                            spark_dataframe.approxQuantile(
-                                                    column,
-                                                    probabilities,
-                                                    relativeError
-                                                )
+                                spark_dataframe.approxQuantile(column, probabilities, relativeError)
+                        
+                        Ngoài ra, :green[percentile_approx] cũng là một lựa chọn thứ hai, nhưng sẽ thao tác qua :orange[functions]
+
+                        **:yellow[Syntax]**
+
+                                F.percentile_approx(column, quantiles, accuracy)
+                        
+                        
+                        Tuy nhiên, để trích xuất các item trong output, ta có thể thực hiện thêm như sau
+                        ```python
+                        transactions_df.withColumn("p50_tx", F.round(F.col("tx_pcts").getItem(0), 2)) \\
+                                       .withColumn("p90_tx", F.round(F.col("tx_pcts").getItem(1), 2)) \\
+                                       .withColumn("p95_tx", F.round(F.col("tx_pcts").getItem(2), 2)) \\
+                                       .withColumn("p99_tx", F.round(F.col("tx_pcts").getItem(3), 2)) \\
+                                       .drop('tx_pcts').show(truncate=False)
+                        ```
+
+                        **:blue[Output]**
+                        
+                                    +-------------+------+------+------+------+
+                                    |avg_tx_amount|p50_tx|p90_tx|p95_tx|p99_tx|
+                                    +-------------+------+------+------+------+
+                                    |17.99        |9.75  |31.8  |59.4  |180.0 |
+                                    +-------------+------+------+------+------+                        
                     ''')
         with c2:
-            st.code(
-"""
-  transactions_df = transactions_df.withColumn(
-                                        "transaction_amount", 
-                                        col("Quantity") * col("UnitPrice"))
+            st.write(
+                '''
+                **:green[Method 1: df.approxQuantile]**
+                ```python
+                # Tạo biến tx_amount bằng UnitPrice * Quantity
+                transactions_df = transactions_df.withColumn("tx_amount", 
+                                                             F.col("Quantity") * F.col("UnitPrice")
+                                                            )
+                # Here we evaluate these levels (1 %, 25 %, 50 %, 75 %, 99 %) and error = 0.01
+                probabilities = [0.01, 0.25, 0.50, 0.75, 0.95, 0.99]
+                rel_error = 0.01
+                quantiles = transactions_df.approxQuantile("tx_amount", probabilities, rel_error)
+                quantiles                
+                ```
+                **:blue[Output]**
 
-  # Here we evaluate these levels (1 %, 25 %, 50 %, 75 %, 99 %) and error = 0.01
-  quantiles = transactions_df.approxQuantile(
-                                     "transaction_amount",
-                                     [0.01, 0.25, 0.50, 0.75, 0.95, 0.99],
-                                     0.01
-                                )
-  quantiles
-""", language = 'python'
+                        [-77183.6, 3.36, 8.42, 16.94, 50.98, 77183.6] 
+                
+                **:green[Method 2: F.percentile_approx()]**
+                ```python
+                quantiles = [0.50, 0.90, 0.95, 0.99]
+                accuracy = 10000
+                transactions_df.agg(
+                                    F.round(F.avg('tx_amount'), 2).alias('avg_tx_amount'),
+                                    F.percentile_approx('tx_amount', quantiles, accuracy).alias('tx_pcts')
+                                ).show(truncate=False)
+                ```
+                **:blue[Output]**
+
+                            +-------------+---------------------------------------+
+                            |avg_tx_amount|tx_pcts                                |
+                            +-------------+---------------------------------------+
+                            |17.99        |[9.75, 31.8, 59.4, 180.0]              |
+                            +-------------+---------------------------------------+
+                '''
             )
-            st.write("""
-                    **:blue[Output]**
-
-                        [-77183.6, 3.36, 8.42, 16.94, 50.98, 77183.6]
-                    """)
 
     elif title == 'Eda05. Drop duplicates then Repartition':
         c1, c2 = st.columns([6, 7], gap='large')
         with c1:
             st.write(f'''
                         ##### :blue[{title}]
-                        Với dữ liệu `transactions_df` này, ta sẽ
-                        - Kiểm tra duplicate theo `InvoiceNo`
-                        - Ước tính số `InvoiceNo` distinct
+                        Với dữ liệu `transactions_df` này, ta thấy rằng
+                        ```python
+                        transactions_df.agg(
+                                        F.count('*').alias('total_rows'),
+                                        F.count('InvoiceNo').alias('cnt_not_null'),
+                                        F.count_distinct('InvoiceNo').alias('cnt_distinct_not_null'),
+                                        F.approx_count_distinct('InvoiceNo').alias('apprx_cnt_distinct')
+                                ).show()
+                        ```
+
+                        **:green[Output]**
+
+                                +----------+------------+---------------------+------------------+
+                                |total_rows|cnt_not_null|cnt_distinct_not_null|apprx_cnt_distinct|
+                                +----------+------------+---------------------+------------------+
+                                |    238351|      238351|                12381|             12642|
+                                +----------+------------+---------------------+------------------+
+
+                        trong đó, `approx_count_distinct` giúp ước lượng số lượng InvoiceNo duy nhất, khác NULL nhưng **nhanh hơn** trên **big data** nhưng có **:red[sai số nhỏ]**
+
+                        -------------
+                        **:orange[Một số Spark-API thường sử dụng khác trong banking & finance]** (có thể đọc lại :red[Bs00])
+                        - :green[option()]: Điều chỉnh các lựa chọn khi đọc dữ liệu
+                        - :green[repartition()]: Thay đổi số lượng và cách phân phối partitions
+                        - :green[coalesce()]: Giảm số lượng partitions
+                        - :green[mode(...)]: Cách thức ghi dữ liệu là ghi đè (:red[overwrite]) hay ghi nối (:red[append]) hoặc báo lỗi (:red[error]) / bỏ qua lỗi (:red[ignore]) nếu dữ liệu đích đã tồn tại.
                     ''')
         with c2:
-            st.code(
-'''
-transactions_df.groupBy("InvoiceNo").count().filter(F.col("count") > 1) \\
-                .orderBy(F.desc("count")).show(5)
-'''
-            )
-            st.write("**Output**")
-            _, oc1, _ = st.columns([1,2,3])
-            with oc1:
-                st.dataframe(pd.DataFrame({'InvoiceNo': {0: '537434',
-                                            1: '538071',
-                                            2: '538349',
-                                            3: '537638',
-                                            4: '537237'},
-                                            'count': {0: 675, 1: 652, 2: 620, 3: 601, 4: 597}}), hide_index=True)
-            st.divider()
-            st.code(
-"""
-transactions_df.agg(
-                    F.count("InvoiceNo").alias("non_null_ids"),
-                    F.approx_count_distinct("InvoiceNo").alias("approx_distinct_ids")
-                ).show()
-""", language='python'
-            )
-            st.write("**Output**")
-            _, oc2, _ = st.columns([1,2,2])
-            with oc2:
-                st.dataframe(pd.DataFrame({'non_null_ids': {0: 100247}, 'approx_distinct_ids': {0: 4963}}), hide_index=True)
+            code_col_1, out_col_1 = st.columns([3, 1.1], gap='large')
+            with code_col_1:
+                st.write('''
+                        Để in ra :red[top 5 InvoiceNo] xuất hiện nhiều nhất,
+
+                        ```python
+                        transactions_df.groupBy("InvoiceNo").count()\\
+                                       .filter(F.col("count") > 1) \\
+                                       .orderBy(F.desc("count")).show(5)
+                        ```
+                        ''')
+            with out_col_1:
+                st.write("""
+                        **:green[Output]**
+
+                            +---------+-----+
+                            |InvoiceNo|count|
+                            +---------+-----+
+                            |   537434|  675|
+                            |   538071|  652|
+                            |   538349|  620|
+                            |   537638|  601|
+                            |   537237|  597|
+                            +---------+-----+
+                        """)
+            # st.divider()
+            code_col_2, out_col_2= st.columns([3, 1.1], gap='large')
+            with code_col_2:
+                st.write('''
+                        Nếu ta muốn drop những dòng duplicated, ta có thể áp dụng trực tiếp
+                        ```python
+                        subset_cols = ['InvoiceNo', 'StockCode', 'Quantity', 'CustomerID']
+                        distinct_tx_df = transactions_df.dropDuplicates(subset_cols)
+                        print(distinct_tx_df.count()) 
+                        ```
+
+                        Tuy nhiên, cần phân biệt :blue[dropDuplicates] với sự kết hợp của :green[groupBy] với :green[left-anti join]
+                        ```python
+                        duplicated_df = transactions_df.groupBy(subset_cols).count()\\
+                                                       .filter(F.col('count') > 1),                        
+                        drop_dupl_tx_df = transactions_df.join(duplicated_df, 
+                                                              subset_cols, 'leftanti')
+                        print(drop_dupl_tx_df.count())
+                        ```
+                        ''')
+            with out_col_2:
+                st.write("")
+                st.write("")
+                st.write(""" 
+                        **:green[Output]**
+                        
+                            536,478 (rows)
+
+                        """)
+                st.write("")
+                st.write("Sự kết hợp này sẽ loại bỏ toàn bộ **duplicate groups :red[(kể cả 1st rows)]**")
+                st.write(""" 
+                        **:green[Output]**
+                        
+                            531,750 (rows)
+
+                        """)
+                
+            code_col_3, out_col_3= st.columns([3, 1.1], gap='large')
+            with code_col_3:
+                st.write('''
+                        Để **:green[phân phối lại số partition]**, ta có thể thực hiện như sau
+                        ```python
+                        transactions_df.repartition(8)
+                        print("Partitions: ", transactions_df.rdd.getNumPartitions() )
+                        ```
+                        ''')
+            with out_col_3:
+                st.write("")
+                st.write("""
+                        **:green[Output]**
+
+                            Partitions: 8
+                        """)
+
 
     elif title == 'Eda06. Skewness notes':
         c1, c2 = st.columns([6, 7], gap='large')
@@ -2419,4 +3178,24 @@ transactions_df.agg(
             )
 
             st.write('Với phương thức này, dữ liệu vẫn có thể `shuffle` và gây tốn resource; `.distinct()` cũng khá tốn cost; hãy dùng khi yêu cầu kiểm tra coverage thực sự cần thiết.')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
