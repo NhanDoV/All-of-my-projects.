@@ -24,3 +24,6 @@
 
 # Force GitHub to recognize Jupyter Notebooks as Jupyter Notebook
 *.ipynb linguist-language=Jupyter Notebook
+
+# Force Github to recognize Dockerfile
+*.dockerfile linguist-language=Dockerfile

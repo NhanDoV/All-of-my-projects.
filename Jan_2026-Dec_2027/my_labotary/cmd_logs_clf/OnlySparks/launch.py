@@ -10,6 +10,7 @@ topic_title_dict = {
             'Bs04. Sort Merge Join',
             'Bs05. Anti-join',
             'Bs06. Salt_key for skewed data',
+            'Bs07. Slowly Changing Dimension (SCD) Builder'
         ],
     'EDA': [
             'Eda01. Schema, columns & partition count',
@@ -51,7 +52,8 @@ topic_title_dict = {
         ],
     'UDF vs UDTF': [
             'UDF01. Row -> Values or Multi Values',
-            'UDF02. Custom Fraud Classification'
+            'UDF02. Custom Fraud Classification',
+            'UDF03. Hierarchical Employee Org-Chart Traversal'
         ],
     'Window': [
             'Wd01. Rising Temperatures',
@@ -59,6 +61,7 @@ topic_title_dict = {
             'Wd03. End-to-end Sales Analytic Pipeline',
             'Wd04. User Session Island Detection',
             'Wd05. Cumulative Revenue by Dynamic_Window',
+            'Wd06. Multi-source deduplication'
     ]
 }
 
@@ -645,6 +648,123 @@ if topic == 'Basic':
                         ```
                         ''')
 
+    elif title == "Bs07. Slowly Changing Dimension (SCD) Builder":
+        c1, c2 = st.columns([5, 6], gap='large')
+        with c1:
+            st.write(f"""
+                    ##### :blue[{title}]
+                    Các kho dữ liệu doanh nghiệp duy trì cơ chế "Các chiều thay đổi chậm" loại 2 (Slowly Changing Dimensions Type 2 - SCD2) nhằm bảo toàn tính chính xác về mặt lịch sử, phục vụ cho các mục đích phân bổ tài chính, tuân thủ quy định và báo cáo theo từng thời điểm cụ thể (point-in-time snapshot reporting).
+                    Xét bảng chiều SCD2 hiện tại (từ ngày hôm trước) cùng với dữ liệu ảnh chụp (snapshot) vận hành của ngày hôm nay (SNAPSHOT_DATE = "2024-01-15"), quy trình xử lý như sau:
+                    1. Các bản ghi không thay đổi: Giữ nguyên các bản ghi hiện tại mà không sửa đổi gì.
+                    2. Các bản ghi có thay đổi (Thay đổi thuộc tính):
+                    - Đóng dòng dữ liệu hiện có: thiết lập `valid_to` = ngày snapshot - 1 ngày ("2024-01-14") và `is_current` = false.
+                    - Chèn dòng dữ liệu mới: thiết lập `valid_from` = ngày snapshot ("2024-01-15"), `valid_to` = "9999-12-31" và `is_current` = true.
+                    3. Các đơn vị kinh doanh (merchant) mới (Thêm mới): Chèn các bản ghi mới với `valid_from` = ngày snapshot, `valid_to` = "9999-12-31" và `is_current` = true.
+                    4. Các đơn vị kinh doanh đã bị xóa (Rời bỏ/Ngừng hoạt động): Thực hiện đóng mềm (soft-close) các bản ghi hiện tại bằng cách thiết lập `valid_to` = ngày snapshot - 1 ngày ("2024-01-14") và `is_current` = false.
+
+                    Sắp xếp kết quả cuối cùng theo thứ tự tăng dần của `merchant_id` và `valid_from`.
+
+                    **:orange[Input dataframe]**
+
+                    (merchants_scd2_df)
+
+                        +-----------+-------------+---------+----------+----------+----------+
+                        |merchant_id|merchant_name|plan_tier|valid_from|  valid_to|is_current|
+                        +-----------+-------------+---------+----------+----------+----------+
+                        |       M001|    Acme Corp|    Basic|2024-01-01|9999-12-31|      true|
+                        |       M002|     Beta LLC|      Pro|2024-01-01|9999-12-31|      true|
+                        +-----------+-------------+---------+----------+----------+----------+
+
+                    (merchants_snapshot_df)
+
+                        +-----------+-------------+---------+
+                        |merchant_id|merchant_name|plan_tier|
+                        +-----------+-------------+---------+
+                        |       M001|    Acme Corp|      Pro|
+                        |       M003|    Gamma Inc|    Basic|
+                        +-----------+-------------+---------+ 
+                    """)
+        with c2:
+            st.write(""" 
+                    ```python
+                    SNAPSHOT_DATE = "2024-01-15"
+                    HIGH_DATE = "9999-12-31"
+                    CLOSE_DATE = "2024-01-14"
+                    
+                    current_scd = merchants_scd2_df.filter(F.col("is_current") == True)
+                    historic_scd = merchants_scd2_df.filter(F.col("is_current") == False)
+                    
+                    joined = merchants_snapshot_df.alias("snap").join(current_scd.alias("scd"),  
+                                                                      on = "merchant_id", how = "full"
+                                                                    )
+                    classified = joined.withColumn("change_type",
+                                                    F.when(F.col("scd.merchant_id").isNull(), "NEW")
+                                                     .when(F.col("snap.merchant_id").isNull(), "DELETED")
+                                                     .when(
+                                                        (F.col("snap.plan_tier") != F.col("scd.plan_tier")) |
+                                                        (F.col("snap.merchant_name") != F.col("scd.merchant_name")),
+                                                        "CHANGED"
+                                                    ).otherwise("UNCHANGED")
+                                                )                
+                    unchanged = classified.filter(F.col("change_type") == "UNCHANGED")\\
+                                          .select(F.col("scd.merchant_id").alias("merchant_id"),
+                                                  F.col("scd.merchant_name").alias("merchant_name"),
+                                                  F.col("scd.plan_tier").alias("plan_tier"),
+                                                  F.col("scd.valid_from").alias("valid_from"),
+                                                  F.col("scd.valid_to").alias("valid_to"),
+                                                  F.col("scd.is_current").alias("is_current")
+                                                )
+                    changed_close = classified.filter(F.col("change_type") == "CHANGED")\\
+                                              .select(F.col("scd.merchant_id").alias("merchant_id"),
+                                                      F.col("scd.merchant_name").alias("merchant_name"),
+                                                      F.col("scd.plan_tier").alias("plan_tier"),
+                                                      F.col("scd.valid_from").alias("valid_from"),
+                                                      F.lit(CLOSE_DATE).alias("valid_to"),
+                                                      F.lit(False).alias("is_current")
+                                                )
+                    changed_new = classified.filter(F.col("change_type") == "CHANGED")\\
+                                            .select(F.col("snap.merchant_id").alias("merchant_id"),
+                                                    F.col("snap.merchant_name").alias("merchant_name"),
+                                                    F.col("snap.plan_tier").alias("plan_tier"),
+                                                    F.lit(SNAPSHOT_DATE).alias("valid_from"),
+                                                    F.lit(HIGH_DATE).alias("valid_to"),
+                                                    F.lit(True).alias("is_current")
+                                                )
+                    new_rows = classified.filter(F.col("change_type") == "NEW")\\
+                                         .select(F.col("snap.merchant_id").alias("merchant_id"),
+                                                 F.col("snap.merchant_name").alias("merchant_name"),
+                                                 F.col("snap.plan_tier").alias("plan_tier"),
+                                                 F.lit(SNAPSHOT_DATE).alias("valid_from"),
+                                                 F.lit(HIGH_DATE).alias("valid_to"),
+                                                 F.lit(True).alias("is_current")
+                                            )
+                    deleted_rows = classified.filter(F.col("change_type") == "DELETED")\\
+                                              .select(F.col("scd.merchant_id").alias("merchant_id"),
+                                                      F.col("scd.merchant_name").alias("merchant_name"),
+                                                      F.col("scd.plan_tier").alias("plan_tier"),
+                                                      F.col("scd.valid_from").alias("valid_from"),
+                                                      F.lit(CLOSE_DATE).alias("valid_to"),
+                                                      F.lit(False).alias("is_current")
+                                                    )
+                    res = historic_scd.unionByName(unchanged)\\
+                                        .unionByName(changed_close)\\
+                                        .unionByName(changed_new)\\
+                                        .unionByName(new_rows)\\
+                                        .unionByName(deleted_rows) \\
+                                        .orderBy("merchant_id", "valid_from")
+                    ```
+                    **:blue[Output]**
+
+                        +-----------+-------------+---------+----------+----------+----------+
+                        |merchant_id|merchant_name|plan_tier|valid_from|  valid_to|is_current|
+                        +-----------+-------------+---------+----------+----------+----------+
+                        |       M001|    Acme Corp|    Basic|2024-01-01|2024-01-14|     false|
+                        |       M001|    Acme Corp|      Pro|2024-01-15|9999-12-31|      true|
+                        |       M002|     Beta LLC|      Pro|2024-01-01|2024-01-14|     false|
+                        |       M003|    Gamma Inc|    Basic|2024-01-15|9999-12-31|      true|
+                        +-----------+-------------+---------+----------+----------+----------+
+                    """)
+
 elif topic == "Window":
     if title == "Wd01. Rising Temperatures":
         c1, c2 = st.columns([3, 4], gap='large')
@@ -821,8 +941,8 @@ df_agg.withColumn('spending_rank', F.dense_rank().over(wd_rnk)) \\
             _, oc, _ = st.columns([1, 9, 1])
             oc.dataframe(out_df, hide_index=True)
 
-    elif title == 'Wd04. User Session Island Detection':
-        c1, c2 = st.columns([7, 11], gap='large')
+    elif title == 'Wd04. User Session Island Detection': # Fix lại output
+        c1, c2 = st.columns([7, 12], gap='large')
         with c1:
             st.write(f'''
                         ##### :blue[{title}]
@@ -845,53 +965,59 @@ df_agg.withColumn('spending_rank', F.dense_rank().over(wd_rnk)) \\
             _, ic, _ = st.columns([1, 4, 1])
             with ic:
                 st.dataframe(pd.DataFrame({
-                    'user_id': ['u001', 'u001', 'u001', 'u001', 'u002'],
-                    'event_ts': ['2024-01-15 09:00:00', '2024-01-01 09:12:00', '2024-01-15 09:45:00', '2024-01-15 09:58:00', '2024-01-15 10:00:00'],
-                    'event_type': ['page_view', 'click', 'page_view', 'purchase', 'page_view']
+                    'user_id': ['u001', 'u001', 'u001', 'u001', 'u002', 'u002'],
+                    'event_ts': ['2024-01-15 09:00:00', '2024-01-01 09:12:00', '2024-01-15 09:45:00', 
+                                 '2024-01-15 09:58:00', '2024-01-15 09:56:00', '2024-01-15 10:30:00'],
+                    'event_type': ['page_view', 'click', 'page_view', 'purchase', 'page_view', 'click']
                 }), hide_index=True)
         with c2:
             st.code(
 '''
- from pyspark.sql.window import Window
- 
- lag_wd = Window.partitionBy('user_id').orderBy('event_ts')
- tm_wdw = Window.partitionBy('user_id').orderBy('event_ts')\\
-                .rowsBetween(Window.unboundedPreceding, Window.currentRow)
+from pyspark.sql.window import Window
 
- event_with_ssn_df = df.withColumn('prev_ts', F.lag('event_ts', 1).over(lag_wd))\\
-                       .withColumn('is_new_session', 
-                            F.when(F.col('prev_ts').isNull() | 
-                                (F.unix_timestamp('event_ts') - F.unix_timestamp('prev_ts') >= 1800),
-                            1).otherwise(0)
+lag_wd = Window.partitionBy('user_id').orderBy('event_ts')
+tm_wdw = Window.partitionBy('user_id').orderBy('event_ts')\\
+               .rowsBetween(Window.unboundedPreceding, Window.currentRow)
+
+event_with_ssn_df = df.withColumn('prev_ts', F.lag('event_ts', 1).over(lag_wd))\\
+                      .withColumn('is_new_session', 
+                                    F.when(F.col('prev_ts').isNull() | 
+                                        (F.unix_timestamp('event_ts') - F.unix_timestamp('prev_ts') >= 1800),
+                                    1).otherwise(0)
                       ).withColumn('sess_num', F.sum('is_new_session').over(tm_wdw))\\
-                      .withColumn('session_id',
-                                  F.concat_ws('_', F.col('user_id'), F.col('sess_num').cast('string'))
+                       .withColumn('session_id',
+                                    F.concat_ws('_', F.col('user_id'), F.col('sess_num').cast('string'))
                                 )
- ssn_agg = event_with_ssn_df.groupBy('user_id', 'session_id')\\
+ssn_agg = event_with_ssn_df.groupBy('user_id', 'session_id')\\
                             .agg(
                                 F.min('event_ts').alias('session_start'),
-                                F.max('event_ts').alias('session_end'), F.count('*').alias('event_count')
+                                F.max('event_ts').alias('session_end'), 
+                                F.count('*').alias('event_count')
                             )
-
- event_with_ssn_df.join(ssn_agg, ['user_id', 'session_id'], 'left')\\
-                  .select('user_id', 'session_id',
+event_with_ssn_df.join(ssn_agg, ['user_id', 'session_id'], 'left')\\
+                 .select('user_id', 'session_id',
                           F.date_format('event_ts', 'yyyy-MM-dd HH:mm:ss').alias('event_ts'),
                           'event_type', 
                           F.date_format('session_start', 'yyyy-MM-dd HH:mm:ss').alias('session_start'),
                           F.date_format('session_end', 'yyyy-MM-dd HH:mm:ss').alias('session_end'),
+                          'event_count'
                     ).orderBy('user_id', 'event_ts').show()
 '''
             )
-            st.write("**Output**")
-            _, oc = st.columns([1, 9])
+            st.write("**:green[Output]**")
+            _, oc, _ = st.columns([1, 19, 1])
             with oc:
                 st.dataframe(pd.DataFrame({
-                    'user_id': ['u001', 'u001', 'u001', 'u001', 'u002'],
-                    'session_id': ['u001_1', 'u001_2', 'u001_3', 'u001_3', 'u002_1'],
-                    'event_ts': ['2024-01-01 09:12:00', '2024-01-15 09:00:00', '2024-01-15 09:45:00', '2024-01-15 09:58:00', '2024-01-15 10:00:00'],
-                    'event_type': ['click', 'page_view', 'page_view', 'purchase', 'page_view'],
-                    'session_start': ['2024-01-01 09:12:00', '2024-01-15 09:00:00', '2024-01-15 09:45:00', '2024-01-15 09:45:00', '2024-01-15 10:00:00'],
-                    'session_end': ['2024-01-01 09:12:00', '2024-01-15 09:00:00', '2024-01-15 09:58:00', '2024-01-15 09:58:00', '2024-01-15 10:00:00']
+                    'user_id': ['u001', 'u001', 'u001', 'u001', 'u002', 'u002'],
+                    'session_id': ['u001_1', 'u001_1', 'u001_2', 'u001_2', 'u002_1', 'u002_2'],
+                    'event_ts': ['2024-01-15 09:00:00', '2024-01-01 09:12:00', '2024-01-15 09:45:00', 
+                                 '2024-01-15 09:58:00', '2024-01-15 09:56:00', '2024-01-15 10:30:00'],
+                    'event_type': ['page_view', 'click', 'page_view', 'purchase', 'page_view', 'click'],
+                    'session_start': ['2024-01-15 09:00:00', '2024-01-01 09:00:00', '2024-01-15 09:45:00',
+                                      '2024-01-15 09:45:00', '2024-01-15 09:56:00', '2024-01-15 10:30:00'],
+                    'session_end': ['2024-01-15 09:12:00', '2024-01-01 09:12:00', '2024-01-15 09:58:00',
+                                    '2024-01-15 09:58:00', '2024-01-15 09:56:00', '2024-01-15 10:30:00'],
+                    'event_count': [2, 2, 2, 2, 1, 1]
                 }), hide_index=True)
 
     elif title == 'Wd05. Cumulative Revenue by Dynamic_Window':
@@ -992,6 +1118,59 @@ df_agg.withColumn('spending_rank', F.dense_rank().over(wd_rnk)) \\
                     'mtd_cumulative': ['500', '800', '1,250', '700', '900'],
                     'country_daily_rank': ['2', '1', '1', '1', '1']
                 }), hide_index=True)
+
+    elif title == 'Wd06. Multi-source deduplication':
+        c1, c2 = st.columns([8, 9], gap='large')
+        with c1:
+            st.write(f"""
+                    ##### :blue[{title}]
+                    Trong :green[hệ thống quản lý dữ liệu tổng thể (MDM [Master Data Management])] của doanh nghiệp, hồ sơ khách hàng được đồng bộ từ nhiều hệ thống nguồn (CRM, Web, ứng dụng di động).
+
+                    Xử lý các bản ghi khách hàng bị trùng lặp theo quy tắc xác định:
+
+                    1. Nhóm các bản ghi dựa trên :green[`customer_id`].
+                    2. Chọn bản ghi mới nhất dựa trên trường :green[`updated_at`] (sắp xếp theo thứ tự giảm dần - DESC).
+                    3. Nếu các mốc thời gian :green[`updated_at`] trùng nhau, sử dụng trường :green[`source_priority`] (sắp xếp theo thứ tự giảm dần - DESC) để phân biệt (giá trị càng cao thì độ tin cậy càng lớn).
+
+                    **:orange[Input dataframe: customers_df]**
+                    """)
+            st.dataframe(pd.DataFrame({
+                                    'customer_id': [1, 1, 2, 2, 3],
+                                    'customer_name': ['Alice', 'Alice Smith', 'Bob', 'Bobby Carlsen', 'David'],
+                                    'email': ['alice@crm.com', 'alice.smith@web.com', 'bob@app.com', 
+                                              'bobby.carlsen@pm.com', 'david@hrbr.com'],
+                                    'updated_at': ['2024-03-01 10:00:00', '2024-03-01 10:00:00', '2024-02-15 08:00:00', 
+                                                   '2024-02-15 11:00:00', '2024-01-03 08:00:00'],
+                                    'source_priority': [1, 3, 2, 5, 4]
+                                    }), 
+                        hide_index=True)
+
+        with c2:
+            st.write("""
+                    ```python
+                    from pyspark.sql.window import Window
+
+                    wd = Window.partitionBy("customer_id") \\
+                               .orderBy(F.col("updated_at").desc(), 
+                                        F.col('source_priority').desc()
+                                    )
+                    df = customer_feed_df.withColumn("rnk", 
+                                                    F.row_number().over(wd)
+                                            ).filter(F.col('rnk') == 1)\\
+                                            .drop('rnk')
+                    df.show()
+                    ```
+                    **:green[Output dataframe]**
+
+                            +-----------+-------------+--------------------+-------------------+---------------+
+                            |customer_id|customer_name|               email|         updated_at|source_priority|
+                            +-----------+-------------+--------------------+-------------------+---------------+
+                            |          1|  Alice Smith| alice.smith@web.com|2024-03-01 10:00:00|              3|
+                            |          2|Bobby Carlsen|bobby.carlsen@pm.com|2024-02-15 11:00:00|              5|
+                            |          3|        David|      david@hrbr.com|2024-01-03 08:00:00|              4|
+                            +-----------+-------------+--------------------+-------------------+---------------+
+
+                     """)
 
 elif topic == "Regex Clause":
     if title == "RC01. Find spending-behaviors pattern":
@@ -2757,6 +2936,92 @@ elif topic == 'UDF vs UDTF':
                 '''
             )
 
+    elif title == 'UDF03. Hierarchical Employee Org-Chart Traversal':
+        c1, c2 = st.columns([6, 7], gap='large')
+        with c1:
+            st.write(f"""
+                    ##### :blue[{title}]
+                    Trong phần này, ta sẽ giải quyết một bài toán phổ biến trong các hệ thống quản lý nhân sự, nơi cần xác định mối quan hệ phân cấp giữa các nhân viên và quản lý của họ chỉ với các built-in functions của Spark, mà không cần sử dụng udf hay CTE truyền thống trong SQL.
+
+                    Các hệ thống phân tích lực lượng lao động và quản lý quyền truy cập thường mô hình hóa các chuỗi báo cáo quản lý dưới dạng đồ thị có hướng. 
+                    Trong Spark, các biểu thức **:red[bảng đệ quy (recursive CTE)]** không được hỗ trợ trực tiếp; do đó, việc duyệt cây phân cấp phải được thực hiện thông qua phương pháp lặp, sử dụng thuật toán **:blue[tìm kiếm theo chiều rộng (Breadth-First Search - BFS)]**.
+
+                    Với một danh sách nhân viên dạng phẳng bao gồm 
+                    - `emp_id` (mã nhân viên), 
+                    - `emp_name` (tên nhân viên) và 
+                    - `manager_id` (mã quản lý trực tiếp), 
+                    
+                    Hãy tạo một DataFrame biểu diễn hệ thống phân cấp đã được làm phẳng, 
+                    - liệt kê tất cả các cấp quản lý phía trên (tổ tiên) của mỗi nhân viên, kéo dài đến tận cấp cao nhất là CEO (nơi `manager_id` là NULL).
+                    - Tạo biến `depth`: Khoảng cách từ nhân viên đến cấp quản lý phía trên (1 = quản lý trực tiếp, 2 = quản lý của quản lý, v.v.).
+
+                    Sắp xếp kết quả cuối cùng theo thứ tự tăng dần của `emp_id` và `depth`.
+
+                    **:orange[Input dataframe]**
+
+                                +------+--------+----------+
+                                |emp_id|emp_name|manager_id|
+                                +------+--------+----------+
+                                |  E001|   Alice|      NULL|
+                                |  E002|     Bob|      E001|
+                                |  E003|   Carol|      E001|
+                                |  E004|    Dave|      E002|
+                                |  E005|     Eve|      E004|
+                                +------+--------+----------+                    
+                    """)
+        with c2:
+            st.write(""" 
+                    ```python
+                    from functools import reduce
+
+                    frontier = employees_df.filter(F.col("manager_id").isNotNull()) \\
+                                            .select(
+                                                F.col("emp_id"), 
+                                                F.col("manager_id").alias("ancestor_id"),
+                                                F.lit(1).alias("depth")
+                                            )                    
+                    accumulated = []
+                    depth = 1
+                    MAX_DEPTH = 15
+                    
+                    while True:
+                        cnt = frontier.count()
+                        if cnt == 0 or depth > MAX_DEPTH:
+                            break
+                        accumulated.append(frontier)
+                        ext_df = employees_df.select(
+                                                    F.col("emp_id").alias("ancestor_id"),
+                                                    F.col("manager_id").alias("next_ancestor_id")
+                                                ).filter(F.col("next_ancestor_id").isNotNull())
+                        frontier = frontier.join(ext_df, on="ancestor_id", how="inner")\\
+                                            .select(
+                                                    F.col("emp_id"),
+                                                    F.col("next_ancestor_id").alias("ancestor_id"),
+                                                    (F.col("depth") + 1).alias("depth")
+                                                )                        
+                        depth += 1
+                    if accumulated:
+                        res = reduce(lambda a, b: a.unionByName(b), accumulated).orderBy("emp_id", "depth")
+                    else:
+                        res = frontier
+                    ```
+                    **:blue[Output]**
+
+                            +------+-----------+-----+
+                            |emp_id|ancestor_id|depth|
+                            +------+-----------+-----+
+                            |  E002|       E001|    1|
+                            |  E003|       E001|    1|
+                            |  E004|       E002|    1|
+                            |  E004|       E001|    2|
+                            |  E005|       E004|    1|
+                            |  E005|       E002|    2|
+                            |  E005|       E001|    3|
+                            +------+-----------+-----+
+
+                    """)
+
+
 elif topic == "EDA":
     if title == 'Eda01. Schema, columns & partition count':
         c1, c2 = st.columns([9, 7], gap='large')
@@ -3152,7 +3417,6 @@ transactions_df.agg(
                             Partitions: 8
                         """)
 
-
     elif title == 'Eda06. Skewness notes':
         c1, c2 = st.columns([6, 7], gap='large')
         with c1:
@@ -3178,24 +3442,3 @@ transactions_df.agg(
             )
 
             st.write('Với phương thức này, dữ liệu vẫn có thể `shuffle` và gây tốn resource; `.distinct()` cũng khá tốn cost; hãy dùng khi yêu cầu kiểm tra coverage thực sự cần thiết.')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -378,10 +378,10 @@ QUESTION_BANK = {
                 "id": "g9-06",
                 "question": "Cho tam giác $ABC$ vuông tại $A$, có $AB=6\\,\\text{cm}$, $AC=8\\,\\text{cm}$. Gọi $H$ là đường cao kẻ từ $A$ và $M$ là trung điểm của $BC$. Tính độ dài đoạn $HM$.",
                 "steps": [
-                    "Tính $BC$ bằng định lý Pythagore: $BC^2 = AB^2 + AC^2 = 6^2 + 8^2 = 36 + 64 = 100 \\Rightarrow BC = 10$ cm.",
-                    "Ngoài ra, $AH$ là đường cao nên $AH = \\frac{AB \\cdot AC}{BC} = \\frac{6 \\cdot 8}{10} = 4.8$ cm.",
+                    "Tính $BC$ bằng định lý Pythagore: <br> $\\qquad \\qquad BC^2 = AB^2 + AC^2 = 6^2 + 8^2 = 36 + 64 = 100 \\Rightarrow BC = 10$ cm.",
+                    "Ngoài ra, $AH$ là đường cao nên $AH = \\dfrac{AB \\cdot AC}{BC} = \\dfrac{6 \\cdot 8}{10} = 4.8$ cm.",
                     "Trung điểm $M$ của $BC$ có tọa độ trung bình của $B$ và $C$, nên $BM = MC = \\frac{BC}{2} = 5$ cm.",
-                    "Xét tam giác vuông $BAH$ có $BH = \\sqrt{AB^2 - AH^2} = \\sqrt{6^2 - 4.8^2} = \\sqrt{36 - 23.04} = \\sqrt{12.96} = 3.6$ cm.",
+                    "Xét tam giác vuông $BAH$ có <br> $\\qquad \\qquad BH = \\sqrt{AB^2 - AH^2} = \\sqrt{6^2 - 4.8^2} = \\sqrt{36 - 23.04} = \\sqrt{12.96} = 3.6$ cm.",
                     "Suy ra, $HM = BM - BH = 5 - 3.6 = 1.4$ cm.",
                 ],
                 "answer": "$\\boxed{1.4\\, \\text{cm}}$",
@@ -395,7 +395,7 @@ QUESTION_BANK = {
                     "Vì $AD$ và $BE$ là các đường cao nên $\\widehat{AEB} = \\widehat{ADB} = 90^\\circ$; dẫn đến các đỉnh $E, D$ cùng nhìn $AB$ dưới góc vuông.",
                     "Do đó, tứ giác $AEDB$ nội tiếp trong một đường tròn đường kính $AB$.",
                     "Do $ABC$ cân tại $A$ với $AD$ là đường cao nên cũng đồng thời là đường trung tuyến, suy ra $D$ là trung điểm của $BC$.",
-                    "Hơn nữa, $\\widehat{BEC} = 90^\\circ$, nên $\\triangle \\, BEC$ vuông tại $E$ và $DE$ là trung tuyến nên $DE = \\frac{1}{2} BC$.",
+                    "Hơn nữa, $\\widehat{BEC} = 90^\\circ$, nên $\\Delta \\, BEC$ vuông tại $E$ và $DE$ là trung tuyến nên $DE = \\frac{1}{2} BC$.",
                     "Vì $O$ là tâm đường tròn ngoại tiếp tam giác $AHE$, nên $O$ là trung điểm $AH$; dẫn đến $OAE$ là tam giác cân (tại $O$) nên $\\widehat{OAE} = \\widehat{OEA}$.",
                     "Ngoài ra, tam giác $DBE$ cân tại $D$ nên $\\widehat{DEB} = \\widehat{DBE}$.",
                     "Mà $\\widehat{DBE} = \\widehat{OAE}$ (cùng phụ với $\\widehat{ACB}$) do đó $$\\widehat{DEB} = \\widehat{OEA}$$",                    
@@ -421,22 +421,28 @@ QUESTION_BANK = {
             },
             {
                 "id": "g9-09",
-                "question": "Cho 2 đường tròn $(O \\, ; R)$ và $(O'\\, ; R')$ cắt nhau tại $A, B$ (với $O$ và $O'$ thuộc 2 nửa mặt phẳng bờ $AB$). Gọi $C$ và $D$ lần lượt là giao điểm của $(O)$ với $OA$ và $O'A$; gọi $E, F$ lần lượt là giao điểm của $(O')$ với $OA$ và $O'A$. \n 1) CMR $3$ điểm $C,B,F$ và tứ giác $CDEF$ nội tiếp. \n 2) CMR $AD . AF = AE. AC$",
+                "question": "Cho 2 đường tròn $(O \\, ; R)$ và $(O'\\, ; R')$ cắt nhau tại $A, B$ (với $O$ và $O'$ thuộc 2 nửa mặt phẳng bờ $AB$). Gọi $C$ và $D$ lần lượt là giao điểm của $(O)$ với $OA$ và $O'A$; gọi $E, F$ lần lượt là giao điểm của $(O')$ với $OA$ và $O'A$. \n 1) CMR $3$ điểm $C,B,F$ thẳng hàng và tứ giác $CDEF$ nội tiếp. \n 2) CMR $AD . AF = AE. AC$",
                 "steps": [
-                    "Ta thấy rằng $\\triangle \\, ABC$ nội tiếp đường tròn đường kính $AC$, nên $\\widehat{ABC} = 90^{\\circ}$",
-                    "Tương tự, $\\triangle \\, ABF$ nội tiếp đường tròn đường kính $AC$, nên $\\widehat{FBA} = 90^{\\circ}$",
+                    "Ta thấy rằng $\\Delta \\, ABC$ nội tiếp đường tròn $(O)$ đường kính $AC$, nên $\\widehat{ABC} = 90^{\\circ}$",
+                    "Tương tự, $\\Delta \\, ABF$ nội tiếp đường tròn $(O^{\\textbf{'}})$ đường kính $AC$, nên $\\widehat{FBA} = 90^{\\circ}$",
                     "Từ đây, suy ra $\\boxed{ 3 \\text{ điểm } C, B, F \\text{ thẳng hàng} }$",
                     "Ngoài ra, các góc $\\widehat{CDA}$ và $\\widehat{FEA}$ đều là các góc vuông do chúng lần lượt là các góc nội tiếp của các đường tròn $(O)$ và  $(O')$. Như vậy cả $\\widehat{CDA}$ và $\\widehat{FEA}$ cùng nhìn cạnh $FC$ dưới góc $90^{\\circ}$ nên $\\boxed{ \\text{tứ giác } CDEF \\text{ nội tiếp} }$",
-                    "Xét cặp tam giác $\\triangle \\, CDA$ và $\\triangle FEA$ có $\\begin{cases} \\widehat{D} = \\widehat{E} = 90^{\\circ} \\\\ \\widehat{A_1} = \\widehat{A_2} \\; \\text{(đ. đ)} \\end{cases}$ nên $\\triangle \\, CDA \\; \\sim \\; \\triangle \\, FEA$ (g,g)",
+                    "Xét cặp tam giác $\\Delta \\, CDA$ và $\\Delta FEA$ có $\\begin{cases} \\widehat{D} = \\widehat{E} = 90^{\\circ} \\\\ \\widehat{A_1} = \\widehat{A_2} \\; \\text{(đ. đ)} \\end{cases}$ nên $\\Delta \\, CDA \\; \\sim \\; \\Delta \\, FEA$ (g,g)",
                     "Do đó, $\\dfrac{AD}{AC} = \\dfrac{AE}{AF}$ do đó $\\boxed{AD . AF = AE. AC }$"
                 ],
                 "answer": ""
             },
             {
                 "id": "g9-10",
-                "question": "Trên $(O)$, lấy $2$ điểm $B, C$ sao cho $O$ không thuộc $BC$; trên cung nhỏ $BC$ lấy điểm $A$ sao cho $AB$ khác $AC$. Gọi $A' \\in (O)$ và $D \\in BC$ sao cho $A'A$ là đường kính, còn $AD \\perp BC$. Cuối cùng, gọi $E, F$ lần lượt là chân đường cao kẻ từ $B, C$ đến $A'A$ \n 1) CMR tứ giác $AEDB$ nội tiếp và $DF$ song song với $A'B$, và $DE \\perp AC$ \n 2) Biết $\\widehat{ACB} = 30^{\\circ}$ và $OA = 6$ cm, tính $S_{\\triangle ABO}$",
+                "question": "Trên $(O)$, lấy $2$ điểm $B, C$ sao cho $O$ không thuộc $BC$; trên cung nhỏ $BC$ lấy điểm $A$ sao cho $AB$ khác $AC$. Gọi $A' \\in (O)$ và $D \\in BC$ sao cho $A'A$ là đường kính, còn $AD \\perp BC$. Cuối cùng, gọi $E, F$ lần lượt là chân đường cao kẻ từ $B, C$ đến $A'A$ \n 1) CMR tứ giác $AEDB$ nội tiếp và $DF$ song song với $A'B$, và $DE \\perp AC$ \n 2) Biết $\\widehat{ACB} = 30^{\\circ}$ và $OA = 6$ cm, tính $S_{\\overset{\\frown}{OA'B} }$",
                 "steps": [
-                    "Ta thấy rằng $\\widehat{BDA} = \\widehat{AEB} = 90^{\\circ}$ nên"
+                    "Ta thấy rằng $AD \\perp BC$ và $BE \\perp A'A$ do đó $\\widehat{BDA} = \\widehat{AEB}$ nên cùng nhìn đoạn $AB$ dưới góc $90^{\\circ}$, vì thế $\\boxed{\\text{tứ giác} AEDB \\text{ nội tiếp đường tròn đường kính } AB}$",
+                    "Để chứng minh $DF \\text{//} A'B$, ta sẽ chứng minh $\\widehat{F_1} = \\widehat{A^{\\textbf{'}}_1}$. Dễ thấy rằng $\\widehat{A^{\\textbf{'}}_1} = \\widehat{C_1}$ (cùng chắn cung nhỏ $AB$) $\\qquad (i)$",
+                    "Mặt khác, tứ giác $ADFC$ có $\\widehat{ADC} = \\widehat{AFC} = 90^{\\circ}$ nên nó nội tiếp đường tròn đường kính $AC$, từ đó ta được $\\widehat{F_1} = \\widehat{C_1} \\qquad (ii)$",
+                    "Từ $(i)$ và $(ii)$, $\\widehat{A^{\\textbf{'}}_1} = \\widehat{F_1}$ nên $\\boxed{DF \\text{ // } A'B}$",
+                    "Vì tứ giác $AEDB$ nội tiếp nên $\\widehat{ABE} = \\widehat{D_1}$. Ngoài ra, $\\widehat{ABE} = \\widehat{A^{\\textbf{'}}_1}$ (do cùng phụ với $\\widehat{EAB}$). Suy ra $\\widehat{D_1} = \\widehat{A^{\\textbf{'}}_1}$",
+                    "Trước đó, ta đã chứng minh $\\widehat{A^{\\textbf{'}}_1} = \\widehat{C_1} \\; \\Rightarrow \\; \\widehat{D_1} = \\widehat{C_1} \\; \\Rightarrow \\; \\widehat{D_1} + \\widehat{DAE} = 90^{\\circ},$ vậy $\\boxed{DE \\perp AC}$",
+                    "Vì $\\widehat{C_1} = 30^{\\circ} \\; \\Rightarrow \\; \\widehat{A^{\\textbf{'}}_1} = 30^{\\circ} \\; \\Rightarrow \\; \\Delta OA'B$ cân tại $O$ có $\\widehat{A'OB} = 180^{\\circ} - 2 \\widehat{A^{\\textbf{'}}_1} = 120^{\\circ}$. Do đó, $S_{\\overset{\\frown}{OA'B} } = \\dfrac{1}{3} S_{(O, OA))}  = \\dfrac{1}{3} \\cdot \\pi OA^2 = 12 \\pi cm^{3}$"
                 ],
                 "answer": "$\\boxed{12 \\pi cm^3}$"
             }
@@ -444,12 +450,14 @@ QUESTION_BANK = {
         "Số học": [
             {
                 "id": "a9-01",
+                "level": "easy",
                 "question": "Rút gọn phân thức $\\dfrac{x^2-9}{x+3}$, với điều kiện $x \\neq -3$.",
                 "steps": ["Phân tích tử thành hiệu hai bình phương: $x^2-9=(x-3)(x+3)$.", "Vì $x \\neq -3$, rút gọn được $\\dfrac{(x-3)(x+3)}{x+3}=x-3$."],
                 "answer": "$\\boxed{x-3\\quad (x \\neq -3)}$",
             },
             {
                 "id": "a9-02",
+                "level": "easy",
                 "question": "Cho phương trình: $3x^2 - 5x + 3 = 0$ có 2 nghiệm $x_1, x_2$. Hãy tính $x_1^3 + x_2^3$.",
                 "steps": [
                             "Tổng quát với tam thức bậc hai $ax^2 + bx + c = 0$ có hai nghiệm $x_1, x_2$, ta có: $x_1 + x_2 = -\\dfrac{b}{a}$ và $x_1 x_2 = \\dfrac{c}{a}$.", 
@@ -460,6 +468,7 @@ QUESTION_BANK = {
             },
             {
                 "id": "a9-03",
+                "level": "easy",
                 "question": "Phân tích đa thức thành nhân tử: $2 x^3 - 9 x^2 + 7 x + 6$.",
                 "steps": [
                             "Ta nhận thấy rằng $2 x^3 - 9 x^2 + 7x + 6 = (2x^3 - 4x^2) - (5x^2 - 10x) - (3x - 6)$",
@@ -471,18 +480,21 @@ QUESTION_BANK = {
             },
             {
                 "id": "a9-04",
+                "level": "easy",
                 "question": "Giải hệ phương trình: $\\begin{cases}x+y=7\\\\x-y=1\\end{cases}$.",
                 "steps": ["Cộng hai phương trình: $2x=8\\Rightarrow x=4$.", "Thay vào $x+y=7$: $y=3$."],
                 "answer": "$\\boxed{(x,y)=(4,3)}$",
             },
             {
                 "id": "a9-05",
+                "level": "easy",
                 "question": "Một hộp có 3 viên bi đỏ và 2 viên bi xanh. Lấy ngẫu nhiên một viên. Tính xác suất lấy được viên bi xanh.",
                 "steps": ["Có tổng cộng $3+2=5$ viên bi, trong đó có 2 viên xanh.", "Xác suất bằng số kết quả thuận lợi chia tổng số kết quả đồng khả năng: $P=\\frac25$."],
                 "answer": "$\\boxed{\\frac25}$",
             },
             {
                 "id": "a9-06",
+                "level": "easy",
                 "question": "Rút gọn căn thức $\\dfrac{1}{2 - \\sqrt{3}} +  \\sqrt{7 - 4\\sqrt{3}}$",
                 "steps": [
                     "Rút gọn phân thức: $\\dfrac{1}{2 - \\sqrt{3}} = \\dfrac{2 + \\sqrt{3}}{(2 - \\sqrt{3})(2 + \\sqrt{3})} = 2 + \\sqrt{3}$.",
@@ -493,6 +505,7 @@ QUESTION_BANK = {
             },
             {
                 "id": "a9-07",
+                "level": "easy",
                 "question": "Rút gọn biểu thức: $\\sqrt{21 - 8\\sqrt{5}} + 2 \\sqrt{6 - 2\\sqrt{5}}$",
                 "steps": [
                     "Đầu tiên, $\\sqrt{21 - 8\\sqrt{5}} = |4 - 2\\sqrt{5}| = 4 - 2\\sqrt{5}$.",
@@ -503,6 +516,7 @@ QUESTION_BANK = {
             },
             {
                 "id": "a9-08",
+                "level": "medium",
                 "question": "CMR $A = 1 + 2^3 + 3^3 + \\ldots + 2026^3$ chia hết cho $2027$.",
                 "steps": [
                         "Nhận thấy rằng $A$ có $1013$ cặp số, và ta có thể nhóm chúng lại như sau: $(1^3 + 2026^3) + (2^3 + 2025^3) + \\ldots + (1013^3 + 1014^3)$.",
@@ -516,50 +530,91 @@ QUESTION_BANK = {
             },
             {
                 "id": "a9-09",
+                "level": "easy",
                 "question": "Cho phương trình $2x^2 - 7x + 4 = 0$. Không giải phương trình hãy chứng minh phương trình trên có 2 nghiệm phân biệt $x_1, x_2$ và sau đó tính giá trị của $x_1(4x_2 + x_1) + x_2^2$",
                 "steps": [
-                        "Dễ thấy rằng $\\triangle = (-7)^2 - 4 \\times 2 \\times 4 = 17 > 0$ nên phương trình có $2$ nghiệm phân biệt $x_1$ và $x_2$",
+                        "Dễ thấy rằng $\\Delta = (-7)^2 - 4 \\times 2 \\times 4 = 17 > 0$ nên phương trình có $2$ nghiệm phân biệt $x_1$ và $x_2$",
                         "Hơn nữa, ta có $x_1 x_2 = \\dfrac{4}{2} = 2$ và $x_1 + x_2 = -\\dfrac{(-7)}{2} = \\dfrac{7}{2}$",
                         "Do đó, $x_1(4x_2 + x_1) + x_2^2 = \\left( x_1^2 + x_2^2 \\right) + 4x_1 x_2 = \\left( x_1 + x_2 \\right)^2 + 2x_1 x_2 = \\dfrac{49}{4} + 4 = \\dfrac{65}{4}$"
                 ],
                 "answer": "$\\boxed{ \\dfrac{65}{4} }$"
-            }
+            },
+            {
+                "id": "a9-10",
+                "level": "easy",
+                "question": "Rút gọn biểu thức : $A \\,= \\, \\dfrac{4}{3 + \\sqrt{5}} \\, - \\, \\dfrac{8}{1 + \\sqrt{5}} \\, + \\, \\dfrac{15}{\\sqrt{5}}$",
+                "steps": [
+                    "Bằng cách nhân liên hợp, ta có $\\dfrac{4}{3 + \\sqrt{5}} \\, = \\, \\dfrac{4 \\left( 3 - \\sqrt{5} \\right) }{3^2 - (\\sqrt{5})^2} \\, = \\, 3 - \\sqrt{5}$",
+                    "Tương tự, $\\dfrac{8}{1 + \\sqrt{5}} \\, = \\, \\dfrac{8 \\left( \\sqrt{5} - 1 \\right)}{5 - 1} = 2 \\left( \\sqrt{5} - 1 \\right)$",
+                    "Như vậy, $A \\, = \\, \\left( 3 - \\sqrt{5} \\right) \\, - \\, 2 \\left( \\sqrt{5} - 1 \\right) \\, + \\, 3 \\sqrt{5} \\; = \\; 5$"
+                ],
+                "answer": "$\\boxed{5}$"
+            },
+            {
+                "id": "a9-11",
+                "level": "easy",
+                "question": "Cho parabol $(P): y = \\dfrac{x^2 + x}{2}$ và đường thẳng $(d): y=x + 2$. Tìm tọa độ giao điểm của $(P)$ và $(d)$",
+                "steps": [
+                    "Phương trình hoành độ giao điểm của $(P)$ và $(d)$ là $\\dfrac{x^2 + x}{2} = x + 2$, hay $x^2 - x - 4 = 0$",
+                    "Tam thức bậc hai $a x^2 + b x + c = 0$ có nghiệm nếu $\\Delta = b^2 - 4ac \\geq 0$, thay các giá trị $a=1, \\; b=-1, \\; c=-4$, ta được $\\Delta = 17$",
+                    "Như vậy, $(P)$ và $(d)$ cắt nhau tại hai điểm phân biệt $\\begin{cases} x_1 = \\dfrac{1 + \\sqrt{17}}{2} \\\\ y_1 = \\dfrac{5 + \\sqrt{17}}{2} \\end{cases}$ và $\\begin{cases} x_2 = \\dfrac{1 - \\sqrt{17}}{2} \\\\ y_1 = \\dfrac{5 - \\sqrt{17}}{2} \\end{cases}$"
+                ],
+                "answer": "$\\boxed{A\\left( \\dfrac{1 + \\sqrt{17}}{2} ; \\; \\dfrac{5 + \\sqrt{17}}{2} \\right) \\text{ và } B\\left( \\dfrac{1 - \\sqrt{17}}{2} ; \\; \\dfrac{5 - \\sqrt{17}}{2} \\right) }$"
+            },
+            {
+                "id": "a9-12",
+                "level": "medim",                
+                "question": "Cho parabol $(P): y = x^2 + 3x$ và đường thẳng $(d): y= 2m x + 5m^2 - 2m$ (với $m$ là tham số). Xác định $m$ để $P$ và $d$ cắt nhau tại $2$ điểm phân biệt.",
+                "steps": [
+                    "Phương trình hoành độ giao điểm của $(P)$ và $(d)$ là $x^2 + 3x = 2mx + 5m^2 - 2m$, hay $x^2 + (3 - 2m)x - (5m^2 - 2m) = 0$",
+                    "Tam thức bậc hai $a x^2 + b x + c = 0$ có nghiệm nếu $\\Delta = b^2 - 4ac \\geq 0$, thay các giá trị $a=1, \\; b=3 - 2m, \\; c=-(5m^2 - 2m)$, ta được $\\Delta = (3 - 2m)^2 + 4(5m^2 - 2m) = 24 m^2 - 20 m + 9$",
+                    "Như vậy, $(P)$ và $(d)$ cắt nhau tại hai điểm phân biệt khi $\\Delta > 0$, hay $24 m^2 - 20 m + 9 > 0$",
+                    "Giải bất phương trình bậc hai $24 m^2 - 20 m + 9 > 0$, ta được nghiệm $m < \\dfrac{3}{4}$ hoặc $m > \\dfrac{3}{2}$"
+                ],
+                "answer": "$\\boxed{m < \\dfrac{3}{4} \\text{ hoặc } m > \\dfrac{3}{2}}$"
+            },
         ],
     },
     12: {
         "Hình học": [
             {
                 "id": "g12-01",
+                "level": "easy",
                 "question": "Trong không gian $Oxyz$, cho hai điểm $A(1,2,3)$, $B(4,6,3)$. Tính độ dài đoạn thẳng $AB$.",
                 "steps": ["Dùng công thức khoảng cách trong không gian.", "$AB=\\sqrt{(4-1)^2+(6-2)^2+(3-3)^2}=\\sqrt{9+16}=5$."],
                 "answer": "$\\boxed{AB=5}$",
             },
             {
                 "id": "g12-02",
+                "level": "easy",
                 "question": "Cho mặt cầu tâm $I(0,0,0)$, bán kính $R=3$. Viết phương trình mặt cầu.",
                 "steps": ["Phương trình mặt cầu tâm $I(a,b,c)$, bán kính $R$ là $(x-a)^2+(y-b)^2+(z-c)^2=R^2$.", "Thay $a=b=c=0$, $R=3$, được $x^2+y^2+z^2=9$."],
                 "answer": "$\\boxed{x^2+y^2+z^2=9}$",
             },
             {
                 "id": "g12-03",
+                "level": "easy",
                 "question": "Một khối lập phương có cạnh $a=4\\,\\text{cm}$. Tính thể tích khối lập phương.",
                 "steps": ["Thể tích khối lập phương: $V=a^3$.", "$V=4^3=64\\,\\text{cm}^3$."],
                 "answer": "$\\boxed{64\\,\\text{cm}^3}$",
             },
             {
                 "id": "g12-04",
+                "level": "easy",
                 "question": "Trong không gian, cho vectơ $\\vec{u}=(2,-1,2)$. Tính độ dài của vectơ $\\vec{u}$.",
                 "steps": ["Độ dài vectơ $(a,b,c)$ bằng $\\sqrt{a^2+b^2+c^2}$.", "$\\|\\vec{u}\\|=\\sqrt{2^2+(-1)^2+2^2}=\\sqrt9=3$."],
                 "answer": "$\\boxed{3}$",
             },
             {
                 "id": "g12-05",
+                "level": "easy",
                 "question": "Một hình nón tròn xoay có bán kính đáy $r=3\\,\\text{cm}$, chiều cao $h=4\\,\\text{cm}$. Tính thể tích.",
                 "steps": ["Dùng công thức $V=\\frac13\\pi r^2h$.", "$V=\\frac13\\pi\\times9\\times4=12\\pi\\,\\text{cm}^3$."],
                 "answer": "$\\boxed{12\\pi\\,\\text{cm}^3}$",
             },
             {
                 "id": "g12-06",
+                "level": "medium",
                 "question": "Cho tứ diện $ABCD$, ở mỗi mặt, ta lấy các trọng tâm $A'$ ở $(BCD)$; $B'$ ở $(ACD)$; $C'$ ở $(ABD)$ và $D'$ ở $(ABC)$. Hãy tính tỷ lệ thể tích giữa 2 khối $A'B'C'D'$ và $ABCD$",
                 "steps": [
                     "Chọn điểm $O$ làm gốc tọa độ. Gọi $\\vec{a}=\\overrightarrow{OA}$, $\\vec{b}=\\overrightarrow{OB}$, $\\vec{c}=\\overrightarrow{OC}$, $\\vec{d}=\\overrightarrow{OD}$ lần lượt là các vectơ vị trí của bốn đỉnh $A,B,C,D$.",
@@ -574,6 +629,7 @@ QUESTION_BANK = {
             },
             {
                 "id": "g12-07",
+                "level": "medium",
                 "question": "Cho hình chóp $S.ABCD$ có đáy $ABCD$ là hình bình hành và $SA \\perp (ABCD)$. Biết rằng $SA = h, AB=a, AD=b,$ hãy tính thể tích khối chóp theo $a, b$ và $h$, biết rằng góc $A = 120^\\circ$",
                 "steps": [
                     "Từ các giả thiết, ta có thể tính diện tích đáy $ABCD$ bằng công thức: <br> $\\qquad \\qquad S_{ABCD} = \\overrightarrow{AB} \\cdot \\overrightarrow{AD} = a \\cdot b \\cdot \\sin(120^\\circ) = a b \\cdot \\dfrac{\\sqrt{3}}{2}$",
@@ -583,6 +639,7 @@ QUESTION_BANK = {
             },
             {
                 "id": "g12-08",
+                "level": "medium",
                 "question": "Trong $Oxyz$ cho mặt cầu $(S)$ với tâm $I(1; 2; -1)$ và tiếp xúc mặt phẳng $(P): 2x-2y-z-8=0$. Hãy viết phương trình tổng quát của mặt cầu $(S)$",
                 "steps": [
                     "Vì mặt cầu $(S)$ tâm $I(1;2;-1)$ tiếp xúc với mặt phẳng $(P): 2x-2y-z-8=0$ nên bán kính $R$ bằng khoảng cách từ $I$ đến $(P)$, tức là <br><br> $\\qquad R = d(I,(P)) = \\dfrac{|2\\cdot1 - 2\\cdot2 - (-1) - 8|}{\\sqrt{2^2 + (-2)^2 + (-1)^2}} = \\dfrac{|2-4+1-8|}{\\sqrt{9}} = \\dfrac{|-9|}{3} = 3$",
@@ -593,6 +650,7 @@ QUESTION_BANK = {
             },
             {
                 "id": "g12-09",
+                "level": "hard",
                 "question": "Trong $Oxy$ cho hình chữ nhật $ABCD$ với $I(6; 2)$ là giao điểm 2 đường chéo $AC$ và $BD$. Gọi $M(1;5) \\in AB$ và $E$ là trung điểm của $CD$ thuộc đường thẳng $(\\Delta): x+y-5=0$. Hãy viết phương trình đường thằng $AB$",
                 "steps": [
                     "Gọi $N$ là điểm đối xứng của $M$ qua $I$ (khi đó $N \\in CD$), suy ra $N(11; -1)$.",
@@ -607,6 +665,7 @@ QUESTION_BANK = {
             },
             {
                 "id": "g12-10",
+                "level" : "medium",
                 "question": "Trong không gian $Oxyz,$ cho mặt phẳng $(P): 2x - 2y -z - 4=0$ và mặt cầu $(S): x^2 + y^2 + z^2 - 2x - 4y - 6z - 11 = 0.$ CMR mặt phẳng $(P)$ cắt mặt cầu $(S)$ theo một đường tròn và tìm tâm, bán kính của đường tròn đó.",
                 "steps": [
                     "Từ phương trình mặt cầu $(S)$, ta có tâm $I(1; 2; 3)$ và bán kính $R = \\sqrt{1^2 + 2^2 + 3^2 + 11} = 5$.",
@@ -621,36 +680,42 @@ QUESTION_BANK = {
         "Số học": [
             {
                 "id": "a12-01",
+                "level": "easy",
                 "question": "Tính đạo hàm của hàm số $f(x)=3x^4-2x^2+5$.",
                 "steps": ["Áp dụng quy tắc $(x^n)'=nx^{n-1}$ và đạo hàm của hằng số bằng 0.", "$f'(x)=12x^3-4x$."],
                 "answer": "$\\boxed{f'(x)=12x^3-4x}$",
             },
             {
                 "id": "a12-02",
+                "level": "easy",
                 "question": "Tính tích phân $\\int_0^2 3x^2\\,dx$.",
                 "steps": ["Nguyên hàm của $3x^2$ là $x^3$.", "$\\int_0^2 3x^2\\,dx=[x^3]_0^2=8-0=8$."],
                 "answer": "$\\boxed{8}$",
             },
             {
                 "id": "a12-03",
+                "level": "easy",
                 "question": "Giải phương trình $\\log_2(x)=3$.",
                 "steps": ["Đổi sang dạng lũy thừa: $x=2^3$.", "Suy ra $x=8$, thỏa điều kiện $x>0$."],
                 "answer": "$\\boxed{x=8}$",
             },
             {
                 "id": "a12-04",
+                "level": "easy",
                 "question": "Tìm số phức liên hợp của $z=3-4i$ và mô-đun của $z$.",
                 "steps": ["Số phức liên hợp đổi dấu phần ảo: $\\overline z=3+4i$.", "Mô-đun: $|z|=\\sqrt{3^2+(-4)^2}=5$."],
                 "answer": "$\\boxed{\\overline z=3+4i,\\quad |z|=5}$",
             },
             {
                 "id": "a12-05",
+                "level": "easy",
                 "question": "Tìm giá trị lớn nhất của hàm số $f(x)=-x^2+4x+1$ trên $\\mathbb{R}$.",
                 "steps": ["Viết lại hàm số trên thành: $f(x)=-(x-2)^2+5$.", "Vì $(x-2)^2\\ge 0$, nên $f(x)\\le5$, đạt được khi $x=2$."],
                 "answer": "$\\boxed{\\max f(x)=5\\text{ tại }x=2}$",
             },
             {
                 "id": "a12-06",
+                "level": "medium",
                 "question": "Cho số nguyên $k > 2$, trong các dãy sau thì dãy nào có giới hạn về 0 \n $\\qquad A. \\left( \\frac{2k+1}{2k+2} \\right)^k \\qquad B. (2k - 1)^k \\qquad C. (2k + 1)^k \\qquad D. \\left( \\frac{2k-1}{2k-2} \\right)^k$",
                 "steps": [
                     "Đầu tiên, để ngắn gọn ta sẽ gán $a = \\frac{2k+1}{2k+2}; b = 2k-1; c = 2k+1$ và $d = \\frac{2k-1}{2k-2}$",
@@ -660,6 +725,7 @@ QUESTION_BANK = {
             },
             {
                 "id": "a12-07",
+                "level": "medium",
                 "question": "Cho $f(x)$ là một đa thức, biết rằng $f(x) - f'(x) = (x+1)^2$, hãy tìm giá trị của $f(2)$",
                 "steps": [
                     "Vì $f$ là một đa thức và $f(x) - f'(x) = x^2 + 2x + 1$ nên bậc tối đa của đa thức là 2, ta gọi $f(x) = ax^2 + bx + c$",
@@ -671,6 +737,7 @@ QUESTION_BANK = {
             },
             {
                 "id": "a12-08",
+                "level": "easy",
                 "question": "Nguyên hàm của $2^x + \\sin x$ là",
                 "steps": [
                     "Ta có $\\displaystyle \\int \\sin x dx = -\\cos x + c_1$",
@@ -680,6 +747,7 @@ QUESTION_BANK = {
             },
             {
                 "id": "a12-09",
+                "level": "easy",
                 "question": "Giải BPT sau $\\log_{\\frac{1}{2}} \\left( 9 - x^2 \\right) < 0$",
                 "steps": [
                     "Tập xác định: $x \\in \\left( -3, 3 \\right)$",
@@ -690,6 +758,7 @@ QUESTION_BANK = {
             },
             {
                 "id": "a12-10",
+                "level": "medium",
                 "question": "Giải phương trình $2\\sqrt[3]{3x - 2} + 3\\sqrt{6 - 5x} - 8 = 0$ với $x \\in \\mathbb{R}$",
                 "steps": [
                     "Điều kiện xác định $6 - 5x \\geq 0 \\Rightarrow x \\leq \\dfrac{6}{5}$",
