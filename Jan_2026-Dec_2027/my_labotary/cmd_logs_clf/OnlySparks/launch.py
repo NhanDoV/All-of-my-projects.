@@ -2953,21 +2953,25 @@ elif topic == 'UDF vs UDTF':
                     
                     Hãy tạo một DataFrame biểu diễn hệ thống phân cấp đã được làm phẳng, 
                     - liệt kê tất cả các cấp quản lý phía trên (tổ tiên) của mỗi nhân viên, kéo dài đến tận cấp cao nhất là CEO (nơi `manager_id` là NULL).
-                    - Tạo biến `depth`: Khoảng cách từ nhân viên đến cấp quản lý phía trên (1 = quản lý trực tiếp, 2 = quản lý của quản lý, v.v.).
+                    - Tạo biến `depth`: Khoảng cách từ nhân viên đến cấp quản lý phía trên 
+
+                                1 = quản lý trực tiếp, 
+                                2 = quản lý của quản lý, etc
 
                     Sắp xếp kết quả cuối cùng theo thứ tự tăng dần của `emp_id` và `depth`.
 
                     **:orange[Input dataframe]**
 
-                                +------+--------+----------+
-                                |emp_id|emp_name|manager_id|
-                                +------+--------+----------+
-                                |  E001|   Alice|      NULL|
-                                |  E002|     Bob|      E001|
-                                |  E003|   Carol|      E001|
-                                |  E004|    Dave|      E002|
-                                |  E005|     Eve|      E004|
-                                +------+--------+----------+                    
+                        +------+--------+----------+
+                        |emp_id|emp_name|manager_id|
+                        +------+--------+----------+                         E001 
+                        |  E001|   Alice|      NULL|                       /      \\
+                        |  E002|     Bob|      E001|          (1)       E002     E003
+                        |  E003|   Carol|      E001|                     |
+                        |  E004|    Dave|      E002|          (2)       E004
+                        |  E005|     Eve|      E004|                     |
+                        +------+--------+----------+          (3)       E005  
+                        
                     """)
         with c2:
             st.write(""" 
